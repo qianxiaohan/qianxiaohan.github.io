@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="12.1 动态内存和类 不能在类声明中初始化静态成员变量，这是因为声明描述了如何分配内存，但并不分配内存。 对于静态类成员，可以在类声明之外使用单独的语句来进行初始化，这是因为静态类成员是单独存储的，而不是对象的组成部分。 初始化始化语句指出了类型，并使用了作用域运算符，但没有使用关键字 static。 &#x3D;&#x3D;p428&#x3D;&#x3D;  举个例子： 12345678910">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2024/07/18/%E7%AC%AC12%E7%AB%A0%E7%B1%BB%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="12.1 动态内存和类 不能在类声明中初始化静态成员变量，这是因为声明描述了如何分配内存，但并不分配内存。 对于静态类成员，可以在类声明之外使用单独的语句来进行初始化，这是因为静态类成员是单独存储的，而不是对象的组成部分。 初始化始化语句指出了类型，并使用了作用域运算符，但没有使用关键字 static。 &#x3D;&#x3D;p428&#x3D;&#x3D;  举个例子： 12345678910">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-18T06:52:17.297Z">
+<meta property="article:modified_time" content="2024-07-17T23:10:23.515Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/07/18/%E7%AC%AC12%E7%AB%A0%E7%B1%BB%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/07/18/%E7%AC%AC12%E7%AB%A0%E7%B1%BB%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/","path":"2024/07/18/第12章类和动态内存分配/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%92%8C%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">12.1 动态内存和类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2-%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84%E6%96%B0String%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">12.2 改进后的新String类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3-%E5%9C%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BD%BF%E7%94%A8new%E6%97%B6%E5%BA%94%E6%B3%A8%E6%84%8F%E7%9A%84%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">12.3 在构造函数中使用new时应注意的事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-4-%E6%9C%89%E5%85%B3%E8%BF%94%E5%9B%9E%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">4.</span> <span class="nav-text">12.4 有关返回对象的说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-7-%E9%98%9F%E5%88%97%E6%A8%A1%E6%8B%9F"><span class="nav-number">5.</span> <span class="nav-text">12.7 队列模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-8-%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">12.8 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/18/%E7%AC%AC12%E7%AB%A0%E7%B1%BB%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-07-18 14:52:17 / Modified: 07:10:23" itemprop="dateCreated datePublished" datetime="2024-07-18T14:52:17+08:00">2024-07-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="12-1-动态内存和类"><a href="#12-1-动态内存和类" class="headerlink" title="12.1 动态内存和类"></a>12.1 动态内存和类</h2><ul>
+<li>不能在类声明中初始化静态成员变量，这是因为声明描述了如何分配内存，但并不分配内存。</li>
+<li>对于静态类成员，可以在类声明之外使用单独的语句来进行初始化，这是因为静态类成员是单独存储的，而不是对象的组成部分。</li>
+<li>初始化始化语句指出了类型，并使用了作用域运算符，但没有使用关键字 static。 &#x3D;&#x3D;p428&#x3D;&#x3D;</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//stringbad.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StringBad</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">     <span class="type">char</span> * str;                <span class="comment">// pointer to string</span></span><br><span class="line">     <span class="type">int</span> len;                   <span class="comment">// length of string</span></span><br><span class="line">     <span class="type">static</span> <span class="type">int</span> num_strings;    <span class="comment">// number of objects</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">     .....</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stringbad.cpp</span></span><br><span class="line"><span class="type">int</span> StringBad::num_strings = <span class="number">0</span>;	<span class="comment">//initializing static class member</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不能在类声明中初始化数据成员的一种例外(第10章笔记)是，静态数据成员为整型或枚举const。&#x3D;&#x3D;p428&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//stringbad.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StringBad</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">char</span> * str;                <span class="comment">// pointer to string</span></span><br><span class="line">    <span class="type">int</span> len;                   <span class="comment">// length of string</span></span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> num_strings = <span class="number">0</span>;    <span class="comment">//这么写可以</span></span><br><span class="line">    <span class="keyword">enum</span> &#123;num_strings = <span class="number">0</span>;&#125;	<span class="comment">//或者这么写可以</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">     .....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果没有定义，C++自动提供了下面这些成员函数：	&#x3D;&#x3D;p432&#x3D;&#x3D;<ul>
+<li>默认构造函数</li>
+<li>默认析构函数</li>
+<li>复制(拷贝)构造函数</li>
+<li>赋值运算符</li>
+<li>地址运算符</li>
+<li>移动构造函数(move constructor)</li>
+<li>移动赋值运算符(move assignment operator)</li>
+</ul>
+</li>
+<li>带参数的构造函数也可以是默认构造函数，只要所有参数都有默认值。 &#x3D;&#x3D;p433&#x3D;&#x3D;</li>
+<li><font color='red'> 复制构造函数按值传递对象应该改成按引用传递对象</font>, 这样可以节省调用构造函数的时间以及存储新对象的空间。 &#x3D;&#x3D;p433&#x3D;&#x3D;</li>
+</ul>
+<br>
+
+<h2 id="12-2-改进后的新String类"><a href="#12-2-改进后的新String类" class="headerlink" title="12.2 改进后的新String类"></a>12.2 改进后的新String类</h2><ul>
+<li>不能通过对象调用静态成员函数，静态成员函数不能使用this指针，静态成员函数不与特定的对象相关联，因此只能使用静态成员函数。 &#x3D;&#x3D;p441&#x3D;&#x3D;</li>
+</ul>
+<br>
+
+<h2 id="12-3-在构造函数中使用new时应注意的事项"><a href="#12-3-在构造函数中使用new时应注意的事项" class="headerlink" title="12.3 在构造函数中使用new时应注意的事项"></a>12.3 在构造函数中使用new时应注意的事项</h2><ul>
+<li>使用new初始化对象的<font color='red'>指针成员时</font>，需要注意： &#x3D;&#x3D;p446&#x3D;&#x3D;<ul>
+<li>如果在构造函数中使用new来初始化指针成员，则应在析构函数中使用delete。</li>
+<li>new和delete必须相互兼容。new对应于delete，new[]对应于delete[]。</li>
+<li>如果有多个构造函数，则必须以相同的方式使用new，要么都带中括号，要么都不带。因为只有一个析构函数，所有的构造函数都必须与它兼容。</li>
+<li>应定义一个复制构造函数，通过深度复制将一个对象初始化为另一个对象。像这样：<code>String::String(const String &amp; st)</code></li>
+<li>应当定义一个赋值运算符，通过深度复制将一个对象复制给另一个对象。像这样：<code>String &amp; String::operator=(const String &amp; st)</code></li>
+</ul>
+</li>
+</ul>
+<br>
+
+<h2 id="12-4-有关返回对象的说明"><a href="#12-4-有关返回对象的说明" class="headerlink" title="12.4 有关返回对象的说明"></a>12.4 有关返回对象的说明</h2><ul>
+<li>使用 const 引用的常见原因是旨在提高效率，但对于何时可以采用这种方式存在一些限制。 &#x3D;&#x3D;p449&#x3D;&#x3D;</li>
+<li>函数返回对象将调用复制构造函数，而返回引用不会。 &#x3D;&#x3D;p449&#x3D;&#x3D;</li>
+<li>返回的对象是被调用函数中的局部变量，则不应按引用方式返回它，因为在被调用函数执行完毕时，局部对象将调用其析构函数。 &#x3D;&#x3D;p450&#x3D;&#x3D;</li>
+<li>有些方法和函数(如重载的赋值运算符)可以返回对象，也可以返回对象的引用，应首选引用，因为其效率更高。	&#x3D;&#x3D;p451&#x3D;&#x3D;</li>
+</ul>
+<br>
+
+<h2 id="12-7-队列模拟"><a href="#12-7-队列模拟" class="headerlink" title="12.7 队列模拟"></a>12.7 队列模拟</h2><ul>
+<li>调用构造函数时，对象将在括号中的代码执行之前就被创建，因此必须在对象创建时初始化常量	&#x3D;&#x3D;p464&#x3D;&#x3D;</li>
+<li>成员初始化列表(member initializer list)注意事项：	&#x3D;&#x3D;p465&#x3D;&#x3D;<ul>
+<li>只能用于构造函数</li>
+<li>必须用这种格式来初始化非静态const数据成员(至少在 C++11之前是这样的)</li>
+<li>必须用这种格式来初始化引用数据成员(引用本质是一个指针常量)</li>
+</ul>
+</li>
+<li>成员初始化列表语法举例：<code>queue(int qs) : qsize(qs), items(0), front(NULL), rear(NULL) &#123; &#125;</code>  &#x3D;&#x3D;p464&#x3D;&#x3D;</li>
+</ul>
+<br>
+
+<h2 id="12-8-总结"><a href="#12-8-总结" class="headerlink" title="12.8 总结"></a>12.8 总结</h2><ul>
+<li>C++11新增：可以在类内初始化非静态const成员  &#x3D;&#x3D;p475&#x3D;&#x3D;</li>
+<li>C+11允许类内初始化，即在类定义中进行初始化：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">...</span><br><span class="line">    Node * front = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">enum</span> &#123;Q_SIZE = <span class="number">10</span>&#125;;</span><br><span class="line">    Node * rear = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">int</span> items = <span class="number">0</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> qsize = Q_SIZE;</span><br><span class="line">...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这与使用成员初始化列表等价。然而，使用成员初始化列表的构造函数将覆盖相应的类内初始化</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/18/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-angle-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
