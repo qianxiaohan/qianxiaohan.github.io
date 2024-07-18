@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="9.1 单独编译文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数  9.2 存储持续性、作用域和链接性C++内存分布 9.2.3 变量的五种存储方式 p310    存储描述 持续">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Plus第9章学习笔记">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="9.1 单独编译文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数  9.2 存储持续性、作用域和链接性C++内存分布 9.2.3 变量的五种存储方式 p310    存储描述 持续">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-18T09:37:44.360Z">
+<meta property="article:modified_time" content="2024-07-18T09:48:08.357Z">
+<meta property="article:author" content="lyx">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/","path":"2024/07/18/第9章内存模型和命名空间/","title":"C++ Primer Plus第9章学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Plus第9章学习笔记 | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">9.1 单独编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E5%AD%98%E5%82%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">9.2 存储持续性、作用域和链接性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="nav-number">3.</span> <span class="nav-text">9.3 名称空间</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++ Primer Plus第9章学习笔记 | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Plus第9章学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:48:08" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="9-1-单独编译"><a href="#9-1-单独编译" class="headerlink" title="9.1 单独编译"></a>9.1 单独编译</h3><p>文件结构 p301</p>
+<ul>
+<li>头文件：包含结构声明和使用这些结构的函数的原型</li>
+<li>源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码</li>
+</ul>
+<p>头文件中包含的内容 p301</p>
+<ul>
+<li>函数原型</li>
+<li>使用#define或const定义的符号常量</li>
+<li>结构声明</li>
+<li>类声明</li>
+<li>模板声明</li>
+<li>内联函数</li>
+</ul>
+<h3 id="9-2-存储持续性、作用域和链接性"><a href="#9-2-存储持续性、作用域和链接性" class="headerlink" title="9.2 存储持续性、作用域和链接性"></a>9.2 存储持续性、作用域和链接性</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18174875">C++内存分布</a></p>
+<p>9.2.3 变量的五种存储方式 <code>p310</code></p>
+<table>
+<thead>
+<tr>
+<th>存储描述</th>
+<th>持续性</th>
+<th>作用域</th>
+<th>链接性</th>
+<th>如何声明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>自动</td>
+<td>自动</td>
+<td>代码块</td>
+<td>无</td>
+<td>代码块中</td>
+</tr>
+<tr>
+<td>寄存器</td>
+<td>自动</td>
+<td>代码块</td>
+<td>无</td>
+<td>代码块中使用register关键字</td>
+</tr>
+<tr>
+<td>静态、无链接性</td>
+<td>静态</td>
+<td>代码块</td>
+<td>无</td>
+<td>代码块中使用static关键字</td>
+</tr>
+<tr>
+<td>静态、外部链接性</td>
+<td>静态</td>
+<td>文件</td>
+<td>外部</td>
+<td>在所有函数之外</td>
+</tr>
+<tr>
+<td>静态、内部链接性</td>
+<td>静态</td>
+<td>文件</td>
+<td>内部</td>
+<td>在所有函数之外且使用static关键字</td>
+</tr>
+</tbody></table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> g;			<span class="comment">//静态存储持续性、外部链接性，又叫做全局变量</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> s_g;	<span class="comment">//静态存储持续性、内部链接性</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> temp;			<span class="comment">//自动存储持续性、无链接性，又叫局部变量</span></span><br><span class="line">    <span class="keyword">register</span> <span class="type">int</span> temp2;	<span class="comment">//自动存储持续性、无链接性</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> temp3;	<span class="comment">//静态存储持续性、无链接性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>静态变量的初始化 <code>p310</code></p>
+<ul>
+<li>静态初始化：零初始化和常量表达式初始化</li>
+<li>动态初始化：变量将在编译后初始化</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="type">int</span> x;									<span class="comment">//用零初始化</span></span><br><span class="line"><span class="type">int</span> y = <span class="number">5</span>;								<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">long</span> z = <span class="number">13</span>*<span class="number">13</span>;							<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">int</span> enough = <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="type">long</span>) + <span class="number">1</span>;		<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> pi = <span class="number">4.0</span> * <span class="built_in">atan</span>(<span class="number">1.0</span>);		<span class="comment">//动态初始化</span></span><br></pre></td></tr></table></figure>
+
+<p>9.2.7 const全局变量的链接性为内部 p317</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> fingers = <span class="number">10</span>;		<span class="comment">//等同于const static int fingers = 10;</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>9.2.8 所有函数的存储持续性都自动为静态，即在整个程序执行期间都一直存在。默认情况下函数链接性为外部，可以使用static关键字将函数的链接性设置为内部的。 <code>p318</code></p>
+<p>9.2.9 <code>p319</code></p>
+<ul>
+<li>C语言链接性，例如C语言编译器可能将spiff这样的函数名翻译为_spiff</li>
+<li>C++链接性，C++中一个名称可能对应多个函数，例如C++编译器执行名称矫正或名称修正，例如可能将spiff(int)转换为_spiff_i、spoiff(double，double)转换为_spiff_d_d</li>
+</ul>
+<p>在C++中使用C库中预编译的函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spiff(<span class="number">22</span>);		<span class="comment">//使用C库中的spiff函数</span></span><br></pre></td></tr></table></figure>
+
+<p>使用函数原型来指出要使用的约定：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;				<span class="comment">//使用c协议进行名称查找</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;					<span class="comment">//使用c++协议进行名称查找</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C++&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;			<span class="comment">//使用c++协议进行名称查找	</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-3-名称空间"><a href="#9-3-名称空间" class="headerlink" title="9.3 名称空间"></a>9.3 名称空间</h3><p>9.3.2 名称空间namespace，解决名称冲突的问题 	<code>p325</code></p>
+<p>9.3.2 如果有名称空间jack和jill，并在代码中使用作用域解析运算符，则不会出现二义性：	<code>p328</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jack::pal = <span class="number">3</span>;</span><br><span class="line">jill::pal = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用using声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> jack::pal;</span><br><span class="line"><span class="keyword">using</span> jill::pal;</span><br><span class="line">pal = <span class="number">4</span>;		<span class="comment">//有二义性，不确定是哪个名称空间的pal</span></span><br></pre></td></tr></table></figure>
+
+<p>编译器不允许同时使用上述两个using声明</p>
+<br>
+
+<p>using指令(using Directives)：<code>using namespace std;</code></p>
+<p>using声明(using Declarations)：<code>using std::cout;</code></p>
+<p>一般说来，使用 using 声明比使用 using编译指令更安全，这是由于它只导入指定的名称。如果该名称与局部名称发生冲突，编译器将发出指示。using编译指令导入所有名称，包括可能并不需要的名称。如果与局部名称发生冲突，则局部名称将覆盖名称空间版本，而编译器并不会发出警告。另外，名称空间的开<br>放性意味着名称空间的名称可能分散在多个地方，这使得难以准确知道添加了哪些名称。 p329</p>
+<br>
+
+<p>9.3.3 在名称空间中声明的函数名的作用域为整个名称空间，因此定义和声明必须位于同一个名称空间中。	<code>p332</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//namespace.h</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//声明函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//namespace.cpp</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//定义函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<p>9.3.4 名称空间指导规则 	<code>p334</code></p>
+<ul>
+<li>使用已命名的namespace中的变量，而不是使用外部全局变量，例如<code>namespace Jack &#123;...&#125;;</code></li>
+<li>使用未命名的namespace中的变量，而不是静态全局变量，例如<code>namespace &#123;...&#125;;</code></li>
+<li>如果开发了一个函数库或类库，将其放在一个namespace中</li>
+<li>仅将编译指令 using作为一种将旧代码转换为使用名称空间的权宜之计。</li>
+<li>不要在头文件中使用using指令，如果非要使用using指令，应将其放在所有预编译器指令#include之后</li>
+<li>导入名称时，首选使用作用域解析运算符或using声明的方法</li>
+<li>对于 using 声明，首选将其作用域设置为局部而不是全局</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/18/%E7%AC%AC12%E7%AB%A0%E7%B1%BB%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="prev" title="C++ Primer Plus第12章学习笔记">
+                  <i class="fa fa-angle-left"></i> C++ Primer Plus第12章学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
