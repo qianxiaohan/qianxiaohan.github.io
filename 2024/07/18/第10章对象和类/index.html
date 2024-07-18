@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Object-oriented programming (OOP)特性：  抽象(Abstraction) 封装和数据隐藏(Encapsulation and data hiding) 多态(Polymorphism) 继承(Inheritance) 代码的可重用性(Reusability of code)">
+    <meta name="description" content="测试一下  y&#x3D;f(x)y&#x3D;f(x)y&#x3D;f(x) Object-oriented programming (OOP)特性：  抽象(Abstraction) 封装和数据隐藏(Encapsulation and data hiding) 多态(Polymorphism) 继承(Inheritance) 代码的可重用性(Reusability of code)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++ Primer Plus第10章学习笔记">
 <meta property="og:url" content="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/index.html">
 <meta property="og:site_name" content="Lyx&#39;s Blog">
-<meta property="og:description" content="Object-oriented programming (OOP)特性：  抽象(Abstraction) 封装和数据隐藏(Encapsulation and data hiding) 多态(Polymorphism) 继承(Inheritance) 代码的可重用性(Reusability of code)">
+<meta property="og:description" content="测试一下  y&#x3D;f(x)y&#x3D;f(x)y&#x3D;f(x) Object-oriented programming (OOP)特性：  抽象(Abstraction) 封装和数据隐藏(Encapsulation and data hiding) 多态(Polymorphism) 继承(Inheritance) 代码的可重用性(Reusability of code)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-18T09:37:44.362Z">
-<meta property="article:modified_time" content="2024-07-18T09:57:13.328Z">
+<meta property="article:modified_time" content="2024-07-18T13:15:11.672Z">
 <meta property="article:author" content="lyx">
 <meta name="twitter:card" content="summary">
 
@@ -111,7 +111,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-%E8%BF%87%E7%A8%8B%E6%80%A7%E7%BC%96%E7%A8%8B%E5%92%8C%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">10.1  过程性编程和面向对象编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-%E6%8A%BD%E8%B1%A1%E5%92%8C%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">10.2 抽象和类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">10.3 类的构造函数和析构函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-this%E6%8C%87%E9%92%88"><span class="nav-number">4.</span> <span class="nav-text">10.4 this指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-6-%E7%B1%BB%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">5.</span> <span class="nav-text">10.6 类作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-8-%E5%A4%8D%E4%B9%A0%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">10.8 复习题</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#101-%E8%BF%87%E7%A8%8B%E6%80%A7%E7%BC%96%E7%A8%8B%E5%92%8C%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text"> 10.1  过程性编程和面向对象编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#102-%E6%8A%BD%E8%B1%A1%E5%92%8C%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text"> 10.2 抽象和类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#103-%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text"> 10.3 类的构造函数和析构函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#104-this%E6%8C%87%E9%92%88"><span class="nav-number">4.</span> <span class="nav-text"> 10.4 this指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#106-%E7%B1%BB%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">5.</span> <span class="nav-text"> 10.6 类作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#108-%E5%A4%8D%E4%B9%A0%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 10.8 复习题</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,7 +187,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:57:13" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：21:15:11" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -208,7 +208,8 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>Object-oriented programming (OOP)特性：</p>
+    <div class="post-body" itemprop="articleBody"><p><mark>测试一下</mark>  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y=f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></p>
+<p>Object-oriented programming (OOP)特性：</p>
 <ul>
 <li>抽象(Abstraction)</li>
 <li>封装和数据隐藏(Encapsulation and data hiding)</li>
@@ -217,58 +218,66 @@
 <li>代码的可重用性(Reusability of code)</li>
 </ul>
 <span id="more"></span>
-
-<h3 id="10-1-过程性编程和面向对象编程"><a href="#10-1-过程性编程和面向对象编程" class="headerlink" title="10.1  过程性编程和面向对象编程"></a>10.1  过程性编程和面向对象编程</h3><p><code>p341</code></p>
+<h3 id="101-过程性编程和面向对象编程"><a class="markdownIt-Anchor" href="#101-过程性编程和面向对象编程"></a> 10.1  过程性编程和面向对象编程</h3>
+<p><code>p341</code></p>
 <ul>
 <li>面向过程编程(procedural programming)，结构化编程(C语言中如for循环、while循环、do while循环和if else语言)反映了面向过程编程的思想，根据执行的操作来构思一个程序。采用过程性编程方法时，首先考虑要遵循的步骤，然后考虑如何表示这些数据</li>
 <li>面向对象编程(Object-oriented programming)，OOP编程更加强调数据，首先考虑数据不仅要考虑如何表示数据，还要考虑如何使用数据</li>
 </ul>
 <p>总之，采用OOP方法时，首先从用户的角度考虑对象–描述对象所需的数据以及描述用户与数据交互所需的操作。完成对接口的描述后，需要确定如何实现接口和数据存储。最后，使用新的设计方案创建出程序。</p>
-<h3 id="10-2-抽象和类"><a href="#10-2-抽象和类" class="headerlink" title="10.2 抽象和类"></a>10.2 抽象和类</h3><ul>
-<li><p>接口是一个共享框架，供两个系统交互使用，例如用户与计算机之间的交互，程序接口将用户的意图转化为存储在计算机中的具体信息。接口让程序员够编写与类对象交互的代码。 例如std::string中的size()方法，就是用户与string对象之间的公共接口的组成部分。<code>p342</code></p>
+<h3 id="102-抽象和类"><a class="markdownIt-Anchor" href="#102-抽象和类"></a> 10.2 抽象和类</h3>
+<ul>
+<li>
+<p>接口是一个共享框架，供两个系统交互使用，例如用户与计算机之间的交互，程序接口将用户的意图转化为存储在计算机中的具体信息。接口让程序员够编写与类对象交互的代码。 例如std::string中的size()方法，就是用户与string对象之间的公共接口的组成部分。<code>p342</code></p>
 </li>
-<li><p>struct与class看起来非常类似，C++对struct进行了拓展，使之具有与类相同的特性。struct与class唯一的区别是，struct的默认访问类型是public，而class为private。 <code>p345</code></p>
+<li>
+<p>struct与class看起来非常类似，C++对struct进行了拓展，使之具有与类相同的特性。struct与class唯一的区别是，struct的默认访问类型是public，而class为private。 <code>p345</code></p>
 </li>
-<li><p>典型的类声明，公有部分的内容构成了设计的抽象部分——公有接口。<code>将数据封装到私有部分中可以保护数据的完整性，这被称为数据隐藏。</code>   <code>p351</code></p>
+<li>
+<p>典型的类声明，公有部分的内容构成了设计的抽象部分——公有接口。<code>将数据封装到私有部分中可以保护数据的完整性，这被称为数据隐藏。</code>   <code>p351</code></p>
 </li>
 </ul>
  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">className</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    数据成员声明</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    成员函数原型</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="10-3-类的构造函数和析构函数"><a href="#10-3-类的构造函数和析构函数" class="headerlink" title="10.3 类的构造函数和析构函数"></a>10.3 类的构造函数和析构函数</h3><p>C++11列表初始化  p361</p>
+<h3 id="103-类的构造函数和析构函数"><a class="markdownIt-Anchor" href="#103-类的构造函数和析构函数"></a> 10.3 类的构造函数和析构函数</h3>
+<p>C++11列表初始化  p361</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Stock hot_tip = &#123;<span class="string">&quot;Derivatives Plus Plus&quot;</span>, <span class="number">100</span>, <span class="number">45.0</span>&#125;;</span><br><span class="line">Stock jock &#123;<span class="string">&quot;Sport Age Storage, Inc&quot;</span>&#125;;</span><br><span class="line">Stock temp &#123;&#125;;</span><br><span class="line"></span><br><span class="line">前两个用&#123;&#125;括起来的列表与 构造函数 Stock::<span class="built_in">Stock</span>(<span class="type">const</span> std::string &amp; co, <span class="type">long</span> n = <span class="number">0</span>, <span class="type">double</span> pr = <span class="number">0.0</span>);匹配</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>只要类方法不修改调用对象，就应该将其声明为const，例如show()应该这样声明：<code>void show() const;</code>，函数定义应该这样：<code>void show() const &#123;&#125; </code> ，<font color='red'>只有类的成员函数才能在函数名后面添加const。</font> &#x3D;&#x3D;p362&#x3D;&#x3D;</li>
-<li>如果构造函数使用了new，则必须提供使用delete的析构函数 &#x3D;&#x3D;p363&#x3D;&#x3D;</li>
+<li>只要类方法不修改调用对象，就应该将其声明为const，例如show()应该这样声明：<code>void show() const;</code>，函数定义应该这样：<code>void show() const &#123;&#125; </code> ，<font color='red'>只有类的成员函数才能在函数名后面添加const。</font> <mark>p362</mark></li>
+<li>如果构造函数使用了new，则必须提供使用delete的析构函数 <mark>p363</mark></li>
 </ul>
-<h3 id="10-4-this指针"><a href="#10-4-this指针" class="headerlink" title="10.4 this指针"></a>10.4 this指针</h3><ul>
+<h3 id="104-this指针"><a class="markdownIt-Anchor" href="#104-this指针"></a> 10.4 this指针</h3>
+<ul>
 <li>this指针被作为隐藏参数传递给方法，一般来说，所有的类方法都将this指针设置为调用它的对象的地址 	<code>p364</code></li>
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stock <span class="title">kate</span><span class="params">(<span class="string">&quot;Woof, Inc.&quot;</span>, <span class="number">100</span>, <span class="number">63</span>)</span></span>;</span><br><span class="line"><span class="function">Stock <span class="title">joe</span><span class="params">(<span class="string">&quot;Pryal Co.&quot;</span>, <span class="number">120</span>, <span class="number">30</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> Stock &amp; <span class="title">Stock::topval</span><span class="params">(<span class="type">const</span> Stock &amp; s)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (s.total_val &gt; total_val)</span><br><span class="line">     	<span class="keyword">return</span> s;           <span class="comment">// argument object</span></span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">     	<span class="keyword">return</span> *<span class="keyword">this</span>;       <span class="comment">// invoking object</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kate.<span class="built_in">topval</span>(joe);</span><br></pre></td></tr></table></figure>
-
 <p>​		这里是kate调用的topval，所以参数s就是joe，this指针指向kate，*this就是kate。</p>
-<h3 id="10-6-类作用域"><a href="#10-6-类作用域" class="headerlink" title="10.6 类作用域"></a>10.6 类作用域</h3><ul>
-<li><p>全局(文件)作用域和局部(代码块)作用域。函数名称的作用域也可以是全局的，但不能是局部的。	<code>p370</code></p>
+<h3 id="106-类作用域"><a class="markdownIt-Anchor" href="#106-类作用域"></a> 10.6 类作用域</h3>
+<ul>
+<li>
+<p>全局(文件)作用域和局部(代码块)作用域。函数名称的作用域也可以是全局的，但不能是局部的。	<code>p370</code></p>
 </li>
-<li><p>在类中创建常量：  <code>p371</code></p>
+<li>
+<p>在类中创建常量：  <code>p371</code></p>
 <ul>
 <li>第一种方式在类中声明一个枚举，在作用域为整个类的代码中遇到Months时，编译器将用12来替代它</li>
 </ul>
    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bakery</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123;Months = <span class="number">12</span>&#125;;</span><br><span class="line">    <span class="type">double</span> costs[Months];</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>第二种方式使用关键字static，这将创建一个名为Months的常量，该常量与其他静态变量存储在一起，而不是存储在对象中</li>
 </ul>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bakery</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> Months = <span class="number">12</span>;</span><br><span class="line">    <span class="type">double</span> costs[Months];</span><br></pre></td></tr></table></figure></li>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bakery</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> Months = <span class="number">12</span>;</span><br><span class="line">    <span class="type">double</span> costs[Months];</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="10-8-复习题"><a href="#10-8-复习题" class="headerlink" title="10.8 复习题"></a>10.8 复习题</h3><p>1、什么是类？</p>
+<h3 id="108-复习题"><a class="markdownIt-Anchor" href="#108-复习题"></a> 10.8 复习题</h3>
+<p>1、什么是类？</p>
 <p><font color='red'>类是用户定义的类型的定义。类声明指定了数据将如何存储，同时指定了用来访问和操纵这些数据的方法(类成员函数)。</font></p>
 <p>2、类如何实现抽象、封装和数据隐藏？</p>
 <p><font color='red'>类表示人们可以类方法的公有接口对类对象执行的操作,这是抽象。类的数据成员可以是私有的(默认值)，这意味着只能通过成员函数来访问这些数据，这是数据隐藏。实现的具体细节(如数据表示和方法的代码)都是隐藏的，这是封装。 </font></p>
 <p>3、对象和类之间的关系是什么?</p>
 <p><font color='red'>类定义了一种类型，包括如何使用它。对象是一个变量或其他数据对象(如由new生成的)，并根据类定义被创建和使用。类和对象之间的关系同标准类型与其变量之间的关系相同。</font></p>
 <p>4、除了是函数之外，类函数成员与类数据成员之间的区别是什么?</p>
-<p><font color='red'>如果创建给定类的多个对象，则每个对象都有其自己的数据内存空间;但所有的对象都使用同一组<br>成员函数(通常，方法是公有的，而数据是私有的，但这只是策略方面的问题，而不是对类的要求)。</font></p>
+<p><font color='red'>如果创建给定类的多个对象，则每个对象都有其自己的数据内存空间;但所有的对象都使用同一组<br />
+成员函数(通常，方法是公有的，而数据是私有的，但这只是策略方面的问题，而不是对类的要求)。</font></p>
 <p>5、定义一个类来表示银行帐户。数据成员包括储户姓名、账号(使用字符串)和存款。成员函数执行如下操作:</p>
 <ul>
 <li>创建一个对象并将其初始化</li>
@@ -278,14 +287,13 @@
 </ul>
 <p>请提供类声明，而不用给出方法实现。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Account</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string username;</span><br><span class="line">    std::string accountNumber;</span><br><span class="line">    <span class="type">double</span> balance;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Account</span>(<span class="type">const</span> std::string &amp;username, <span class="type">const</span> std::string &amp;accountNumber,</span><br><span class="line">        <span class="type">double</span> balance = <span class="number">0.0</span>);</span><br><span class="line">    ~<span class="built_in">Account</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">deposit</span><span class="params">(<span class="type">double</span> cash)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">withdraw</span><span class="params">(<span class="type">double</span> cash)</span></span>;   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>6、类构造函数在何时被调用?类析构函数呢?</p>
 <p><font color='red'>在创建类对象或显式调用构造函数时，类的构造函数都将被调用。当对象过期时，类的析构函数将被调用。</font></p>
 <p>7、给出复习题5中的银行账户类的构造函数的代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Account::<span class="built_in">Account</span>(<span class="type">const</span> std::string &amp;username, <span class="type">const</span> std::string &amp;accountNumber,</span><br><span class="line">        <span class="type">double</span> balance)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;username = username;</span><br><span class="line">    <span class="keyword">this</span>-&gt;accountNumber = accountNumber;</span><br><span class="line">    <span class="keyword">this</span>-&gt;balance = balance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>8、什么是默认构造函数，拥有默认构造函数有何好处?</p>
-<p><font color='red'>默认构造函数是没有参数或所有参数都有默认值的构造函数。拥有默认构造函数后，可以声明对象，<br>而不初始化它，即使已经定义了初始化构造函数。它还使得能够声明数组。</font></p>
+<p><font color='red'>默认构造函数是没有参数或所有参数都有默认值的构造函数。拥有默认构造函数后，可以声明对象，<br />
+而不初始化它，即使已经定义了初始化构造函数。它还使得能够声明数组。</font></p>
 <p>9、修改 Stock 类的定义(stock20h中的版本)，使之包含返回各个数据成员值的成员函数。注意:返回公司名的成员函数不应为修改数组提供便利，也就是说，不能简单地返回string 引用。</p>
 <p>10、this 和*this 是什么?</p>
 <p><font color='red'>this指针是类方法可以使用的指针，this是指向用于调用方法的对象。this是对象的地址，*this是对象本身</font></p>

@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="9.1 单独编译文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数">
+    <meta name="description" content="9.1 单独编译 文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++ Primer Plus第9章学习笔记">
 <meta property="og:url" content="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/index.html">
 <meta property="og:site_name" content="Lyx&#39;s Blog">
-<meta property="og:description" content="9.1 单独编译文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数">
+<meta property="og:description" content="9.1 单独编译 文件结构 p301  头文件：包含结构声明和使用这些结构的函数的原型 源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码  头文件中包含的内容 p301  函数原型 使用#define或const定义的符号常量 结构声明 类声明 模板声明 内联函数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-18T09:37:44.360Z">
 <meta property="article:modified_time" content="2024-07-18T09:57:20.124Z">
@@ -111,7 +111,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">9.1 单独编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E5%AD%98%E5%82%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">9.2 存储持续性、作用域和链接性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="nav-number">3.</span> <span class="nav-text">9.3 名称空间</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#91-%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text"> 9.1 单独编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#92-%E5%AD%98%E5%82%A8%E6%8C%81%E7%BB%AD%E6%80%A7-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text"> 9.2 存储持续性、作用域和链接性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#93-%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="nav-number">3.</span> <span class="nav-text"> 9.3 名称空间</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -208,7 +208,8 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="9-1-单独编译"><a href="#9-1-单独编译" class="headerlink" title="9.1 单独编译"></a>9.1 单独编译</h3><p>文件结构 p301</p>
+    <div class="post-body" itemprop="articleBody"><h3 id="91-单独编译"><a class="markdownIt-Anchor" href="#91-单独编译"></a> 9.1 单独编译</h3>
+<p>文件结构 p301</p>
 <ul>
 <li>头文件：包含结构声明和使用这些结构的函数的原型</li>
 <li>源代码文件：包含与结构有关的函数的代码、包含调用与结构相关的函数的代码</li>
@@ -223,8 +224,8 @@
 <li>内联函数</li>
 </ul>
 <span id="more"></span>
-
-<h3 id="9-2-存储持续性、作用域和链接性"><a href="#9-2-存储持续性、作用域和链接性" class="headerlink" title="9.2 存储持续性、作用域和链接性"></a>9.2 存储持续性、作用域和链接性</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18174875">C++内存分布</a></p>
+<h3 id="92-存储持续性-作用域和链接性"><a class="markdownIt-Anchor" href="#92-存储持续性-作用域和链接性"></a> 9.2 存储持续性、作用域和链接性</h3>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18174875">C++内存分布</a></p>
 <p>9.2.3 变量的五种存储方式 <code>p310</code></p>
 <table>
 <thead>
@@ -236,7 +237,8 @@
 <th>如何声明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>自动</td>
 <td>自动</td>
 <td>代码块</td>
@@ -271,51 +273,43 @@
 <td>内部</td>
 <td>在所有函数之外且使用static关键字</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> g;			<span class="comment">//静态存储持续性、外部链接性，又叫做全局变量</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> s_g;	<span class="comment">//静态存储持续性、内部链接性</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> temp;			<span class="comment">//自动存储持续性、无链接性，又叫局部变量</span></span><br><span class="line">    <span class="keyword">register</span> <span class="type">int</span> temp2;	<span class="comment">//自动存储持续性、无链接性</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> temp3;	<span class="comment">//静态存储持续性、无链接性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>静态变量的初始化 <code>p310</code></p>
 <ul>
 <li>静态初始化：零初始化和常量表达式初始化</li>
 <li>动态初始化：变量将在编译后初始化</li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="type">int</span> x;									<span class="comment">//用零初始化</span></span><br><span class="line"><span class="type">int</span> y = <span class="number">5</span>;								<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">long</span> z = <span class="number">13</span>*<span class="number">13</span>;							<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">int</span> enough = <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="type">long</span>) + <span class="number">1</span>;		<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> pi = <span class="number">4.0</span> * <span class="built_in">atan</span>(<span class="number">1.0</span>);		<span class="comment">//动态初始化</span></span><br></pre></td></tr></table></figure>
-
 <p>9.2.7 const全局变量的链接性为内部 p317</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> fingers = <span class="number">10</span>;		<span class="comment">//等同于const static int fingers = 10;</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>9.2.8 所有函数的存储持续性都自动为静态，即在整个程序执行期间都一直存在。默认情况下函数链接性为外部，可以使用static关键字将函数的链接性设置为内部的。 <code>p318</code></p>
 <p>9.2.9 <code>p319</code></p>
 <ul>
 <li>C语言链接性，例如C语言编译器可能将spiff这样的函数名翻译为_spiff</li>
-<li>C++链接性，C++中一个名称可能对应多个函数，例如C++编译器执行名称矫正或名称修正，例如可能将spiff(int)转换为_spiff_i、spoiff(double，double)转换为_spiff_d_d</li>
+<li>C<ins>链接性，C</ins>中一个名称可能对应多个函数，例如C++编译器执行名称矫正或名称修正，例如可能将spiff(int)转换为_spiff_i、spoiff(double，double)转换为_spiff_d_d</li>
 </ul>
 <p>在C++中使用C库中预编译的函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spiff(<span class="number">22</span>);		<span class="comment">//使用C库中的spiff函数</span></span><br></pre></td></tr></table></figure>
-
 <p>使用函数原型来指出要使用的约定：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;				<span class="comment">//使用c协议进行名称查找</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;					<span class="comment">//使用c++协议进行名称查找</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C++&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;			<span class="comment">//使用c++协议进行名称查找	</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="9-3-名称空间"><a href="#9-3-名称空间" class="headerlink" title="9.3 名称空间"></a>9.3 名称空间</h3><p>9.3.2 名称空间namespace，解决名称冲突的问题 	<code>p325</code></p>
+<h3 id="93-名称空间"><a class="markdownIt-Anchor" href="#93-名称空间"></a> 9.3 名称空间</h3>
+<p>9.3.2 名称空间namespace，解决名称冲突的问题 	<code>p325</code></p>
 <p>9.3.2 如果有名称空间jack和jill，并在代码中使用作用域解析运算符，则不会出现二义性：	<code>p328</code></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jack::pal = <span class="number">3</span>;</span><br><span class="line">jill::pal = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-
 <p>如果使用using声明：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> jack::pal;</span><br><span class="line"><span class="keyword">using</span> jill::pal;</span><br><span class="line">pal = <span class="number">4</span>;		<span class="comment">//有二义性，不确定是哪个名称空间的pal</span></span><br></pre></td></tr></table></figure>
-
 <p>编译器不允许同时使用上述两个using声明</p>
 <br>
-
 <p>using指令(using Directives)：<code>using namespace std;</code></p>
 <p>using声明(using Declarations)：<code>using std::cout;</code></p>
-<p>一般说来，使用 using 声明比使用 using编译指令更安全，这是由于它只导入指定的名称。如果该名称与局部名称发生冲突，编译器将发出指示。using编译指令导入所有名称，包括可能并不需要的名称。如果与局部名称发生冲突，则局部名称将覆盖名称空间版本，而编译器并不会发出警告。另外，名称空间的开<br>放性意味着名称空间的名称可能分散在多个地方，这使得难以准确知道添加了哪些名称。 p329</p>
+<p>一般说来，使用 using 声明比使用 using编译指令更安全，这是由于它只导入指定的名称。如果该名称与局部名称发生冲突，编译器将发出指示。using编译指令导入所有名称，包括可能并不需要的名称。如果与局部名称发生冲突，则局部名称将覆盖名称空间版本，而编译器并不会发出警告。另外，名称空间的开<br />
+放性意味着名称空间的名称可能分散在多个地方，这使得难以准确知道添加了哪些名称。 p329</p>
 <br>
-
 <p>9.3.3 在名称空间中声明的函数名的作用域为整个名称空间，因此定义和声明必须位于同一个名称空间中。	<code>p332</code></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//namespace.h</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//声明函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//namespace.cpp</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//定义函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <br>
-
 <p>9.3.4 名称空间指导规则 	<code>p334</code></p>
 <ul>
 <li>使用已命名的namespace中的变量，而不是使用外部全局变量，例如<code>namespace Jack &#123;...&#125;;</code></li>
