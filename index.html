@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/" class="post-title-link" itemprop="url">C++ Primer Plus第11章学习笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -181,7 +181,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:50:21" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:57:05" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
     </span>
 
   
@@ -195,191 +204,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="11-2-计算时间：一个运算符重载示例"><a href="#11-2-计算时间：一个运算符重载示例" class="headerlink" title="11.2 计算时间：一个运算符重载示例"></a>11.2 计算时间：一个运算符重载示例</h3><p>不能重载的运算符：</p>
-<table>
-<thead>
-<tr>
-<th>运算符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>sizeof</td>
-<td>sizeof运算符</td>
-</tr>
-<tr>
-<td>.</td>
-<td>成员运算符</td>
-</tr>
-<tr>
-<td>.*</td>
-<td>成员指针运算符</td>
-</tr>
-<tr>
-<td>::</td>
-<td>作用域解析运算符</td>
-</tr>
-<tr>
-<td>?:</td>
-<td>条件运算符</td>
-</tr>
-<tr>
-<td>typeid</td>
-<td>一个RTTI运算符</td>
-</tr>
-<tr>
-<td>const_cast</td>
-<td>强制类型转换运算符</td>
-</tr>
-<tr>
-<td>dynamic_cast</td>
-<td>强制类型转换运算符</td>
-</tr>
-<tr>
-<td>reinterpret_cast</td>
-<td>强制类型转换运算符</td>
-</tr>
-<tr>
-<td>static_cast</td>
-<td>强制类型转换运算符</td>
-</tr>
-</tbody></table>
-<p>可重载的运算符：</p>
-<table>
-<thead>
-<tr>
-<th align="center">+</th>
-<th align="center">-</th>
-<th align="center">*</th>
-<th align="center">&#x2F;</th>
-<th align="center">%</th>
-<th align="center">^</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&amp;</td>
-<td align="center">|</td>
-<td align="center">~</td>
-<td align="center">!</td>
-<td align="center">&#x3D;</td>
-<td align="center">&lt;</td>
-</tr>
-<tr>
-<td align="center">&gt;</td>
-<td align="center">+&#x3D;</td>
-<td align="center">-&#x3D;</td>
-<td align="center">*&#x3D;</td>
-<td align="center">&#x2F;&#x3D;</td>
-<td align="center">%&#x3D;</td>
-</tr>
-<tr>
-<td align="center">^&#x3D;</td>
-<td align="center">&amp;&#x3D;</td>
-<td align="center">|&#x3D;</td>
-<td align="center">&lt;&lt;</td>
-<td align="center">&gt;&gt;</td>
-<td align="center">&gt;&gt;&#x3D;</td>
-</tr>
-<tr>
-<td align="center">&lt;&lt;&#x3D;</td>
-<td align="center">&#x3D;&#x3D;</td>
-<td align="center">!&#x3D;</td>
-<td align="center">&lt;&#x3D;</td>
-<td align="center">&gt;&#x3D;</td>
-<td align="center">&amp;&amp;</td>
-</tr>
-<tr>
-<td align="center">||</td>
-<td align="center">++</td>
-<td align="center">–</td>
-<td align="center">,</td>
-<td align="center">-&gt;*</td>
-<td align="center">-&gt;</td>
-</tr>
-<tr>
-<td align="center">()</td>
-<td align="center">[]</td>
-<td align="center">new</td>
-<td align="center">delete</td>
-<td align="center">new[]</td>
-<td align="center">delete[]</td>
-</tr>
-</tbody></table>
-<p>可重载的运算符中以下运算符只能通过成员函数进行重载：</p>
-<table>
-<thead>
-<tr>
-<th>运算符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x3D;</td>
-<td>赋值运算符</td>
-</tr>
-<tr>
-<td>()</td>
-<td>函数调用运算符</td>
-</tr>
-<tr>
-<td>[]</td>
-<td>下标运算符</td>
-</tr>
-<tr>
-<td>-&gt;</td>
-<td>通过指针访问类成员的运算符</td>
-</tr>
-</tbody></table>
-<h3 id="11-3-友元"><a href="#11-3-友元" class="headerlink" title="11.3 友元"></a>11.3 友元</h3><ul>
-<li>通过让函数成员成为类的友元，可以赋予该函数与类的成员函数相同的访问权限。 <code>p391</code></li>
-<li>创建友元函数第一步将其原型放在类声明中，并在原型声明加上关键字friend。该原型意味这两点着：<ul>
-<li>该函数是在类声明中声明的，但它不是成员函数，不能使用成员运算符来调用</li>
-<li>虽然它不是成员函数，但它与成员函数的访问权限相同</li>
-</ul>
-</li>
-<li>友元函数的定义，不要使用ClassName::类限定符。<code>p391</code></li>
-<li>只有类声明可以决定哪一个函数是友元，因此类声明仍然控制了哪些函数可以访问私有数据。总之，类方法和友元只是表达类接口的两种不同机制。<code>p392</code></li>
-</ul>
-<h3 id="11-6-类的自动转换和强制类型转换"><a href="#11-6-类的自动转换和强制类型转换" class="headerlink" title="11.6 类的自动转换和强制类型转换"></a>11.6 类的自动转换和强制类型转换</h3><ul>
-<li><p>特殊的C++运算符函数：转换函数，转换函数有以下几点注意事项： <code>p416</code></p>
-<ul>
-<li>转换函数必须是类方法</li>
-<li>转换函数不能指定返回类型</li>
-<li>转换函数不能有参数</li>
-</ul>
-</li>
-<li><p>例如，转换为double类型的函数原型：<code>operator double()</code>；转换为int类型的函数原型：<code>operator int()</code></p>
-</li>
-<li><pre><code class="cpp">  //定义operator int()
-  Stonewt::operator int() const
-  &#123;
-      return int(pounds + 0.5);
-  &#125;
-  
-  //定义operator double()
-  Stonewt::operator double() const
-  &#123;
-      return pounds;
-  &#125;
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- </span><br><span class="line"></span><br><span class="line">### 11.8 复习题</span><br><span class="line"></span><br><span class="line">1、使用成员函数为Stonewt类重载乘法运算符，该运算符将数据成员与double类型的值相乘。注意用英石和磅表示时，需要进位。也就是说，将10英石8磅乘以2等于21英石2磅。</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">//原型</span><br><span class="line">Stonewt operator*(double mult);</span><br><span class="line"></span><br><span class="line">//定义，直接调用已有构造函数</span><br><span class="line">Stonewt Stonewt::operator*(double mult)</span><br><span class="line">&#123;</span><br><span class="line">    return Stonewt(mult * pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-<p>2、友元函数与成员函数之间的区别是什么?</p>
-<p><font color='red'>成员函数是类定义的一部分，通过特定的对象来调用。成员函数可以隐式访问调用对象的成员，而无需使用成员运算符。友元函数不是类的组成部分，因此被称为直接函数调用。友元函数不能隐式访问类成员，而必须将成员运算符用于作为参数传递的对象。请比较复习题1和复习题4的答案。</font></p>
-<p>3、非成员函数必须是友元才能访问类成员吗?</p>
-<p><font color='red'>要访问私有成员，它必须是友元，但要访问公有成员，可以不是友元。</font></p>
-<p>4、使用友元函数为 Stonewt类重载乘法运算符，该运算符将double值与 Stone 值相乘。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型</span></span><br><span class="line"><span class="keyword">friend</span> Stonewt <span class="keyword">operator</span>*(<span class="type">double</span> mult, <span class="type">const</span> Stonewt&amp; s);</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义</span></span><br><span class="line">Stonewt::<span class="keyword">operator</span>*(<span class="type">double</span> mult, <span class="type">const</span> Stonewt&amp; s)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Stonewt</span>(mult * s.pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5、哪些运算符不能重载？</p>
-<p><a href="###11.2">运算符重载</a></p>
-<p>6、在重载运算符&#x3D;、()、[]和-&gt;时，有什么限制？</p>
-<p><font color='red'>这些运算符只能通过成员函数来定义。</font></p>
-<p>7、为 Vector 类定义一个转换函数，将 Vector 类转换为一个 double 类型的值，后者表示矢量的长度。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型、内联定义</span></span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mag; &#125;</span><br></pre></td></tr></table></figure>
-
-<p><font color='red'>使用magval()方法比定义该转换函数更加符合逻辑。</font></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -423,7 +255,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/" class="post-title-link" itemprop="url">C++ Primer Plus第10章学习笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -435,7 +267,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:50:37" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:57:13" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
     </span>
 
   
@@ -456,74 +297,14 @@
 <li>继承(Inheritance)</li>
 <li>代码的可重用性(Reusability of code)</li>
 </ul>
-<h3 id="10-1-过程性编程和面向对象编程"><a href="#10-1-过程性编程和面向对象编程" class="headerlink" title="10.1  过程性编程和面向对象编程"></a>10.1  过程性编程和面向对象编程</h3><p><code>p341</code></p>
-<ul>
-<li>面向过程编程(procedural programming)，结构化编程(C语言中如for循环、while循环、do while循环和if else语言)反映了面向过程编程的思想，根据执行的操作来构思一个程序。采用过程性编程方法时，首先考虑要遵循的步骤，然后考虑如何表示这些数据</li>
-<li>面向对象编程(Object-oriented programming)，OOP编程更加强调数据，首先考虑数据不仅要考虑如何表示数据，还要考虑如何使用数据</li>
-</ul>
-<p>总之，采用OOP方法时，首先从用户的角度考虑对象–描述对象所需的数据以及描述用户与数据交互所需的操作。完成对接口的描述后，需要确定如何实现接口和数据存储。最后，使用新的设计方案创建出程序。</p>
-<h3 id="10-2-抽象和类"><a href="#10-2-抽象和类" class="headerlink" title="10.2 抽象和类"></a>10.2 抽象和类</h3><ul>
-<li><p>接口是一个共享框架，供两个系统交互使用，例如用户与计算机之间的交互，程序接口将用户的意图转化为存储在计算机中的具体信息。接口让程序员够编写与类对象交互的代码。 例如std::string中的size()方法，就是用户与string对象之间的公共接口的组成部分。<code>p342</code></p>
-</li>
-<li><p>struct与class看起来非常类似，C++对struct进行了拓展，使之具有与类相同的特性。struct与class唯一的区别是，struct的默认访问类型是public，而class为private。 <code>p345</code></p>
-</li>
-<li><p>典型的类声明，公有部分的内容构成了设计的抽象部分——公有接口。<code>将数据封装到私有部分中可以保护数据的完整性，这被称为数据隐藏。</code>   <code>p351</code></p>
-</li>
-<li><pre><code class="cpp">  class className
-  &#123;
-  private:
-      数据成员声明
-  public:
-      成员函数原型
-  &#125;;
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 10.3 类的构造函数和析构函数</span><br><span class="line"></span><br><span class="line">C++11列表初始化  p361</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">Stock hot_tip = &#123;&quot;Derivatives Plus Plus&quot;, 100, 45.0&#125;;</span><br><span class="line">Stock jock &#123;&quot;Sport Age Storage, Inc&quot;&#125;;</span><br><span class="line">Stock temp &#123;&#125;;</span><br><span class="line"></span><br><span class="line">前两个用&#123;&#125;括起来的列表与 构造函数 Stock::Stock(const std::string &amp; co, long n = 0, double pr = 0.0);匹配</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-<li><p>只要类方法不修改调用对象，就应该将其声明为const，例如show()应该这样声明：<code>void show() const;</code>，函数定义应该这样：<code>void show() const &#123;&#125; </code> ，<font color='red'>只有类的成员函数才能在函数名后面添加const。</font> &#x3D;&#x3D;p362&#x3D;&#x3D;</p>
-</li>
-<li><p>如果构造函数使用了new，则必须提供使用delete的析构函数 &#x3D;&#x3D;p363&#x3D;&#x3D;</p>
-</li>
-</ul>
-<h3 id="10-4-this指针"><a href="#10-4-this指针" class="headerlink" title="10.4 this指针"></a>10.4 this指针</h3><ul>
-<li><p>this指针被作为隐藏参数传递给方法，一般来说，所有的类方法都将this指针设置为调用它的对象的地址 	<code>p364</code></p>
-</li>
-<li><pre><code class="cpp">  Stock kate(&quot;Woof, Inc.&quot;, 100, 63);
-  Stock joe(&quot;Pryal Co.&quot;, 120, 30);
-  
-  const Stock &amp; Stock::topval(const Stock &amp; s) const
-  &#123;
-       if (s.total_val &gt; total_val)
-           return s;           // argument object
-       else
-           return *this;       // invoking object
-  &#125;
-  
-  kate.topval(joe);
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">​		这里是kate调用的topval，所以参数s就是joe，this指针指向kate，*this就是kate。</span><br><span class="line"></span><br><span class="line">### 10.6 类作用域</span><br><span class="line"></span><br><span class="line">- 全局(文件)作用域和局部(代码块)作用域。函数名称的作用域也可以是全局的，但不能是局部的。	`p370`</span><br><span class="line"></span><br><span class="line">- 在类中创建常量：  `p371`</span><br><span class="line"></span><br><span class="line">    - 第一种方式在类中声明一个枚举，在作用域为整个类的代码中遇到Months时，编译器将用12来替代它</span><br><span class="line"></span><br><span class="line">    - ```cpp</span><br><span class="line">        class Bakery</span><br><span class="line">        &#123;</span><br><span class="line">        private:</span><br><span class="line">         enum &#123;Months = 12&#125;;</span><br><span class="line">         double costs[Months];</span><br></pre></td></tr></table></figure>
-
-  - 第二种方式使用关键字static，这将创建一个名为Months的常量，该常量与其他静态变量存储在一起，而不是存储在对象中
-
-  - ```cpp
-      class Bakery
-      &#123;
-       private:
-           static const int Months = 12;
-           double costs[Months];
-      <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 10.8 复习题</span><br><span class="line"></span><br><span class="line">1、什么是类？</span><br><span class="line"></span><br><span class="line">&lt;font color=&#x27;red&#x27;&gt;类是用户定义的类型的定义。类声明指定了数据将如何存储，同时指定了用来访问和操纵这些数据的方法(类成员函数)。&lt;/font&gt;</span><br><span class="line"></span><br><span class="line">2、类如何实现抽象、封装和数据隐藏？</span><br><span class="line"></span><br><span class="line">&lt;font color=&#x27;red&#x27;&gt;类表示人们可以类方法的公有接口对类对象执行的操作,这是抽象。类的数据成员可以是私有的(默认值)，这意味着只能通过成员函数来访问这些数据，这是数据隐藏。实现的具体细节(如数据表示和方法的代码)都是隐藏的，这是封装。 &lt;/font&gt;</span><br><span class="line"></span><br><span class="line">3、对象和类之间的关系是什么?</span><br><span class="line"></span><br><span class="line">&lt;font color=&#x27;red&#x27;&gt;类定义了一种类型，包括如何使用它。对象是一个变量或其他数据对象(如由new生成的)，并根据类定义被创建和使用。类和对象之间的关系同标准类型与其变量之间的关系相同。&lt;/font&gt;</span><br><span class="line"></span><br><span class="line">4、除了是函数之外，类函数成员与类数据成员之间的区别是什么?</span><br><span class="line"></span><br><span class="line">&lt;font color=&#x27;red&#x27;&gt;如果创建给定类的多个对象，则每个对象都有其自己的数据内存空间;但所有的对象都使用同一组</span><br><span class="line">成员函数(通常，方法是公有的，而数据是私有的，但这只是策略方面的问题，而不是对类的要求)。&lt;/font&gt;</span><br><span class="line"></span><br><span class="line">5、定义一个类来表示银行帐户。数据成员包括储户姓名、账号(使用字符串)和存款。成员函数执行如下操作:</span><br><span class="line"></span><br><span class="line">- 创建一个对象并将其初始化</span><br><span class="line">- 显示储户姓名、账号和存款;</span><br><span class="line">- 存入参数指定的存款;</span><br><span class="line">- 取出参数指定的款项。</span><br><span class="line"></span><br><span class="line">请提供类声明，而不用给出方法实现。</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">class Account</span><br><span class="line">&#123;</span><br><span class="line">private:</span><br><span class="line">    std::string username;</span><br><span class="line">    std::string accountNumber;</span><br><span class="line">    double balance;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    Account(const std::string &amp;username, const std::string &amp;accountNumber,</span><br><span class="line">        double balance = 0.0);</span><br><span class="line">    ~Account();</span><br><span class="line">    void show() const;</span><br><span class="line">    bool deposit(double cash);</span><br><span class="line">    bool withdraw(double cash);   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-<p>6、类构造函数在何时被调用?类析构函数呢?</p>
-<p><font color='red'>在创建类对象或显式调用构造函数时，类的构造函数都将被调用。当对象过期时，类的析构函数将被调用。</font></p>
-<p>7、给出复习题5中的银行账户类的构造函数的代码。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Account::<span class="built_in">Account</span>(<span class="type">const</span> std::string &amp;username, <span class="type">const</span> std::string &amp;accountNumber,</span><br><span class="line">        <span class="type">double</span> balance)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;username = username;</span><br><span class="line">    <span class="keyword">this</span>-&gt;accountNumber = accountNumber;</span><br><span class="line">    <span class="keyword">this</span>-&gt;balance = balance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>8、什么是默认构造函数，拥有默认构造函数有何好处?</p>
-<p><font color='red'>默认构造函数是没有参数或所有参数都有默认值的构造函数。拥有默认构造函数后，可以声明对象，<br>而不初始化它，即使已经定义了初始化构造函数。它还使得能够声明数组。</font></p>
-<p>9、修改 Stock 类的定义(stock20h中的版本)，使之包含返回各个数据成员值的成员函数。注意:返回公司名的成员函数不应为修改数组提供便利，也就是说，不能简单地返回string 引用。</p>
-<p>10、this 和*this 是什么?</p>
-<p><font color='red'>this指针是类方法可以使用的指针，this是指向用于调用方法的对象。this是对象的地址，*this是对象本身</font></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -579,7 +360,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:48:08" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:57:20" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -615,109 +396,14 @@
 <li>模板声明</li>
 <li>内联函数</li>
 </ul>
-<h3 id="9-2-存储持续性、作用域和链接性"><a href="#9-2-存储持续性、作用域和链接性" class="headerlink" title="9.2 存储持续性、作用域和链接性"></a>9.2 存储持续性、作用域和链接性</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18174875">C++内存分布</a></p>
-<p>9.2.3 变量的五种存储方式 <code>p310</code></p>
-<table>
-<thead>
-<tr>
-<th>存储描述</th>
-<th>持续性</th>
-<th>作用域</th>
-<th>链接性</th>
-<th>如何声明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>自动</td>
-<td>自动</td>
-<td>代码块</td>
-<td>无</td>
-<td>代码块中</td>
-</tr>
-<tr>
-<td>寄存器</td>
-<td>自动</td>
-<td>代码块</td>
-<td>无</td>
-<td>代码块中使用register关键字</td>
-</tr>
-<tr>
-<td>静态、无链接性</td>
-<td>静态</td>
-<td>代码块</td>
-<td>无</td>
-<td>代码块中使用static关键字</td>
-</tr>
-<tr>
-<td>静态、外部链接性</td>
-<td>静态</td>
-<td>文件</td>
-<td>外部</td>
-<td>在所有函数之外</td>
-</tr>
-<tr>
-<td>静态、内部链接性</td>
-<td>静态</td>
-<td>文件</td>
-<td>内部</td>
-<td>在所有函数之外且使用static关键字</td>
-</tr>
-</tbody></table>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> g;			<span class="comment">//静态存储持续性、外部链接性，又叫做全局变量</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> s_g;	<span class="comment">//静态存储持续性、内部链接性</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> temp;			<span class="comment">//自动存储持续性、无链接性，又叫局部变量</span></span><br><span class="line">    <span class="keyword">register</span> <span class="type">int</span> temp2;	<span class="comment">//自动存储持续性、无链接性</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> temp3;	<span class="comment">//静态存储持续性、无链接性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>静态变量的初始化 <code>p310</code></p>
-<ul>
-<li>静态初始化：零初始化和常量表达式初始化</li>
-<li>动态初始化：变量将在编译后初始化</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="type">int</span> x;									<span class="comment">//用零初始化</span></span><br><span class="line"><span class="type">int</span> y = <span class="number">5</span>;								<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">long</span> z = <span class="number">13</span>*<span class="number">13</span>;							<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">int</span> enough = <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="type">long</span>) + <span class="number">1</span>;		<span class="comment">//常量表达式初始化</span></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> pi = <span class="number">4.0</span> * <span class="built_in">atan</span>(<span class="number">1.0</span>);		<span class="comment">//动态初始化</span></span><br></pre></td></tr></table></figure>
-
-<p>9.2.7 const全局变量的链接性为内部 p317</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> fingers = <span class="number">10</span>;		<span class="comment">//等同于const static int fingers = 10;</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>9.2.8 所有函数的存储持续性都自动为静态，即在整个程序执行期间都一直存在。默认情况下函数链接性为外部，可以使用static关键字将函数的链接性设置为内部的。 <code>p318</code></p>
-<p>9.2.9 <code>p319</code></p>
-<ul>
-<li>C语言链接性，例如C语言编译器可能将spiff这样的函数名翻译为_spiff</li>
-<li>C++链接性，C++中一个名称可能对应多个函数，例如C++编译器执行名称矫正或名称修正，例如可能将spiff(int)转换为_spiff_i、spoiff(double，double)转换为_spiff_d_d</li>
-</ul>
-<p>在C++中使用C库中预编译的函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spiff(<span class="number">22</span>);		<span class="comment">//使用C库中的spiff函数</span></span><br></pre></td></tr></table></figure>
-
-<p>使用函数原型来指出要使用的约定：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;				<span class="comment">//使用c协议进行名称查找</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;					<span class="comment">//使用c++协议进行名称查找</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C++&quot;</span> <span class="function"><span class="type">void</span> <span class="title">spiff</span><span class="params">(<span class="type">int</span>)</span></span>;			<span class="comment">//使用c++协议进行名称查找	</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="9-3-名称空间"><a href="#9-3-名称空间" class="headerlink" title="9.3 名称空间"></a>9.3 名称空间</h3><p>9.3.2 名称空间namespace，解决名称冲突的问题 	<code>p325</code></p>
-<p>9.3.2 如果有名称空间jack和jill，并在代码中使用作用域解析运算符，则不会出现二义性：	<code>p328</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jack::pal = <span class="number">3</span>;</span><br><span class="line">jill::pal = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果使用using声明：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> jack::pal;</span><br><span class="line"><span class="keyword">using</span> jill::pal;</span><br><span class="line">pal = <span class="number">4</span>;		<span class="comment">//有二义性，不确定是哪个名称空间的pal</span></span><br></pre></td></tr></table></figure>
-
-<p>编译器不允许同时使用上述两个using声明</p>
-<br>
-
-<p>using指令(using Directives)：<code>using namespace std;</code></p>
-<p>using声明(using Declarations)：<code>using std::cout;</code></p>
-<p>一般说来，使用 using 声明比使用 using编译指令更安全，这是由于它只导入指定的名称。如果该名称与局部名称发生冲突，编译器将发出指示。using编译指令导入所有名称，包括可能并不需要的名称。如果与局部名称发生冲突，则局部名称将覆盖名称空间版本，而编译器并不会发出警告。另外，名称空间的开<br>放性意味着名称空间的名称可能分散在多个地方，这使得难以准确知道添加了哪些名称。 p329</p>
-<br>
-
-<p>9.3.3 在名称空间中声明的函数名的作用域为整个名称空间，因此定义和声明必须位于同一个名称空间中。	<code>p332</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//namespace.h</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//声明函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//namespace.cpp</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//定义函数或结构</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<br>
-
-<p>9.3.4 名称空间指导规则 	<code>p334</code></p>
-<ul>
-<li>使用已命名的namespace中的变量，而不是使用外部全局变量，例如<code>namespace Jack &#123;...&#125;;</code></li>
-<li>使用未命名的namespace中的变量，而不是静态全局变量，例如<code>namespace &#123;...&#125;;</code></li>
-<li>如果开发了一个函数库或类库，将其放在一个namespace中</li>
-<li>仅将编译指令 using作为一种将旧代码转换为使用名称空间的权宜之计。</li>
-<li>不要在头文件中使用using指令，如果非要使用using指令，应将其放在所有预编译器指令#include之后</li>
-<li>导入名称时，首选使用作用域解析运算符或using声明的方法</li>
-<li>对于 using 声明，首选将其作用域设置为局部而不是全局</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/18/%E7%AC%AC9%E7%AB%A0%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -773,7 +459,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 14:52:17 / 修改时间：17:52:12" itemprop="dateCreated datePublished" datetime="2024-07-18T14:52:17+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 14:52:17 / 修改时间：17:57:44" itemprop="dateCreated datePublished" datetime="2024-07-18T14:52:17+08:00">2024-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -798,7 +484,7 @@
           <h2 id="12-1-动态内存和类"><a href="#12-1-动态内存和类" class="headerlink" title="12.1 动态内存和类"></a>12.1 动态内存和类</h2><ul>
 <li>不能在类声明中初始化静态成员变量，这是因为声明描述了如何分配内存，但并不分配内存。</li>
 <li>对于静态类成员，可以在类声明之外使用单独的语句来进行初始化，这是因为静态类成员是单独存储的，而不是对象的组成部分。</li>
-<li>初始化始化语句指出了类型，并使用了作用域运算符，但没有使用关键字 static。 &#x3D;&#x3D;p428&#x3D;&#x3D;</li>
+<li>初始化始化语句指出了类型，并使用了作用域运算符，但没有使用关键字 static。 <code>p428</code></li>
 </ul>
           <!--noindex-->
             <div class="post-button">

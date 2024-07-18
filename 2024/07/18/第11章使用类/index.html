@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="11.2 计算时间：一个运算符重载示例不能重载的运算符：    运算符 描述    sizeof sizeof运算符   . 成员运算符   .* 成员指针运算符   :: 作用域解析运算符   ?: 条件运算符   typeid 一个RTTI运算符   const_cast 强制类型转换运算符   dynamic_cast 强制类型转换运算符   reinterpret_cast 强制类型转换运">
+    <meta name="description" content="11.2 计算时间：一个运算符重载示例不能重载的运算符：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lyx&#39;s Blog">
+<meta property="og:title" content="C++ Primer Plus第11章学习笔记">
 <meta property="og:url" content="http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/index.html">
 <meta property="og:site_name" content="Lyx&#39;s Blog">
-<meta property="og:description" content="11.2 计算时间：一个运算符重载示例不能重载的运算符：    运算符 描述    sizeof sizeof运算符   . 成员运算符   .* 成员指针运算符   :: 作用域解析运算符   ?: 条件运算符   typeid 一个RTTI运算符   const_cast 强制类型转换运算符   dynamic_cast 强制类型转换运算符   reinterpret_cast 强制类型转换运">
+<meta property="og:description" content="11.2 计算时间：一个运算符重载示例不能重载的运算符：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-18T09:37:44.365Z">
-<meta property="article:modified_time" content="2024-07-18T09:50:21.348Z">
+<meta property="article:modified_time" content="2024-07-18T09:57:05.646Z">
 <meta property="article:author" content="lyx">
 <meta name="twitter:card" content="summary">
 
@@ -36,10 +36,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/","path":"2024/07/18/第11章使用类/","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/07/18/%E7%AC%AC11%E7%AB%A0%E4%BD%BF%E7%94%A8%E7%B1%BB/","path":"2024/07/18/第11章使用类/","title":"C++ Primer Plus第11章学习笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title> | Lyx's Blog</title>
+<title>C++ Primer Plus第11章学习笔记 | Lyx's Blog</title>
   
 
 
@@ -111,7 +111,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%EF%BC%9A%E4%B8%80%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">11.2 计算时间：一个运算符重载示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-%E5%8F%8B%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text">11.3 友元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">11.6 类的自动转换和强制类型转换</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%EF%BC%9A%E4%B8%80%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">11.2 计算时间：一个运算符重载示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-%E5%8F%8B%E5%85%83"><span class="nav-number">2.</span> <span class="nav-text">11.3 友元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">11.6 类的自动转换和强制类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-8-%E5%A4%8D%E4%B9%A0%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">11.8 复习题</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -170,12 +170,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lyx's Blog">
+      <meta itemprop="name" content="C++ Primer Plus第11章学习笔记 | Lyx's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          C++ Primer Plus第11章学习笔记
         </h1>
 
         <div class="post-meta-container">
@@ -187,7 +187,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:50:21" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+      <time title="创建时间：2024-07-18 17:37:44 / 修改时间：17:57:05" itemprop="dateCreated datePublished" datetime="2024-07-18T17:37:44+08:00">2024-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
     </span>
 
   
@@ -200,6 +209,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><h3 id="11-2-计算时间：一个运算符重载示例"><a href="#11-2-计算时间：一个运算符重载示例" class="headerlink" title="11.2 计算时间：一个运算符重载示例"></a>11.2 计算时间：一个运算符重载示例</h3><p>不能重载的运算符：</p>
+<span id="more"></span>
+
 <table>
 <thead>
 <tr>
@@ -354,21 +365,12 @@
 </li>
 <li><p>例如，转换为double类型的函数原型：<code>operator double()</code>；转换为int类型的函数原型：<code>operator int()</code></p>
 </li>
-<li><pre><code class="cpp">  //定义operator int()
-  Stonewt::operator int() const
-  &#123;
-      return int(pounds + 0.5);
-  &#125;
-  
-  //定义operator double()
-  Stonewt::operator double() const
-  &#123;
-      return pounds;
-  &#125;
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- </span><br><span class="line"></span><br><span class="line">### 11.8 复习题</span><br><span class="line"></span><br><span class="line">1、使用成员函数为Stonewt类重载乘法运算符，该运算符将数据成员与double类型的值相乘。注意用英石和磅表示时，需要进位。也就是说，将10英石8磅乘以2等于21英石2磅。</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">//原型</span><br><span class="line">Stonewt operator*(double mult);</span><br><span class="line"></span><br><span class="line">//定义，直接调用已有构造函数</span><br><span class="line">Stonewt Stonewt::operator*(double mult)</span><br><span class="line">&#123;</span><br><span class="line">    return Stonewt(mult * pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
 </ul>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义operator int()</span></span><br><span class="line"><span class="function">Stonewt::<span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(pounds + <span class="number">0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义operator double()</span></span><br><span class="line"><span class="function">Stonewt::<span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pounds;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-8-复习题"><a href="#11-8-复习题" class="headerlink" title="11.8 复习题"></a>11.8 复习题</h3><p>1、使用成员函数为Stonewt类重载乘法运算符，该运算符将数据成员与double类型的值相乘。注意用英石和磅表示时，需要进位。也就是说，将10英石8磅乘以2等于21英石2磅。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型</span></span><br><span class="line">Stonewt <span class="keyword">operator</span>*(<span class="type">double</span> mult);</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义，直接调用已有构造函数</span></span><br><span class="line">Stonewt Stonewt::<span class="keyword">operator</span>*(<span class="type">double</span> mult)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Stonewt</span>(mult * pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>2、友元函数与成员函数之间的区别是什么?</p>
 <p><font color='red'>成员函数是类定义的一部分，通过特定的对象来调用。成员函数可以隐式访问调用对象的成员，而无需使用成员运算符。友元函数不是类的组成部分，因此被称为直接函数调用。友元函数不能隐式访问类成员，而必须将成员运算符用于作为参数传递的对象。请比较复习题1和复习题4的答案。</font></p>
 <p>3、非成员函数必须是友元才能访问类成员吗?</p>
@@ -397,8 +399,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/" rel="prev" title="">
-                  <i class="fa fa-angle-left"></i> 
+                <a href="/2024/07/18/%E7%AC%AC10%E7%AB%A0%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB/" rel="prev" title="C++ Primer Plus第10章学习笔记">
+                  <i class="fa fa-angle-left"></i> C++ Primer Plus第10章学习笔记
                 </a>
             </div>
             <div class="post-nav-item">
