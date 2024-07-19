@@ -1262,7 +1262,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #8bfbb3;
+    background: #dd30ff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2720,3 +2720,4 @@ header.header {
     display: none;
   }
 }
+@import url("https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css");

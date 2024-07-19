@@ -124,13 +124,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -382,18 +382,18 @@
 <p>1、使用成员函数为Stonewt类重载乘法运算符，该运算符将数据成员与double类型的值相乘。注意用英石和磅表示时，需要进位。也就是说，将10英石8磅乘以2等于21英石2磅。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型</span></span><br><span class="line">Stonewt <span class="keyword">operator</span>*(<span class="type">double</span> mult);</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义，直接调用已有构造函数</span></span><br><span class="line">Stonewt Stonewt::<span class="keyword">operator</span>*(<span class="type">double</span> mult)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Stonewt</span>(mult * pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>2、友元函数与成员函数之间的区别是什么?</p>
-<p><font color='red'>成员函数是类定义的一部分，通过特定的对象来调用。成员函数可以隐式访问调用对象的成员，而无需使用成员运算符。友元函数不是类的组成部分，因此被称为直接函数调用。友元函数不能隐式访问类成员，而必须将成员运算符用于作为参数传递的对象。请比较复习题1和复习题4的答案。</font></p>
+<p><font color="red">成员函数是类定义的一部分，通过特定的对象来调用。成员函数可以隐式访问调用对象的成员，而无需使用成员运算符。友元函数不是类的组成部分，因此被称为直接函数调用。友元函数不能隐式访问类成员，而必须将成员运算符用于作为参数传递的对象。请比较复习题1和复习题4的答案。</font></p>
 <p>3、非成员函数必须是友元才能访问类成员吗?</p>
-<p><font color='red'>要访问私有成员，它必须是友元，但要访问公有成员，可以不是友元。</font></p>
+<p><font color="red">要访问私有成员，它必须是友元，但要访问公有成员，可以不是友元。</font></p>
 <p>4、使用友元函数为 Stonewt类重载乘法运算符，该运算符将double值与 Stone 值相乘。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型</span></span><br><span class="line"><span class="keyword">friend</span> Stonewt <span class="keyword">operator</span>*(<span class="type">double</span> mult, <span class="type">const</span> Stonewt&amp; s);</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义</span></span><br><span class="line">Stonewt::<span class="keyword">operator</span>*(<span class="type">double</span> mult, <span class="type">const</span> Stonewt&amp; s)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Stonewt</span>(mult * s.pounds);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>5、哪些运算符不能重载？</p>
 <p><a href="###11.2">运算符重载</a></p>
 <p>6、在重载运算符=、()、[]和-&gt;时，有什么限制？</p>
-<p><font color='red'>这些运算符只能通过成员函数来定义。</font></p>
+<p><font color="red">这些运算符只能通过成员函数来定义。</font></p>
 <p>7、为 Vector 类定义一个转换函数，将 Vector 类转换为一个 double 类型的值，后者表示矢量的长度。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原型、内联定义</span></span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mag; &#125;</span><br></pre></td></tr></table></figure>
-<p><font color='red'>使用magval()方法比定义该转换函数更加符合逻辑。</font></p>
+<p><font color="red">使用magval()方法比定义该转换函数更加符合逻辑。</font></p>
 
     </div>
 
@@ -412,6 +412,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2024/07/19/STM32-USART/" rel="next" title="STM32学习记录(五)：串口通信">
+                  STM32学习记录(五)：串口通信 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -474,6 +477,13 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
 
 
 
