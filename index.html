@@ -19,12 +19,14 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
+    <meta name="description" content="记录一些在学习过程中遇到的问题，包括C&#x2F;C++、STM32、RTOS等等">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Lyx&#39;s Blog">
 <meta property="og:url" content="http://qianxiaohan.github.io/index.html">
 <meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="记录一些在学习过程中遇到的问题，包括C&#x2F;C++、STM32、RTOS等等">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="lyx">
+<meta property="article:author" content="Lyx">
 <meta name="twitter:card" content="summary">
 
 
@@ -112,20 +114,20 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">lyx</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
 </div>
 <div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -151,16 +153,292 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/19/Hexo+NexT%E6%90%AD%E5%BB%BAGitHub%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/22/STM32-TIM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Lyx's Blog">
       <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/07/22/STM32-TIM/" class="post-title-link" itemprop="url">STM32学习记录(六)：TIM定时器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-07-22 10:47:57 / 修改时间：10:53:39" itemprop="dateCreated datePublished" datetime="2024-07-22T10:47:57+08:00">2024-07-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/STM32/" itemprop="url" rel="index"><span itemprop="name">STM32</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>TIM是Timer的简写，是STM32的一种外设</p>
+<p>定时器分为高级定时器、通用定时器、基本定时器。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/22/STM32-TIM/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/19/%E4%B8%B2%E8%A1%8C%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/07/19/%E4%B8%B2%E8%A1%8C%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">串行通信</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-07-19 23:10:09 / 修改时间：23:16:34" itemprop="dateCreated datePublished" datetime="2024-07-19T23:10:09+08:00">2024-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="串行通信有关概念"><a class="markdownIt-Anchor" href="#串行通信有关概念"></a> 串行通信有关概念</h3>
+<ul>
+<li>串口，通常指的是串行通信接口。</li>
+<li>串行通信(Serial Communication)</li>
+<li>串行通信接口
+<ul>
+<li>通用异步收发器(Universal Asynchronous Receiver/Transmitter:  UART)，是一种硬件接口，通常称串口</li>
+<li>通用同步/异步收发器(Universal Synchronous Asynchronous Receiver/Transmitter:  USART)</li>
+</ul>
+</li>
+<li>串行通信接口电气标准
+<ul>
+<li>TTL、RS-232、RS-485</li>
+</ul>
+</li>
+<li>USB(Universal Serial Bus)：通用串行总线，USB不是串行通信接口</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/19/%E4%B8%B2%E8%A1%8C%E9%80%9A%E4%BF%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/" class="post-title-link" itemprop="url">QT实现简易串口助手</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-07-19 23:03:29 / 修改时间：23:17:27" itemprop="dateCreated datePublished" datetime="2024-07-19T23:03:29+08:00">2024-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="简易串口助手界面设计"><a class="markdownIt-Anchor" href="#简易串口助手界面设计"></a> 简易串口助手界面设计</h2>
+<p>自定义了QWidget的派生类SerialPortWidget，其界面设计大致如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/19/Hexo+NexT%E6%90%AD%E5%BB%BAGitHub%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -241,12 +519,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -327,12 +605,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -414,12 +692,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -513,12 +791,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -613,12 +891,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lyx">
+      <meta itemprop="name" content="Lyx">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lyx's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -705,7 +983,7 @@
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
-    <span class="author" itemprop="copyrightHolder">lyx</span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
   </div>
 
     </div>

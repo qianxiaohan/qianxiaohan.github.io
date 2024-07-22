@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简易串口助手界面设计 自定义了QWidget的派生类SerialPortWidget，其界面设计大致如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT实现简易串口助手">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="简易串口助手界面设计 自定义了QWidget的派生类SerialPortWidget，其界面设计大致如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp1.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp2.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp3.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp4.png">
+<meta property="article:published_time" content="2024-07-19T15:03:29.755Z">
+<meta property="article:modified_time" content="2024-07-19T15:17:27.412Z">
+<meta property="article:author" content="Lyx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp1.png">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/","path":"2024/07/19/QT实现简易串口助手/","title":"QT实现简易串口助手"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>QT实现简易串口助手 | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text"> 简易串口助手界面设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> 项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text"> 部分代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#qserialport%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text"> QSerialPort类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%B2%E5%8F%A3%E5%90%8D"><span class="nav-number">3.1.1.</span> <span class="nav-text"> 获取串口名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E4%B8%B2%E5%8F%A3%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">3.1.2.</span> <span class="nav-text"> 从串口读取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%91%E4%B8%B2%E5%8F%A3%E5%86%99%E6%95%B0%E6%8D%AE"><span class="nav-number">3.1.3.</span> <span class="nav-text"> 向串口写数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E4%B8%B2%E5%8F%A3"><span class="nav-number">3.1.4.</span> <span class="nav-text"> 关闭串口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E6%88%90exe"><span class="nav-number">4.</span> <span class="nav-text"> 项目打包成exe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text"> 测试结果</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="QT实现简易串口助手 | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          QT实现简易串口助手
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-07-19 23:03:29 / 修改时间：23:17:27" itemprop="dateCreated datePublished" datetime="2024-07-19T23:03:29+08:00">2024-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简易串口助手界面设计"><a class="markdownIt-Anchor" href="#简易串口助手界面设计"></a> 简易串口助手界面设计</h2>
+<p>自定义了QWidget的派生类SerialPortWidget，其界面设计大致如下：</p>
+<span id="more"></span>
+<p><img src="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp1.png" alt></p>
+<p>效果图：</p>
+<p><img src="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp2.png" alt></p>
+<h2 id="项目结构"><a class="markdownIt-Anchor" href="#项目结构"></a> 项目结构</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">serial_port</span><br><span class="line">  └─│  main.cpp					//主程序</span><br><span class="line">    │  mainwindow.cpp			//主窗口源文件和头文件</span><br><span class="line">    │  mainwindow.h</span><br><span class="line">    │  myintvalidator.cpp		//QIntValidator的派生类，重写fixup()</span><br><span class="line">    │  myintvalidator.h</span><br><span class="line">    │  mysetting.json</span><br><span class="line">    │  res.qrc					//资源文件，添加css、图片文件</span><br><span class="line">    │  serialportwidget.cpp		//QWidget的派生类，在其中串口的读写</span><br><span class="line">    │  serialportwidget.h</span><br><span class="line">    │  serial_port.pro			//工程文件</span><br><span class="line">    │  serial_port.pro.user</span><br><span class="line">    │  setting.json				//程序自动创建用于保存各种设置</span><br><span class="line">    │      </span><br><span class="line">    ├─image						//存放图片</span><br><span class="line">    │      closebtn.png</span><br><span class="line">    │      closebtn2.png</span><br><span class="line">    │      openbtn.png</span><br><span class="line">    |	   logo.ico</span><br><span class="line">    |      windowicon.png</span><br><span class="line">    │      </span><br><span class="line">    └─style						//存放qss/css文件</span><br><span class="line">            mystyle.css</span><br></pre></td></tr></table></figure>
+<p><strong>使用json文件保存参数，比如某个复选框是否被勾上，是否显示时间，文本浏览器背景色等等</strong>，有关json文件的读写，这篇博客写的不错：<a target="_blank" rel="noopener" href="https://blog.csdn.net/cpp_learner/article/details/118421096">https://blog.csdn.net/cpp_learner/article/details/118421096</a></p>
+<h2 id="部分代码"><a class="markdownIt-Anchor" href="#部分代码"></a> 部分代码</h2>
+<p>串口助手的核心部分就是串行通信。</p>
+<h3 id="qserialport类"><a class="markdownIt-Anchor" href="#qserialport类"></a> QSerialPort类</h3>
+<p>QSerialPort提供了一些函数去访问串口。</p>
+<blockquote>
+<p>Provides functions to access serial ports.</p>
+</blockquote>
+<h4 id="获取串口名"><a class="markdownIt-Anchor" href="#获取串口名"></a> 获取串口名</h4>
+<p>QSerialPortInfo类可以获取已存在串口的信息：串口描述、串口名、制造商、串口序列号等。使用静态函数<code>QSerialPortInfo::availablePorts()</code>获取所有的串口信息，再通过foreach遍历每个串口的信息。</p>
+<blockquote>
+<p>Provides information about existing serial ports.<br>
+Use the static functions to generate a list of QSerialPortInfo objects. Each QSerialPortInfo object in the list represents a single serial port and can be queried for the port name, system location, description, and manufacturer. The QSerialPortInfo class can also be used as an input parameter for the setPort() method of the QSerialPort class.</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取串口信息</span></span><br><span class="line">QList&lt;QSerialPortInfo&gt; infos = QSerialPortInfo::<span class="built_in">availablePorts</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">const</span> QSerialPortInfo &amp;info : infos)		<span class="comment">//foreach遍历串口信息</span></span><br><span class="line">    serialPortComboBox-&gt;<span class="built_in">addItem</span>(info.<span class="built_in">portName</span>());   <span class="comment">//获取串口名</span></span><br></pre></td></tr></table></figure>
+<h4 id="从串口读取数据"><a class="markdownIt-Anchor" href="#从串口读取数据"></a> 从串口读取数据</h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">QSerialPort *serialport = <span class="keyword">new</span> QSerialPort;</span><br><span class="line"><span class="comment">//串口参数的设置，具体的值参照QT官方的文档</span></span><br><span class="line">serialport-&gt;<span class="built_in">setPortName</span>(portName);	<span class="comment">//设置串口名</span></span><br><span class="line">serialport-&gt;<span class="built_in">setBaudRate</span>(b);	<span class="comment">//设置波特率</span></span><br><span class="line">serialport-&gt;<span class="built_in">setDataBits</span>(databits);	<span class="comment">//设置数据位</span></span><br><span class="line">serialport-&gt;<span class="built_in">setStopBits</span>(stopbits);	<span class="comment">//设置停止位</span></span><br><span class="line">serialport-&gt;<span class="built_in">setParity</span>(parity);	<span class="comment">//设置校验位</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!serialport-&gt;<span class="built_in">open</span>(QIODevice::ReadOnly))	<span class="comment">//只读方式打开文件失败</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">qWarning</span>() &lt;&lt; <span class="string">&quot;open serial port error&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">QByteArray data = serialport.<span class="built_in">readAll</span>();	<span class="comment">//以字节的方式读取数据</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="向串口写数据"><a class="markdownIt-Anchor" href="#向串口写数据"></a> 向串口写数据</h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!serialport-&gt;<span class="built_in">open</span>(QIODevice::WriteOnly))	<span class="comment">//只写方式打开文件失败</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">qWarning</span>() &lt;&lt; <span class="string">&quot;open serial port error&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">QByteArray <span class="title">data</span><span class="params">(<span class="string">&quot;hello&quot;</span>)</span></span>;</span><br><span class="line">serialport.<span class="built_in">write</span>(data);	<span class="comment">//向串口写数据，需要先设置相关的参数</span></span><br></pre></td></tr></table></figure>
+<h4 id="关闭串口"><a class="markdownIt-Anchor" href="#关闭串口"></a> 关闭串口</h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serialport.<span class="built_in">close</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="项目打包成exe"><a class="markdownIt-Anchor" href="#项目打包成exe"></a> 项目打包成exe</h2>
+<p>见另一篇博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18237089">https://www.cnblogs.com/qianxiaohan/p/18237089</a></p>
+<h2 id="测试结果"><a class="markdownIt-Anchor" href="#测试结果"></a> 测试结果</h2>
+<p>使用Virtual Serial Port Driver添加一对虚拟串口，COM2 &lt;==&gt; COM3。</p>
+<p><img src="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp3.png" alt></p>
+<p>自制的简易串口助手选择COM2，另一个串口助手选择COM3，以此来测试自制的简易串口助手。可以看到简易串口助手可以正常地实现数据的收发。</p>
+<p><img src="/2024/07/19/QT%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B/sp4.png" alt></p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/qianxiaohan/QTProject/tree/main/serial_port">https://github.com/qianxiaohan/QTProject/tree/main/serial_port</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/19/Hexo+NexT%E6%90%AD%E5%BB%BAGitHub%E5%8D%9A%E5%AE%A2/" rel="prev" title="Hexo + NexT主题美化GitHub博客">
+                  <i class="fa fa-angle-left"></i> Hexo + NexT主题美化GitHub博客
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/07/19/%E4%B8%B2%E8%A1%8C%E9%80%9A%E4%BF%A1/" rel="next" title="串行通信">
+                  串行通信 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
