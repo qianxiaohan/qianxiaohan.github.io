@@ -234,7 +234,7 @@
 </ul>
 </li>
 <li>带参数的构造函数也可以是默认构造函数，只要所有参数都有默认值。 <code>p433</code></li>
-<li><font color="red"> 复制构造函数按值传递对象应该改成按引用传递对象</font>, 这样可以节省调用构造函数的时间以及存储新对象的空间。 <code>p433</code></li>
+<li><font color='red'> 复制构造函数按值传递对象应该改成按引用传递对象</font>, 这样可以节省调用构造函数的时间以及存储新对象的空间。 <code>p433</code></li>
 </ul>
 <h2 id="122-改进后的新string类"><a class="markdownIt-Anchor" href="#122-改进后的新string类"></a> 12.2 改进后的新String类</h2>
 <ul>
@@ -242,7 +242,7 @@
 </ul>
 <h2 id="123-在构造函数中使用new时应注意的事项"><a class="markdownIt-Anchor" href="#123-在构造函数中使用new时应注意的事项"></a> 12.3 在构造函数中使用new时应注意的事项</h2>
 <ul>
-<li>使用new初始化对象的<font color="red">指针成员时</font>，需要注意： <code>p446</code>
+<li>使用new初始化对象的<font color='red'>指针成员时</font>，需要注意： <code>p446</code>
 <ul>
 <li>如果在构造函数中使用new来初始化指针成员，则应在析构函数中使用delete。</li>
 <li>new和delete必须相互兼容。new对应于delete，new[]对应于delete[]。</li>
