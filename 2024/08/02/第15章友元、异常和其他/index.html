@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="15.1 友元  类并非只能拥有友元函数，也可以将类作为友元。在这种情况下，友元类的所有方法都可以访问原始类的私有成员和保护成员。 p602 例如：假定需要编写一个模拟电视机和遥控器的简单程序。决定定义一个Tv类和一个 Remote 类，来分别表示电视机和遥控器。遥控器并非电视机，反之亦然，所以公有继承的is-a关系并不适用。遥控器也非电视机的一部分，反之亦然，因此包含或私有继承和保护继承的 h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Plus第15章学习笔记">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/08/02/%E7%AC%AC15%E7%AB%A0%E5%8F%8B%E5%85%83%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E5%85%B6%E4%BB%96/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="15.1 友元  类并非只能拥有友元函数，也可以将类作为友元。在这种情况下，友元类的所有方法都可以访问原始类的私有成员和保护成员。 p602 例如：假定需要编写一个模拟电视机和遥控器的简单程序。决定定义一个Tv类和一个 Remote 类，来分别表示电视机和遥控器。遥控器并非电视机，反之亦然，所以公有继承的is-a关系并不适用。遥控器也非电视机的一部分，反之亦然，因此包含或私有继承和保护继承的 h">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-02T13:18:36.338Z">
+<meta property="article:modified_time" content="2024-08-02T13:26:46.364Z">
+<meta property="article:author" content="Lyx">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/08/02/%E7%AC%AC15%E7%AB%A0%E5%8F%8B%E5%85%83%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E5%85%B6%E4%BB%96/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/08/02/%E7%AC%AC15%E7%AB%A0%E5%8F%8B%E5%85%83%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E5%85%B6%E4%BB%96/","path":"2024/08/02/第15章友元、异常和其他/","title":"C++ Primer Plus第15章学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Plus第15章学习笔记 | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#151-%E5%8F%8B%E5%85%83"><span class="nav-number">1.</span> <span class="nav-text"> 15.1 友元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#152-%E5%B5%8C%E5%A5%97%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text"> 15.2 嵌套类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#153-%E5%BC%82%E5%B8%B8"><span class="nav-number">3.</span> <span class="nav-text"> 15.3 异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#154-rtti"><span class="nav-number">4.</span> <span class="nav-text"> 15.4 RTTI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#155-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.</span> <span class="nav-text"> 15.5 类型转换运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#156-%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text"> 15.6 总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#157-%E5%A4%8D%E4%B9%A0%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 15.7 复习题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/08/02/%E7%AC%AC15%E7%AB%A0%E5%8F%8B%E5%85%83%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E5%85%B6%E4%BB%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++ Primer Plus第15章学习笔记 | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Plus第15章学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-08-02 21:18:36 / 修改时间：21:26:46" itemprop="dateCreated datePublished" datetime="2024-08-02T21:18:36+08:00">2024-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="151-友元"><a class="markdownIt-Anchor" href="#151-友元"></a> 15.1 友元</h3>
+<ul>
+<li>类并非只能拥有友元函数，也可以将类作为友元。在这种情况下，友元类的所有方法都可以访问原始类的私有成员和保护成员。 <mark>p602</mark></li>
+<li>例如：假定需要编写一个模拟电视机和遥控器的简单程序。决定定义一个Tv类和一个 Remote 类，来分别表示电视机和遥控器。遥控器并非电视机，反之亦然，所以公有继承的is-a关系并不适用。遥控器也非电视机的一部分，反之亦然，因此包含或私有继承和保护继承的 has-a 关系也不适用。事实上，遥控器可以改变电视机的状态，这表明应将 Remote 类作为 Tv 类的一个友元。 <mark>p602</mark></li>
+<li>如果不使用友元类，则必须将Tv类的private成员设置为public，但是这样会出现同一个遥控器可用于多台电视机，这是不符合常理的。  <mark>p606</mark></li>
+<li>友元
+<ul>
+<li>友元类：类作为友元</li>
+<li>友元成员函数：类的成员函数做友元</li>
+<li>其他友元和类的组合形式：两个类互相为对方的友元类</li>
+<li>共同的友元：函数需要访问两个类的私有数据，在两个类中将该函数作为友元。</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+<p>友元类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Tv</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">Remote</span>;	<span class="comment">//Remote类作为友元，可以访问Tv的私有部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>友元成员函数：使用另一个类的成员函数作为友元。</p>
+<p>需要注意要在class Tv的声明之前，先向前声明(forward declaration)Tv类，Remote类的方法包含了Tv类作为参数，因此向前声明时告诉编译器存在一个Tv类。排列顺序如下： <mark>p607</mark></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Tv</span>;		<span class="comment">//forward declaration</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Remote</span> &#123; ... &#125;;	<span class="comment">//定义类方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tv</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">frined <span class="type">void</span> <span class="title">Remote::set_chan</span><span class="params">(Tv &amp; t, <span class="type">int</span> c)</span></span>;	<span class="comment">//Remote类的成员函数作为友元</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="152-嵌套类"><a class="markdownIt-Anchor" href="#152-嵌套类"></a> 15.2 嵌套类</h3>
+<p>所谓嵌套类就是就是一个类中嵌套了另一个类(或结构体)，比如Queue中嵌套了Node结构体(C++中结构体就是默认访问权限为public的类)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// class scope definitions</span></span><br><span class="line">    <span class="comment">// Node is a nested structure definition local to this class</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span> &#123;Item item; <span class="keyword">struct</span> <span class="title class_">Node</span> * next;&#125;;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>嵌套类、结构和枚举的作用域特征相同</p>
+<table>
+<thead>
+<tr>
+<th>声明位置</th>
+<th>包含它的类是否可以使用它</th>
+<th>从包含它的类派生而来的类是否可以使用它</th>
+<th>在外部是否可以使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>私有部分</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>保护部分</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>公有部分</td>
+<td>是</td>
+<td>是</td>
+<td>是，通过类限定符来使用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="153-异常"><a class="markdownIt-Anchor" href="#153-异常"></a> 15.3 异常</h3>
+<p>处理异常的方式：  <mark>p616</mark></p>
+<ul>
+<li>
+<p>使用<code>abort()</code>函数，如果在函数中调用它，会直接退出程序，不会返回<code>main</code>函数</p>
+</li>
+<li>
+<p>使用函数返回值返回错误码</p>
+</li>
+<li>
+<p>使用异常机制，异常的处理有3个组成部分：</p>
+<ul>
+<li>引发异常，使用<code>throw</code>关键字抛出异常</li>
+<li>使用处理程序(exception handler)捕获异常，<code>catch</code>关键字表示捕获异常</li>
+<li>使用try块，try块标识在块中的代码可能引发异常</li>
+</ul>
+</li>
+<li>
+<p>异常类型可以是字符串或其他C++类型；通常为类类型。	<mark>p620</mark></p>
+</li>
+</ul>
+<p>使用异常机制的例子：  <mark>p619</mark></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">hmean</span><span class="params">(<span class="type">double</span> a, <span class="type">double</span> b)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">double</span> x, y, z;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Enter two numbers: &quot;</span>;</span><br><span class="line">    <span class="keyword">while</span> (std::cin &gt;&gt; x &gt;&gt; y)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            z = <span class="built_in">hmean</span>(x,y);     <span class="comment">//调用hmean函数可能引发异常</span></span><br><span class="line">        &#125;<span class="comment">//try块的末尾</span></span><br><span class="line">        <span class="built_in">catch</span>(<span class="type">const</span> <span class="type">char</span> *s)    <span class="comment">//异常处理，括号里面的类型必须与抛出的类型一致，一般是类</span></span><br><span class="line">        &#123;</span><br><span class="line">            std::cout &lt;&lt; s &lt;&lt; std::endl;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;Enter a new pair of numbers: &quot;</span>;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Harmonic mean of &quot;</span> &lt;&lt; x &lt;&lt; <span class="string">&quot; and &quot;</span> &lt;&lt; y</span><br><span class="line">            &lt;&lt; <span class="string">&quot; is &quot;</span> &lt;&lt; z &lt;&lt; std::endl;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Enter next set of numbers &lt;q to quit&gt;: &quot;</span>;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Bye!\n&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">hmean</span><span class="params">(<span class="type">double</span> a, <span class="type">double</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (a == -b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;untenable arguments to hmean()\n&quot;</span>;   <span class="comment">//抛出一个异常</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2.0</span> * a * b / (a + b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用hmean(10, -10)引发异常后，抛出一个异常，程序返回到try块的末尾。将执行catch块，将异常字符串赋给s，catch块中程序执行到continue时，返回到while循环的开始位置。</p>
+<ul>
+<li>
+<p>**栈解退(unwinding the stack)：**假设现在函数由于出现异常而终止，则程序也将释放栈中的内存，但不会在释放栈中的第一个地址后停止，而是继续寻找，在找到try块之前，栈中的内存会被释放掉，直到找到一个位于try块中的返回地址，。程序跳转到try块的末尾，而不是返回到函数调用后的下一条语句。(throw与return的区别就在此) <mark>p625</mark></p>
+</li>
+<li>
+<p>如果没有栈解退这种特性，则引发异常后，对于中间函数调用放在栈中的自动类对象，其析构函数将不会被调用。 <mark>p625</mark></p>
+</li>
+<li>
+<p>虽然 throw-catch 机制类似于函数参数和函数返回机制，但还是有些不同之处：  <mark>p629</mark></p>
+<ul>
+<li>其中之一是函数 fun()中的返回语句将控制权返回到调用 fun()的函数，但 throw 语句将控制权向上返回到第一个这样的函数：包含能够捕获相应异常的 try-catch 组合。</li>
+<li>另一个不同之处是，引发异常时编译器总是创建一个临时拷贝，即使异常规范和catch块中指定的是引用。因为抛出异常的函数执行完后，throw的类对象将不存在，这也是为什么编译器要创建一个临时拷贝。<strong>catch块使用引用是因为基类引用可以执行派生类对象。</strong></li>
+</ul>
+</li>
+<li>
+<p>C++提供了很多基于exception的异常类型  <mark>p631</mark></p>
+<ul>
+<li>stdexcept头文件中包含了处理的异常类</li>
+<li>bad_alloc异常和new：bad_alloc异常类位于头文件<code>new</code>中，让new引发bad_alloc异常</li>
+<li>空指针和new，C++标准提供了一种在失败时返回空指针的new，语法：<code>int *p = new (std::nothorw) int;</code></li>
+</ul>
+</li>
+<li>
+<p><strong>要捕获所有异常(不管是预期的异常还是意外异常)</strong>，可以这样做：</p>
+<ul>
+<li>包含头文件<code>#include &lt;exception&gt;</code>，using声明<code>using namespace std;</code></li>
+<li>设计一个替代函数，将意外异常转换为bad_excpetion异常</li>
+</ul>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">myUnexcpeted</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> std::<span class="built_in">bad_exception</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将意外异常操作指定为调用该函数：<code>set_unexpected(myUnexpected);</code></li>
+</ul>
+<p>将bad_exception类型包括在异常规范中，并添加如下catch块序列：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">Argh</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span> <span class="title">throw</span><span class="params">(out_of_bounds, bad_exception)</span></span>;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   x = <span class="built_in">Argh</span>(a, b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(out_of_bounds &amp; ex)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(bad_exception &amp; ex) </span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果出现意外异常(不是以上两种异常类型)，程序会调用unexpected()函数。已经使用set_unexpected()修改了unexpected()函数要执行的操作：意外异常转为bad_exception()类型。</p>
+</li>
+</ul>
+<h3 id="154-rtti"><a class="markdownIt-Anchor" href="#154-rtti"></a> 15.4 RTTI</h3>
+<p>RTTI是运行阶段类型识别(Runtime Type Identification)的简称。 <mark>p642</mark></p>
+<blockquote>
+<p>C++ Primer Plus  P642</p>
+<p>假设有一个类层次结构，其中的类都是从同一个基类派生而来的，则可以让基类指针指向其中任何一个类的对象。这样便可以调用这样的函数：在处理一些信息后，选择一个类，并创建这种类型的对象，然后返回它的地址，而该地址可以被赋给基类指针。如何知道指针指向的是哪种对象呢？</p>
+<p>为何要知道类型。可能希望调用类方法的正确版本，在这种情况下，只要该函数是类层次结构中所有成员都拥有的虚函数，则并不真正需要知道对象的类型。但派生对象可能包含不是继承而来的方法，在这种情况下，只有某些类型的对象可以使用该方法。也可能是出于调试目的,想跟踪生成的对象的类型。对于后两种情况，RTTI提供解决方案。</p>
+</blockquote>
+<p>简而言之，派生对象可能包含了不是继承而来的方法，需要知道其类型，RTTI就是解决这种情况的。</p>
+<p>C++有以下3个组件支持RTTI：	<mark>p643</mark></p>
+<ul>
+<li><code>dynamic_cast</code>运算符，将基类指针指向派生类指针，否则运算符返回0(也就是空指针)</li>
+<li><code>typeid</code>运算符返回一个指出对象的类型的值</li>
+<li><code>type_info</code>结构存储了有关特定类型的信息</li>
+</ul>
+<p><code>dynamic_cast</code>语法：<code>dynamic_cast&lt;Type *&gt;(pt)</code>。</p>
+<ul>
+<li>如果(pt*)是Type或者Type直接或间接派生而来的类型，那么就表示将指针pt转换为Type类型的指针。也就是说这么写表示派生类向基类转换(向上转换)。</li>
+<li>也可以让基类指针转为派生类指针，如果转换失败，则会返回空指针</li>
+</ul>
+<h3 id="155-类型转换运算符"><a class="markdownIt-Anchor" href="#155-类型转换运算符"></a> 15.5 类型转换运算符</h3>
+<p>4个类型转换运算符：  <mark>p650</mark></p>
+<ul>
+<li><code>dynamic_cast</code>，既可以向上转换(本身就是安全的)，也可以向下转换(如果转换失败，返回空指针)。</li>
+<li><code>const_cast</code>，有时候可能需要这样一个值(这个值必须是非const类型，只是被const类型的指针指向了)，它在大多数时候是常量，而有时在这种情况下又是可以修改。因此，可以将这个值声明为 const，并在需要修改它的时候，使用<code>const_cast</code>。</li>
+<li><code>static_cast</code>语法：<code>static_cast&lt;type_name&gt;(expression)</code>只有当type_name可以被隐式转换为expression所属的类型或expression所属的类型可以被隐式转换为type_name，才能使用<code>static_cast</code></li>
+<li><code>reinterpret_cast</code>，它不允许删除 const，但会执行其他令人生厌的操作。有时程序员必须做一些依赖于实现的、令人生厌的操作，使用reinterpret_cast运算符可以简化对这种行为的跟踪工作。</li>
+</ul>
+<p>4种运算符语法：类型转换运算符&lt;类型名称&gt;(表达式)。除了<code>static_cast</code>可以将整型转换为枚举值、double转为int、将float转换为long以及其他各种数据值转换以外，其他3个类型转换运算符的<mark>类型名称只能是指针或引用，类型名称是指针时，表达式必须为指针；类型名称是引用时，表达式必须为引用。</mark></p>
+<p>4种运算符举例说明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//dynamic_cast用法</span></span><br><span class="line"><span class="comment">//基类：Brass 派生类：BrassPlus</span></span><br><span class="line">Brass *b = <span class="keyword">new</span> Brass;</span><br><span class="line">BrassPlus *p = <span class="keyword">new</span> BrassPlus;</span><br><span class="line"></span><br><span class="line">BrassPlus *bp = <span class="built_in">dynamic_cast</span>&lt;BrassPlus *&gt;(b);	<span class="comment">//基类指针向下转换为派生类指针</span></span><br><span class="line">Brass *bp = <span class="built_in">dynamic_cast</span>&lt;Brass *&gt;(p);			<span class="comment">//派生指针向上转换为基类指针</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const_cast用法：只有const指针指向的数据是非const时，运算符才是合法的</span></span><br><span class="line">High bar;</span><br><span class="line"><span class="type">const</span> High * pbar = &amp;bar;	<span class="comment">//const High类型指针指向了非const值</span></span><br><span class="line">High * pb = <span class="built_in">const_cast</span>&lt;High *&gt;(pbar);	<span class="comment">//合法的，去掉了const High *的const</span></span><br><span class="line"><span class="type">const</span> Low * pl = <span class="built_in">const_cast</span>&lt;<span class="type">const</span> Low *&gt;(pbar);	<span class="comment">//非法的，const_cast的作用是去掉const修饰</span></span><br><span class="line">												<span class="comment">//不能实现const High *到const Low *的转换</span></span><br><span class="line"><span class="comment">//static_cast用法</span></span><br><span class="line"><span class="comment">//High是Low的基类</span></span><br><span class="line">High bar;</span><br><span class="line">Low blow;</span><br><span class="line">High *pb = <span class="built_in">static_cast</span>&lt;High*&gt;(&amp;blow); <span class="comment">// 合法的向上转换</span></span><br><span class="line">Low *pl = <span class="built_in">static_cast</span>&lt;Low*&gt;(&amp;bar);  <span class="comment">//合法的向下转换</span></span><br><span class="line">Pond *pmer=<span class="type">static</span> <span class="built_in">cast</span>&lt;Pond*&gt;(&amp;blow); <span class="comment">// 不合法，Pond与这两个类无关</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//reinterpret_cast用法</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">dat</span>&#123; <span class="type">short</span> a; <span class="type">short</span> b;&#125;;</span><br><span class="line"><span class="type">long</span> value = <span class="number">0xA224B118</span>;</span><br><span class="line">dat *pd = <span class="built_in">reinterpret_cast</span>&lt;dat *&gt;(&amp;value);</span><br><span class="line">cout &lt;&lt; std::hex &lt;&lt; pd-&gt;a;	<span class="comment">//会打印出value的前两个字节：0xb118</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="156-总结"><a class="markdownIt-Anchor" href="#156-总结"></a> 15.6 总结</h3>
+<ul>
+<li>C++异常机制为处理拙劣的编程事件，如不适当的值、I/O 失败等，提供了一种灵活的方式。 <mark>p652</mark></li>
+<li>RTTI(运行阶段类型信息)特性让程序能够检测对象的类型。</li>
+<li>与通用转换机制相比，<code>dynamic_cast</code>、<code>static_cast</code>、<code>const_cast</code>和 <code>reinterpret_cast</code> 提供了更安全、更明确的类型转换。</li>
+</ul>
+<h3 id="157-复习题"><a class="markdownIt-Anchor" href="#157-复习题"></a> 15.7 复习题</h3>
+<p><strong>1、下面建立友元的尝试有什么错误？</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> a. </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">snap</span> &#123;</span><br><span class="line">    <span class="keyword">friend</span> clasp;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">clasp</span> &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line">b.</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cuff</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">snip</span><span class="params">(muff &amp;)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">muff</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">cuff::snip</span><span class="params">(muff &amp;)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"> c. </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">muff</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">cuff::snip</span><span class="params">(muff &amp;)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cuff</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">snip</span><span class="params">(muff &amp;)</span> </span>&#123; ... &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>a、使用clasp类做友元，应该使用<code>friend class clasp;</code>这样的语句。</p>
+<p>b、将成员函数做作为友元，应该在最前面添加一个向前声明(forward declaration)：<code>class muff;</code></p>
+<p>c、muff类声明在前使用cuff类的snip函数作为友元，但是由于cuff类声明在muff类之后，编译器不清楚<code>void cuff::snip(muff &amp;)</code>的定义。将b、c修改为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">muff</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cuff</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">snip</span><span class="params">(muff &amp;)</span> </span>&#123; ... &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">muff</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">cuff::snip</span><span class="params">(muff &amp;)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>2、您知道了如何建立相互类友元的方法。能够创建一种更为严格的友情关系，即类B只有部分成员是类 A 的友元，而类A只有部分成员是类B的友元吗？请解释原因。</strong></p>
+<p>不。为使类A拥有一个本身为类B的成员函数的友元，B的声明必须位于A的声明之前。一个前向声明是不够的，因为这种声明可以告诉 A：B是一个类；但它不能指出类成员的名称。同样，如果B拥有一个本身是A的成员函数的友元，则A的这个声明必须位于B的声明之前。这两个要求是互斥的。</p>
+<p><strong>3、下面的嵌套类声明中可能存在什么问题?</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Ribs</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Sauce</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> soy;</span><br><span class="line">        <span class="type">int</span> sugar;</span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            <span class="built_in">Sauce</span>(<span class="type">int</span> sl,<span class="type">int</span> s2):<span class="built_in">soy</span>(s1)，<span class="built_in">sugar</span>(s2)&#123;</span><br><span class="line">    &#125;;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>访问类的唯一方法是通过其有接口，这意味着对于 Sauce 对象，只能调用构造函数来创建一个。其他成员(soy和sugar)在默认情况下是私有的。</p>
+<p><strong>4、throw和 return 之间的区别何在?</strong></p>
+<p>假设函数f1()调用函数f2()。</p>
+<ul>
+<li>f2()中的return语句导致程序执行在函数f1()中调用函数f2()后面的一条语句。</li>
+<li>throw 语句导致程序沿函数调用的当前序列回溯，直到找到直接或间接包含对f2()的调用的try语句块为止。它可能在f1()中、调用 f1()的函数中或其他函数中。找到这样的 ty语句块后，将执行下一个匹配的 catch 语句块，而不是函数调用后的语句。</li>
+</ul>
+<p><strong>5、假设有一个从异常基类派生来的异常类层次结构，则应按什么样的顺序放置 catch 块?</strong></p>
+<p>应按从子孙到祖先的顺序排列catch语句块。</p>
+<p>**6、对于本章定义的 Grand、Superb和Magnificent类，假设pg为Grand *指针，并将其中某个类的对<br />
+象的地址赋给了它，而ps为 Superb*指针，则下面两个代码示例的行为有什么不同? **</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(ps = <span class="built_in">dynamic_cast</span>&lt;Superb *&gt;(pg))</span><br><span class="line">    ps-&gt;<span class="built_in">say</span>();	<span class="comment">//sample #1</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">typeid</span>(*pg) == <span class="built_in">typeid</span>(Superb))</span><br><span class="line">    (Superb *)(pg)-&gt;<span class="built_in">say</span>();  <span class="comment">// sample #2</span></span><br></pre></td></tr></table></figure>
+<p>对于sample #1，如果pg指向一个 Superb 对象或从 Superb 派生而来的任何类的对象，则if条件为 true。具体地说，如果pg指向Magnifcent对象，则if条件也为true。对于sample #2，仅当指向 Superb 对象时，if条件才为true，如果指向的是从Superb派生出来的对象，则if条件不为true。</p>
+<p><strong>7、static_cast运算符与 dynamic_cast 运算符有什么不同？</strong></p>
+<p>dynamic_cast 运算符只允许沿类层次结构向上转换(向下转换时具有类型检查的功能)，而static_cast运算符允许向上转换和向下转换。static_cast 运算符还允许枚举类型和整型之间以及数值类型之间的转换。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/02/%E7%AC%AC14%E7%AB%A0C++%E4%BB%A3%E7%A0%81%E9%87%8D%E7%94%A8/" rel="prev" title="">
+                  <i class="fa fa-angle-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
