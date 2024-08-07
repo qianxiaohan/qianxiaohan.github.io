@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="STM32中使用软件模拟IIC，即不使用STM32F10x系列的IIC外设。  集成电路总线I2C I2C通常读作&quot;I方C&quot;，全称Inter-Integrated Circuit，中文名叫做集成电路总线，是两线式串行总线。SCL是串行时钟线，SDA是串行数据线。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32学习记录(四)：I2C">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="STM32中使用软件模拟IIC，即不使用STM32F10x系列的IIC外设。  集成电路总线I2C I2C通常读作&quot;I方C&quot;，全称Inter-Integrated Circuit，中文名叫做集成电路总线，是两线式串行总线。SCL是串行时钟线，SDA是串行数据线。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-1.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-2.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-3.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-4.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-5.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-6.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-7.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-8.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-9.png">
+<meta property="article:published_time" content="2024-08-05T07:12:13.376Z">
+<meta property="article:modified_time" content="2024-08-07T06:46:35.343Z">
+<meta property="article:author" content="Lyx">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/4-1.png">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/08/05/STM32-IIC/","path":"2024/08/05/STM32-IIC/","title":"STM32学习记录(四)：I2C"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>STM32学习记录(四)：I2C | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E6%80%BB%E7%BA%BFi2c"><span class="nav-number">1.</span> <span class="nav-text"> 集成电路总线I2C</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88i2c%E8%A6%81%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BC%8Fopen-drain%E8%BE%93%E5%87%BA"><span class="nav-number">1.1.</span> <span class="nav-text"> 为什么I2C要使用开漏(Open-Drain)输出？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gpio%E6%A8%A1%E6%8B%9Fi2c%E9%A9%B1%E5%8A%A8oled"><span class="nav-number">2.</span> <span class="nav-text"> GPIO模拟I2C驱动OLED</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oled%E6%98%BE%E7%A4%BA%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text"> OLED显示原理[2]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96gpio"><span class="nav-number">2.2.</span> <span class="nav-text"> 初始化GPIO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i2c%E5%8D%8F%E8%AE%AE%E5%BC%80%E5%A7%8B%E5%92%8C%E5%81%9C%E6%AD%A2%E7%8A%B6%E6%80%81"><span class="nav-number">2.3.</span> <span class="nav-text"> I2C协议开始和停止状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oled%E6%A8%A1%E5%9D%97%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.4.</span> <span class="nav-text"> OLED模块初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oled%E5%86%99%E6%95%B0%E6%8D%AE%E5%86%99%E6%8C%87%E4%BB%A4"><span class="nav-number">2.5.</span> <span class="nav-text"> OLED写数据&#x2F;写指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oled%E6%98%BE%E7%A4%BA%E5%AD%97%E7%AC%A6%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.6.</span> <span class="nav-text"> OLED显示字符&#x2F;字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text"> 使用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8i2c%E5%A4%96%E8%AE%BE%E9%A9%B1%E5%8A%A8oled"><span class="nav-number">3.</span> <span class="nav-text"> 使用I2C外设驱动OLED</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#i2c%E5%A4%96%E8%AE%BE%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.1.</span> <span class="nav-text"> I2c外设初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i2c%E5%A4%96%E8%AE%BE%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text"> I2C外设发送数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i2c%E5%A4%96%E8%AE%BE%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text"> I2C外设接收数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text"> 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/08/05/STM32-IIC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="STM32学习记录(四)：I2C | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          STM32学习记录(四)：I2C
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-05 15:12:13" itemprop="dateCreated datePublished" datetime="2024-08-05T15:12:13+08:00">2024-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-07 14:46:35" itemprop="dateModified" datetime="2024-08-07T14:46:35+08:00">2024-08-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/STM32/" itemprop="url" rel="index"><span itemprop="name">STM32</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>STM32中使用软件模拟IIC，即不使用STM32F10x系列的IIC外设。</p>
+<h2 id="集成电路总线i2c"><a class="markdownIt-Anchor" href="#集成电路总线i2c"></a> 集成电路总线I<sup>2</sup>C</h2>
+<p>I<sup>2</sup>C通常读作&quot;I方C&quot;，全称<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/I2C%E6%80%BB%E7%BA%BF">Inter-Integrated Circuit</a>，中文名叫做集成电路总线，是两线式串行总线。SCL是串行时钟线，SDA是串行数据线。</p>
+<span id="more"></span>
+<p>以下内容来自：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/I%C2%B2C">维基百科</a></p>
+ <img src="/2024/08/05/STM32-IIC/4-1.png" class="" title="4-1.png">
+<blockquote>
+<ol>
+<li>Data transfer is initiated with a <em>start</em> condition (S) signalled by SDA being pulled low while SCL stays high.</li>
+<li>SCL is pulled low, and SDA sets the first data bit level while keeping SCL low (during blue bar time).</li>
+<li>The data is sampled (received) when SCL rises for the first bit (B1). For a bit to be valid, SDA must not change between a rising edge of SCL and the subsequent falling edge (the entire green bar time).</li>
+<li>This process repeats, SDA transitioning while SCL is low, and the data being read while SCL is high (B2 through Bn).</li>
+<li>The final bit is followed by a clock pulse, during which SDA is pulled low in preparation for the <em>stop</em> bit.</li>
+<li>A <em>stop</em> condition (P) is signalled when SCL rises, followed by SDA rising.</li>
+</ol>
+</blockquote>
+<ol>
+<li>SCL保持高电平时，SDA被master(主机)拉低，此时为开始状态(S)</li>
+<li>SCL被拉低，SDA在SCL保持低电平时设置第一位数据</li>
+<li>SDA的数据在只有在SCL保持高电平时才有效</li>
+<li>重复第2、3步过程</li>
+<li>SDA发送最后一个位后，下一个时钟脉冲SDA被拉低，为停止状态做准备</li>
+<li>当SCL被拉高，SDA紧接着被拉高，会发出停止信号(P)</li>
+</ol>
+<p>一个典型的I²C实现如下图所示，I<sup>2</sup>C总线设计的初衷就是希望在I<sup>2</sup>C总线可以挂载多个设备。SDA，SCL都需要添加上拉电阻，**MCU用于SDA、SCL的I/O口必须被配置为开漏输出(Open-Drain Mode)输出。**开漏输出模式下，MCU可以控制I/O口输入低电平，而高电平无驱动能力，</p>
+ <img src="/2024/08/05/STM32-IIC/4-2.png" class="" title="4-2.png">
+<h3 id="为什么i2c要使用开漏open-drain输出"><a class="markdownIt-Anchor" href="#为什么i2c要使用开漏open-drain输出"></a> 为什么I<sup>2</sup>C要使用开漏(Open-Drain)输出？</h3>
+<p><strong>使用开漏输出的好处：</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<ol>
+<li>各个设备争用总线不会使总线收到破坏</li>
+<li>对于该连接上的任何输出，如果任何设备的输出将线路拉低，则整个线路为低。这种连接称为线与(wired-AND)连接。</li>
+</ol>
+<p><strong>开漏输出与推挽输出的比较：</strong></p>
+<p>使用开漏输出时，必须添加上拉电阻，当Q1开启时，由于上拉电阻的存在，不会存在短路问题。使用开漏输出，任何设备都可以随时将连接拉低。只要任何设备将线路拉低，线路就会显示为低，但不会因争用而造成破坏。</p>
+<p>使用推挽输出时，在某种情况下Q1、Q4打开，Q2、Q3关闭，并且电路中没有任何电阻，V<sub>DD</sub>相当于直接和GND相连，造成短路。</p>
+<img src="/2024/08/05/STM32-IIC/4-3.png" class="" title="4-3.png">
+<h2 id="gpio模拟i2c驱动oled"><a class="markdownIt-Anchor" href="#gpio模拟i2c驱动oled"></a> GPIO模拟I<sup>2</sup>C驱动OLED</h2>
+<h3 id="oled显示原理"><a class="markdownIt-Anchor" href="#oled显示原理"></a> OLED显示原理<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
+<p>GDDRAM(Graphic Display Data RAM)与128*64像素的显示屏是一一映射关系，向GDDRAM中指定了页地址(Page Address)、列地址的位置写入数据，128*64点阵对应位置就会点亮。行方向上的64行像素点以8位为一组分为了8组，每一页(PAGE)<mark>最下面是最高有效位(MSB)，最上面是最低位(LSB)</mark>。要在OLED中显示一个字符，只需向GDDRAM指定位置写入数据。如下图所示，要在页地址PAGE0，列地址为第123列的位置显示一个6*8像素的字符’A’，显示数据是<code>&#123;0x00, 0x7C, 0x12, 0x11, 0x12, 0x7C&#125;</code>，这个数据从取字模软件中获取，OLED使用字模库是**阴码(高电平点亮)<strong>还是</strong>阳码(低电平点亮)**参照商家的数据手册。</p>
+ <img src="/2024/08/05/STM32-IIC/4-4.png" class="" title="4-4.png">
+<p>举个例子，在取字模软件获得8*16像素的字符’1’，如下图所示，==为什么这里字宽要输入16？==这是因为这个取字模软件默认是取汉字，识别到ASCII码时，输出的字模数据才会变成8*16像素。</p>
+ <img src="/2024/08/05/STM32-IIC/4-5.png" class="" title="4-5.png">
+<p>这个数据怎么来的呢？在<a target="_blank" rel="noopener" href="https://asciiflow.com/">ASCIIFlow</a>绘制出字符’1’在GGDRAM中存放的样式，一列分为两个字节，先存PAGE0的数据，再取PAGE1中存放的数据。从PAGE0取1个字节(下面是最高位，上面是最低位)，再从PAGE1取1个字节，就可以获得{0x00, <font color='red'>0x00</font>, 0x00, <font color='red'>0x00</font>, 0x10, <font color='red'>0x20</font>, 0x10, <font color='red'>0x20</font>, 0xF8, <font color='red'>0x3F</font>, 0x00, <font color='red'>0x20</font>,0x00,<font color='red'>0x20</font>,0x00,<font color='red'>0x00</font>}这样的数据</p>
+ <img src="/2024/08/05/STM32-IIC/4-6.png" class="" title="4-6.png">
+<h3 id="初始化gpio"><a class="markdownIt-Anchor" href="#初始化gpio"></a> 初始化GPIO</h3>
+<p>使用单片机STM32F103C8T6的引脚PB8、PB9作为SCL、SDA。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span>     SDA_WriteBit(x)     GPIO_WriteBit(GPIOB, GPIO_Pin_9, (BitAction)(x))    </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>     SCL_WriteBit(x)     GPIO_WriteBit(GPIOB, GPIO_Pin_8, (BitAction)(x))  </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OLED_I2C_Init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOB, ENABLE);	<span class="comment">//开启时钟</span></span><br><span class="line">	</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line"> 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;    <span class="comment">//开漏输出模式</span></span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;</span><br><span class="line"> 	<span class="built_in">GPIO_Init</span>(GPIOB, &amp;GPIO_InitStructure);</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">SCL_WriteBit</span>(<span class="number">1</span>);        <span class="comment">//拉高SCL和SDA</span></span><br><span class="line">	<span class="built_in">SDA_WriteBit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="i2c协议开始和停止状态"><a class="markdownIt-Anchor" href="#i2c协议开始和停止状态"></a> I<sup>2</sup>C协议开始和停止状态</h3>
+<p>参照：<a href="####%E6%97%B6%E5%BA%8F%E5%9B%BE">时序图</a>，进行编写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* iic协议开始  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_I2C_Start</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA_WriteBit(<span class="number">1</span>);</span><br><span class="line">    SCL_WriteBit(<span class="number">1</span>);</span><br><span class="line">    SDA_WriteBit(<span class="number">0</span>);</span><br><span class="line">    SCL_WriteBit(<span class="number">0</span>);    <span class="comment">//SCL为0，SCL的下一个时钟脉冲时开始发送数据</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* iic协议停止 */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_I2C_Stop</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA_WriteBit(<span class="number">0</span>);</span><br><span class="line">    SCL_WriteBit(<span class="number">1</span>);</span><br><span class="line">    SDA_WriteBit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="oled模块初始化"><a class="markdownIt-Anchor" href="#oled模块初始化"></a> OLED模块初始化</h3>
+<p>OLED初始化部分根据模块的参考例程编写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">OLED_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    delay_s(<span class="number">1</span>);             <span class="comment">//延时1s，稳定OLED上电状态</span></span><br><span class="line">    OLED_I2C_Init();			<span class="comment">//端口初始化</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* 参照商家给的手册 */</span></span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xAE</span>);	<span class="comment">//关闭显示</span></span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xD5</span>);	<span class="comment">//设置显示时钟分频比/振荡器频率</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x80</span>);</span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xA8</span>);	<span class="comment">//设置多路复用率</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x3F</span>);</span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xD3</span>);	<span class="comment">//设置显示偏移</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x00</span>);</span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0x40</span>);	<span class="comment">//设置显示开始行</span></span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xA1</span>);	<span class="comment">//设置左右方向，0xA1正常 0xA0左右反置</span></span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xC8</span>);	<span class="comment">//设置上下方向，0xC8正常 0xC0上下反置</span></span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xDA</span>);	<span class="comment">//设置COM引脚硬件配置</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x12</span>);</span><br><span class="line">	</span><br><span class="line">	OLED_WriteCmd(<span class="number">0x81</span>);	<span class="comment">//设置对比度控制</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xCF</span>);</span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xD9</span>);	<span class="comment">//设置预充电周期</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xF1</span>);</span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xDB</span>);	<span class="comment">//设置VCOMH取消选择级别</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x30</span>);</span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xA4</span>);	<span class="comment">//设置整个显示打开/关闭</span></span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xA6</span>);	<span class="comment">//设置正常/倒转显示</span></span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x8D</span>);	<span class="comment">//设置充电泵</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x14</span>);</span><br><span class="line"></span><br><span class="line">	OLED_WriteCmd(<span class="number">0xAF</span>);	<span class="comment">//开启显示</span></span><br><span class="line"></span><br><span class="line">    OLED_Clear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="oled写数据写指令"><a class="markdownIt-Anchor" href="#oled写数据写指令"></a> OLED写数据/写指令</h3>
+<p>《SS1306技术手册》中说明了SS1306的I<sup>2</sup>c总线数据格式。I<sup>2</sup>c总线协议中，MCU作为master(主机)要访问slave(从机)：</p>
+<ol>
+<li>首先在开始条件(S)后发送从机地址(slave address)，从机地址中SA0位由D/C#引脚决定，R/W#位规定是读还是写。发送完一个字节后，由从机发出ACK信号，这里没有处理ACK</li>
+<li>发送的第二字节是控制字节(Control byte)，Co位为1说明后面发送的字节都要遵循先发送Control byte，再发送Data byte；为1则后面的字节都是Data byte</li>
+<li>发送n个字节后，在停止条件(P)后停止数据的发送。</li>
+</ol>
+ <img src="/2024/08/05/STM32-IIC/4-7.png" class="" title="4-7.png">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  MCU向从机发送一个字节的数据</span></span><br><span class="line"><span class="comment">  * @param  byte 要发送的数据</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_SendByte</span><span class="params">(<span class="type">uint8_t</span> byte)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">uint8_t</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        SDA_WriteBit(byte &amp; ((<span class="number">0x80</span>) &gt;&gt; i));     <span class="comment">//依次发送byte中每一位二进制数据</span></span><br><span class="line">        SCL_WriteBit(<span class="number">1</span>);</span><br><span class="line">        SCL_WriteBit(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    SCL_WriteBit(<span class="number">1</span>);	<span class="comment">//额外的一个时钟，不处理应答信号</span></span><br><span class="line">	SCL_WriteBit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  OLED写指令</span></span><br><span class="line"><span class="comment">  * @param  cmd 要写入的指令</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_WriteCmd</span><span class="params">(<span class="type">uint8_t</span> cmd)</span></span><br><span class="line">&#123;</span><br><span class="line">    OLED_I2C_Start();</span><br><span class="line">    OLED_SendByte(<span class="number">0x78</span>);    <span class="comment">//发送slave(从机)地址，没有处理</span></span><br><span class="line">    OLED_SendByte(<span class="number">0X00</span>);    <span class="comment">//控制字节：准备写指令，Co = 0, D/C# = 0</span></span><br><span class="line">    OLED_SendByte(cmd);     <span class="comment">//写指令</span></span><br><span class="line">    OLED_I2C_Stop();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  OLED写数据</span></span><br><span class="line"><span class="comment">  * @param  data 要写入的数据</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_WriteData</span><span class="params">(<span class="type">uint8_t</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">    OLED_I2C_Start();</span><br><span class="line">    OLED_SendByte(<span class="number">0x78</span>);    <span class="comment">//发送slave(从机)地址</span></span><br><span class="line">    OLED_SendByte(<span class="number">0X40</span>);    <span class="comment">//控制字节：准备写数据，Co = 0, D/C# = 1</span></span><br><span class="line">    OLED_SendByte(data);    <span class="comment">//写数据</span></span><br><span class="line">    OLED_I2C_Stop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="oled显示字符字符串"><a class="markdownIt-Anchor" href="#oled显示字符字符串"></a> OLED显示字符/字符串</h3>
+<p>这里选择8*16像素的字模数据，即宽8个像素，高16个像素。由上面可知OLED将每行的像素分成了8个页，显示字符的时候要分别在两个PAGE上写入数据。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  OLED设置光标位置</span></span><br><span class="line"><span class="comment">  * @param  Y 以左上角为原点，向下方向的坐标，范围：0~7</span></span><br><span class="line"><span class="comment">  * @param  X 以左上角为原点，向右方向的坐标，范围：0~127</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  * **************************************************</span></span><br><span class="line"><span class="comment">  *     128*64的点阵，从行方面来看64行的点阵分成为了8个PAGE，即PAGE0~PAGE7，这也是为什么y取0~7</span></span><br><span class="line"><span class="comment">  *     从列方面来看，共有128列，即SEG0~SGE127，所以x取值0~127</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_SetCursor</span><span class="params">(<span class="type">uint8_t</span> Y, <span class="type">uint8_t</span> X)</span></span><br><span class="line">&#123;</span><br><span class="line">	OLED_WriteCmd(<span class="number">0xB0</span> | Y);					<span class="comment">//设置PAGE起始地址，查阅手册</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x10</span> | ((X &amp; <span class="number">0xF0</span>) &gt;&gt; <span class="number">4</span>));	<span class="comment">//取x的高4位并右移4位，与固定的0x10按位或，设置列地址高4位</span></span><br><span class="line">	OLED_WriteCmd(<span class="number">0x00</span> | (X &amp; <span class="number">0x0F</span>));			<span class="comment">//取x的低4位设置列地址低4位，与固定的0x00按位或，设置列地址低4位</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  在OLED第row行, 第col列显示一个ascii字符</span></span><br><span class="line"><span class="comment">  * @param  row 行取值范围：1~4</span></span><br><span class="line"><span class="comment">  * @param  col 列取值范围：1~16</span></span><br><span class="line"><span class="comment">  * @param  ch  要显示的ascii字符</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  * 行1~4 =====&gt;  行0~7</span></span><br><span class="line"><span class="comment">  * x = 1, y = 0; x = 2, y = 2;</span></span><br><span class="line"><span class="comment">  *	y = kx+b 过(1, 0), (2, 2)解出y = 2x-2 = 2*(x - 1)，即(row - 1) * 2</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * 列1~16 =====&gt;  列0~127</span></span><br><span class="line"><span class="comment">  * x = 1, y = 0; x = 2, y = 8 ===&gt; 得到关系式 y = 8*x - 8 = 8*(x-1)，即(col-1)*8</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_ShowChar</span><span class="params">(<span class="type">uint8_t</span> row, <span class="type">uint8_t</span> col, <span class="type">uint8_t</span> ch)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>((ch - <span class="string">&#x27; &#x27;</span>) &lt; <span class="number">0</span>) <span class="comment">// 如果输入的ascii字符不在字模库里面，则不在OLED上显示</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    OLED_SetCursor((row - <span class="number">1</span>) * <span class="number">2</span>, (col - <span class="number">1</span>)* <span class="number">8</span>);	<span class="comment">//写上半部分</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        OLED_WriteData(OLED_F8x16[ch - <span class="string">&#x27; &#x27;</span>][i]);	<span class="comment">//ch - &#x27; &#x27;可以得到ch在字模库中索引位置</span></span><br><span class="line">    &#125;</span><br><span class="line">    OLED_SetCursor((row - <span class="number">1</span>) * <span class="number">2</span> + <span class="number">1</span>, (col - <span class="number">1</span>)* <span class="number">8</span>);	<span class="comment">//写下半部分</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        OLED_WriteData(OLED_F8x16[ch - <span class="string">&#x27; &#x27;</span>][i + <span class="number">8</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  在OLED第row行, 第col列显示字符串</span></span><br><span class="line"><span class="comment">  * @param  row 行取值范围：1~4</span></span><br><span class="line"><span class="comment">  * @param  col 列取值范围：1~16</span></span><br><span class="line"><span class="comment">  * @param  str 要显示的字符串</span></span><br><span class="line"><span class="comment">  * @retval 无</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_ShowString</span><span class="params">(<span class="type">uint8_t</span> row, <span class="type">uint8_t</span> col, <span class="type">uint8_t</span> *str)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">uint8_t</span> i = <span class="number">0</span>; str[i] != <span class="string">&#x27;\0&#x27;</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        OLED_ShowChar(row, col + i, str[i]);</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* OLED清屏  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_Clear</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">uint8_t</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        OLED_SetCursor(i, <span class="number">0</span>);   <span class="comment">//光标设置到第i行第1列</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">uint8_t</span> j  = <span class="number">0</span>; j &lt; <span class="number">128</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            OLED_WriteData(<span class="number">0X00</span>);</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用方法"><a class="markdownIt-Anchor" href="#使用方法"></a> 使用方法</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    OLED_Init();</span><br><span class="line">    OLED_ShowChar(<span class="number">1</span>, <span class="number">1</span>, <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line">	OLED_ShowString(<span class="number">2</span>, <span class="number">1</span>, <span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="使用i2c外设驱动oled"><a class="markdownIt-Anchor" href="#使用i2c外设驱动oled"></a> 使用I<sup>2</sup>C外设驱动OLED</h2>
+<h3 id="i2c外设初始化"><a class="markdownIt-Anchor" href="#i2c外设初始化"></a> I<sup>2</sup>c外设初始化</h3>
+<p>前面使用的是PB8、PB9来当做I<sup>2</sup>C协议的SCL、SDA线，STM32F103C8T6中提供了I2C外设，参照<a target="_blank" rel="noopener" href="https://blog.csdn.net/eewj/article/details/127333625">芯片的引脚图</a>。这里使用芯片上的I<sup>2</sup>C外设来驱动OLED。因为是MCU控制OLED模块，所以MCU是主机，OLED模块是从机。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;i2c.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 从机地址，这里是OLED模块的地址 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SLAVE_ADDRESS 0x78</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 包括GPIO、I2C外设的初始化 */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MyI2C_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">/* 开启外设时钟 */</span></span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);</span><br><span class="line">	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);</span><br><span class="line">	</span><br><span class="line">    <span class="comment">/* 使用I2C外设，GPIO必须配置为复用开漏输出 */</span></span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	GPIO_Init(GPIOB, &amp;GPIO_InitStructure);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* i2c外设初始化 */</span></span><br><span class="line">    I2C_InitTypeDef I2C_InitStructure;</span><br><span class="line">    I2C_InitStructure.I2C_Mode = I2C_Mode_SMBusDevice;</span><br><span class="line">    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;</span><br><span class="line">    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;</span><br><span class="line">    I2C_InitStructure.I2C_OwnAddress1 = SLAVE_ADDRESS;</span><br><span class="line">    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;</span><br><span class="line">    I2C_InitStructure.I2C_ClockSpeed = <span class="number">400000</span>;</span><br><span class="line">    I2C_Cmd(I2C1, ENABLE);</span><br><span class="line">    I2C_Init(I2C1, &amp;I2C_InitStructure);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="i2c外设发送数据"><a class="markdownIt-Anchor" href="#i2c外设发送数据"></a> I<sup>2</sup>C外设发送数据</h3>
+<p>单片机作为主机向从机OLED模块发送数据，使其显示指定数据，因此这里选择参照主机发送序列图表中的数据发送格式来编写程序</p>
+<img src="/2024/08/05/STM32-IIC/4-8.png" class="" title="4-8.png">
+<p>发送数据流程是这样的：</p>
+<ol>
+<li>首先使用<code>I2C_GenerateSTART(I2C1, ENABLE)</code>产生一个开始条件，</li>
+<li>接着检测状态<code>while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))</code>是否为EV5</li>
+<li>发送从机地址<code>I2C_Send7bitAddress(I2C1, SLAVE_ADDRESS, I2C_Direction_Transmitter)</code></li>
+<li>继续检测状态<code>while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))</code>是否为EV6</li>
+<li>I2C发送数据<code>I2C_SendData(I2C1, data[i])</code>，并且检测状态EV8，<code>while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));</code>发送多个数据重复执行第5步</li>
+<li>产生停止条件<code>I2C_GenerateSTOP(I2C1, ENABLE)</code></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* I2C发送数据 */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MyI2C_SendData</span><span class="params">(<span class="type">uint8_t</span> *data, <span class="type">uint8_t</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">    I2C_GenerateSTART(I2C1, ENABLE);</span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT));</span><br><span class="line">    I2C_Send7bitAddress(I2C1, SLAVE_ADDRESS, I2C_Direction_Transmitter);    <span class="comment">//发送7位地址</span></span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        I2C_SendData(I2C1, data[i]);</span><br><span class="line">        <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));</span><br><span class="line">    &#125;</span><br><span class="line">    I2C_GenerateSTOP(I2C1, ENABLE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mark>while循环判断状态时，最好通过加一个超时时间，超时时间到，还没有处于某个事件状态状态，就可以直接退出循环，防止程序卡死在while循环中</mark>，改进后：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief I2C外设发送数据</span></span><br><span class="line"><span class="comment"> * @param data 数据数组</span></span><br><span class="line"><span class="comment"> * @param len 数组长度</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * ****************************</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * I2C_CheckEvent用来检测每次发送完一个字节后的状态，参照《STM32F10x参考手册》、以及《STM32F103xx固件函数库手册》</span></span><br><span class="line"><span class="comment"> * OK = 1, ERROR = 0</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">MyI2C_SendData</span><span class="params">(<span class="type">uint8_t</span> *data, <span class="type">uint8_t</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">    I2C_GenerateSTART(I2C1, ENABLE);</span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    I2C_Send7bitAddress(I2C1, SLAVE_ADDRESS, I2C_Direction_Transmitter);    <span class="comment">//发送7位地址</span></span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        I2C_SendData(I2C1, data[i]);</span><br><span class="line">        <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    I2C_GenerateSTOP(I2C1, ENABLE);</span><br><span class="line">    <span class="keyword">return</span> _OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="i2c外设接收数据"><a class="markdownIt-Anchor" href="#i2c外设接收数据"></a> I<sup>2</sup>C外设接收数据</h3>
+ <img src="/2024/08/05/STM32-IIC/4-9.png" class="" title="4-9.png">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint8_t</span> <span class="title function_">MyI2C_ReadData</span><span class="params">(<span class="type">uint8_t</span> *data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 发送I2C开始条件*/</span></span><br><span class="line">    I2C_GenerateSTART(I2C1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 测试EV5 */</span>    </span><br><span class="line">    Timeout = LONG_TIMEOUT;</span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT)) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 发送从机地址，方向为接收 */</span></span><br><span class="line">    I2C_Send7bitAddress(I2C1, SLAVE_ADDRESS, I2C_Direction_Receiver);   </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 测试EV6 */</span></span><br><span class="line">    Timeout = LONG_TIMEOUT;</span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))    </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 失能ACK */</span></span><br><span class="line">    I2C_AcknowledgeConfig(I2C1, DISABLE); </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 发送I2C停止条件 */</span>  </span><br><span class="line">    I2C_GenerateSTOP(I2C1, ENABLE);     </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 测试EV7 */</span></span><br><span class="line">    Timeout = LONG_TIMEOUT;</span><br><span class="line">    <span class="keyword">while</span>(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED))   </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((Timeout--) == <span class="number">0</span>) <span class="keyword">return</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 接收一个字节的数据 */</span></span><br><span class="line">    *data = I2C_ReceiveData(I2C1); </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 将应答恢复为使能，为了不影响后续可能产生的读取多字节操作 */</span></span><br><span class="line">    I2C_AcknowledgeConfig(I2C1, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Application Note A Basic Guide to I2C <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1EN41177Pc?p=3&amp;vd_source=834d5a8ee41e57e5e62a70c875800119">https://www.bilibili.com/video/BV1EN41177Pc?p=3&amp;vd_source=834d5a8ee41e57e5e62a70c875800119</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/05/STM32%20Overview/" rel="prev" title="STM32学习记录(一)：STM32概述">
+                  <i class="fa fa-angle-left"></i> STM32学习记录(一)：STM32概述
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/06/STM32-DMA/" rel="next" title="STM32学习记录(八)：DMA">
+                  STM32学习记录(八)：DMA <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>

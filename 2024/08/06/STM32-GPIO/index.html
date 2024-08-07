@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="何为高低电平？  高电平电压(high level voltage)，输出的电压值相对较高 低电平电压(low level voltage)，输出的电压值相对较低  高低电平的电压具体值是多少需要参考数据手册，举个例子，如下表所示，VDD的典型值是3.3V，根据数据手册可以知道低电平下GPIO输出的最大电压是0.4V；高电平下GPIO输出的最小电压是3.3-0.4&#x3D;2.9V。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32学习记录(二)：GPIO">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="何为高低电平？  高电平电压(high level voltage)，输出的电压值相对较高 低电平电压(low level voltage)，输出的电压值相对较低  高低电平的电压具体值是多少需要参考数据手册，举个例子，如下表所示，VDD的典型值是3.3V，根据数据手册可以知道低电平下GPIO输出的最大电压是0.4V；高电平下GPIO输出的最小电压是3.3-0.4&#x3D;2.9V。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-1.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-2.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-3.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-4.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-5.png">
+<meta property="article:published_time" content="2024-08-06T15:24:38.842Z">
+<meta property="article:modified_time" content="2024-08-07T06:45:05.031Z">
+<meta property="article:author" content="Lyx">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/2-1.png">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/","path":"2024/08/06/STM32-GPIO/","title":"STM32学习记录(二)：GPIO"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>STM32学习记录(二)：GPIO | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%95%E4%B8%BA%E9%AB%98%E4%BD%8E%E7%94%B5%E5%B9%B3"><span class="nav-number">1.</span> <span class="nav-text"> 何为高低电平？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vcc-vee-vdd%E5%92%8Cvss%E7%9A%84%E5%90%AB%E4%B9%89%E5%92%8C%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text"> VCC、VEE、VDD和VSS的含义和区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gpio"><span class="nav-number">3.</span> <span class="nav-text"> GPIO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E6%8C%BD%E8%BE%93%E5%87%BA"><span class="nav-number">3.1.</span> <span class="nav-text"> 推挽输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%BC%8F%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.</span> <span class="nav-text"> 开漏输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%BC%8F%E4%B8%8E%E6%8E%A8%E6%8C%BD%E8%BE%93%E5%87%BA%E7%9A%84%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.</span> <span class="nav-text"> 开漏与推挽输出的总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gpio%E5%AE%9E%E7%8E%B0%E6%B5%81%E6%B0%B4%E7%81%AF"><span class="nav-number">4.</span> <span class="nav-text"> GPIO实现流水灯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text"> 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/08/06/STM32-GPIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="STM32学习记录(二)：GPIO | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          STM32学习记录(二)：GPIO
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-06 23:24:38" itemprop="dateCreated datePublished" datetime="2024-08-06T23:24:38+08:00">2024-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-07 14:45:05" itemprop="dateModified" datetime="2024-08-07T14:45:05+08:00">2024-08-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/STM32/" itemprop="url" rel="index"><span itemprop="name">STM32</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="何为高低电平"><a class="markdownIt-Anchor" href="#何为高低电平"></a> 何为高低电平？</h2>
+<ul>
+<li>高电平电压(high level voltage)，输出的电压值相对较高</li>
+<li>低电平电压(low level voltage)，输出的电压值相对较低</li>
+</ul>
+<p>高低电平的电压具体值是多少需要参考数据手册，举个例子，如下表所示，V<sub>DD</sub>的典型值是3.3V，根据数据手册可以知道低电平下GPIO输出的最大电压是0.4V；高电平下GPIO输出的最小电压是3.3-0.4=2.9V。</p>
+<span id="more"></span>
+<img src="/2024/08/06/STM32-GPIO/2-1.png" class="" title="2-1.png">
+<h2 id="vcc-vee-vdd和vss的含义和区别"><a class="markdownIt-Anchor" href="#vcc-vee-vdd和vss的含义和区别"></a> VCC、VEE、VDD和VSS的含义和区别</h2>
+<blockquote>
+<p>Back in the pleistoscene (1960s or earlier), logic was implemented with bipolar transistors. Even more specifically, they were NPN because for some reasons I’m not going to get into, NPN were faster. Back then it made sense to someone that the positive supply voltage would be called Vcc where the “c” stands for collector. Sometimes (but less commonly) the negative supply was called Vee where “e” stands for emitter.</p>
+<p>When FET logic came about, the same kind of naming was used, but now the positive supply was Vdd (drain) and the negative Vss (source). With CMOS this makes no sense, but it persists anyway. Note that the “C” in CMOS stands for “complementary”. That means both N and P channel devices are used in about equal numbers. A CMOS inverter is just a P channel and a N channel MOSFET in its simplest form. With roughly equal numbers of N and P channel devices, drains aren’t more likely to be positive than sources, and vice versa. However, the Vdd and Vss names have stuck for historical reasons. Technically Vcc/Vee is for bipolar and Vdd/Vss for FETs, but in practise today Vcc and Vdd mean the same, and Vee and Vss mean the same.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+</blockquote>
+<p>☑️V<sub>CC</sub><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<ul>
+<li>V<sub>CC</sub>用作使BJT(<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8F%8C%E6%9E%81%E6%80%A7%E6%99%B6%E4%BD%93%E7%AE%A1/3694284">双极性晶体管</a>，俗称三极管)的电路的<strong>正电源电压(positive supply voltage)</strong>。</li>
+<li>V<sub>CC</sub>中的&quot;C&quot;表示<strong>Collecter(集电极)</strong></li>
+<li>普遍认为，&quot;V<sub>CC</sub>&quot;中的出现两个&quot;C&quot;的原因是为了将其与集电极电压V<sub>C</sub>区分开来。</li>
+</ul>
+<p>☑️V<sub>EE</sub></p>
+<ul>
+<li>**V<sub>EE</sub>**用作使用双极晶体管(BJT)的电路的负电源电压(negative supply voltage)。</li>
+<li>V<sub>EE</sub>中的&quot;E&quot;表示<strong>Emitter(发射极)</strong></li>
+<li>普遍认为，&quot;V<sub>EE</sub>&quot;中的出现两个&quot;E&quot;的原因是为了将其与发射极电压V<sub>E</sub>区分开来。</li>
+</ul>
+<p>☑️V<sub>DD</sub></p>
+<ul>
+<li>V<sub>DD</sub>用作使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9C%BA%E6%95%88%E5%BA%94%E7%AE%A1">场效应晶体管(FET)</a>的电路的<strong>正电源电压</strong>。</li>
+<li>V<sub>DD</sub>中的&quot;D&quot;表示<strong>Drain(漏极)</strong>。</li>
+<li>普遍认为，&quot;V<sub>DD</sub>&quot;中的出现两个&quot;D&quot;的原因是为了将其与漏极电压V<sub>D</sub>区分开来。</li>
+</ul>
+<p>☑️V<sub>SS</sub></p>
+<ul>
+<li>V<sub>SS</sub>用作使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9C%BA%E6%95%88%E5%BA%94%E7%AE%A1">场效应晶体管(FET)</a>的电路的<strong>负电源电压</strong>。</li>
+<li>V<sub>SS</sub>中的&quot;S&quot;表示<strong>Source(源极)</strong>。</li>
+<li>普遍认为，&quot;V<sub>SS</sub>&quot;中的出现两个&quot;S&quot;的原因是为了将其与漏极电压V<sub>S</sub>区分开来。</li>
+</ul>
+<p><strong>总结一下，由于历史原因，V<sub>DD</sub>和V<sub>SS</sub>的名称一直存在。从技术上讲，V<sub>CC</sub>/V<sub>EE</sub>用于双极性晶体管(BJT)，V<sub>DD</sub>/V<sub>ss</sub>用于场效应晶体管(FET)，但在今天的实际情况下V<sub>SS</sub>和V<sub>EE</sub>是相同的意思，表示电源负极；V<sub>DD</sub>和V<sub>CC</sub>是相同的意思，表示电源正极。</strong></p>
+<h2 id="gpio"><a class="markdownIt-Anchor" href="#gpio"></a> GPIO</h2>
+<p>STM32芯片中，通用输入输出(General Purpose IO: GPIO) 可以被配置成以下模式：</p>
+<ul>
+<li>浮空输入(Input floating)</li>
+<li>上拉输入(Input pull-up)</li>
+<li>下拉输入(Input pull-down)</li>
+<li>模拟(Analog)</li>
+<li>开漏输出(Output open-drain)</li>
+<li>推挽输出(Output push-pull)</li>
+<li>复用推挽输出(Alternate function push-pull)</li>
+<li>复用开漏输出(Alternate function open-drain)</li>
+</ul>
+<h3 id="推挽输出"><a class="markdownIt-Anchor" href="#推挽输出"></a> 推挽输出</h3>
+<p>推挽输出模式下，MCU向输出数据寄存器中写入逻辑&quot;1&quot;，输出控制器将P-MOS管开启，N-MOS管关闭，I/O与V<sub>DD</sub>接通，因此I/O引脚输出高电平，电流从V<sub>DD</sub>流向I/O引脚，如图所示灯泡被点亮。</p>
+ <img src="/2024/08/06/STM32-GPIO/2-2.png" class="" title="2-2.png">
+<p>MCU向输出数据寄存器中写入逻辑&quot;0&quot;，P-MOS管关闭，N-MOS管开启，I/O与V<sub>SS</sub>(0V)接通，因此I/O引脚输出低电平，灯泡两端都是接地，没有电压差，因此没有电流路过，灯泡也不会亮。</p>
+  <img src="/2024/08/06/STM32-GPIO/2-3.png" class="">
+<h3 id="开漏输出"><a class="markdownIt-Anchor" href="#开漏输出"></a> 开漏输出</h3>
+<p>开漏输出模式下，MCU向输出数据寄存器中写入逻辑&quot;0&quot;，P-MOS管关闭，N-MOS管开启，相当于I/O引脚与V<sub>ss</sub>接通，所以输出低电平。要点亮灯泡，就必须外接电源。</p>
+ <img src="/2024/08/06/STM32-GPIO/2-4.png" class="" title="2-4.png">
+<p>开漏输出模式下，MCU向输出数据寄存器中写入逻辑&quot;1&quot;，P-MOS管关闭，N-MOS管关闭，即电路处于开路状态。I/O引脚输出为高阻态(输出状态不确定)，通常要使高电平下MCU也对I/O口有驱动能力，此时外接一个上拉电阻将I/O引脚拉到高电平</p>
+ <img src="/2024/08/06/STM32-GPIO/2-5.png" class="" title="2-5.png">
+<h3 id="开漏与推挽输出的总结"><a class="markdownIt-Anchor" href="#开漏与推挽输出的总结"></a> 开漏与推挽输出的总结</h3>
+<ul>
+<li>推挽输出下，MCU可以直接驱动I/O口输出高低电平；推挽输出模式一般应用在输出电平为0和3.3伏而且需要高速切换开关状态的场合。</li>
+<li>开漏模式输出下，MCU高电平没有驱动能力，低电平才有驱动能力，适合在连接的外设电压比单片机电压低的场合</li>
+</ul>
+<p>在STM32的应用中，<strong>除了必须用开漏模式的场合，我们都习惯使用推挽输出模式。</strong></p>
+<h2 id="gpio实现流水灯"><a class="markdownIt-Anchor" href="#gpio实现流水灯"></a> GPIO实现流水灯</h2>
+<p>正如上面所说，选择GPIO的推挽输出模式，LED灯正极外接3.3V电源，因此单片机向输出数据寄存器(Output data register， ODR)写入0即可点亮LED灯。输出数据寄存器共有16位，假设要PA0输出低电平，可以向ODR中写入<code>1111 1111 1111 1110b</code>对应的16进制数：<code>0xfffe</code>，在while循环中遍历数组即可实现流水灯</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;delay.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">uint16_t</span> val[<span class="number">4</span>] = &#123; <span class="number">0xfffe</span>, <span class="number">0xfffd</span>, <span class="number">0xfffb</span>, <span class="number">0xfff7</span>&#125;;	<span class="comment">//用于点亮LED灯</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 开启时钟 */</span></span><br><span class="line">    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*	配置GPIOA口 */</span></span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	<span class="comment">//推挽输出</span></span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);</span><br><span class="line"></span><br><span class="line">   	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			GPIO_Write(GPIOA, val[i]);</span><br><span class="line">			delay_ms(<span class="number">500</span>);		<span class="comment">//delay 500ms</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1zG4y1K78S/?spm_id_from=333.999.0.0&amp;vd_source=834d5a8ee41e57e5e62a70c875800119">开漏? 推挽? 都是些什么鬼? 动画帮你一网打尽</a></p>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://electronics.stackexchange.com/questions/17382/what-is-the-difference-between-v-cc-v-dd-v-ee-v-ss">What is the difference between VCCVCC, VDDVDD, VEEVEE, VSS</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://electrical-information.com/vcc-vee-vdd-vss/">Difference between VCC, VEE, VDD, and VSS</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/06/STM32-DMA/" rel="prev" title="STM32学习记录(八)：DMA">
+                  <i class="fa fa-angle-left"></i> STM32学习记录(八)：DMA
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
