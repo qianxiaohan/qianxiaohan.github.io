@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="RTC框图 实时时钟(Real-time clock: RTC)是一个独立的计时器。RTC提供一组连续运行的计数器，可以与合适的软件一起使用，以提供时钟日历功能。可以写入计数器值以设置系统的当前时间&#x2F;日期。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32学习记录(九)：RTC">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="RTC框图 实时时钟(Real-time clock: RTC)是一个独立的计时器。RTC提供一组连续运行的计数器，可以与合适的软件一起使用，以提供时钟日历功能。可以写入计数器值以设置系统的当前时间&#x2F;日期。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/9-1.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/9-2.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/9-3.gif">
+<meta property="article:published_time" content="2024-08-11T08:25:03.985Z">
+<meta property="article:modified_time" content="2024-08-11T08:35:04.362Z">
+<meta property="article:author" content="Lyx">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/9-1.png">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/08/11/STM32-RTC/","path":"2024/08/11/STM32-RTC/","title":"STM32学习记录(九)：RTC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>STM32学习记录(九)：RTC | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#rtc%E6%A1%86%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text"> RTC框图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwr"><span class="nav-number">2.</span> <span class="nav-text"> PWR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bkp"><span class="nav-number">3.</span> <span class="nav-text"> BKP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rtc%E6%98%BE%E7%A4%BA%E5%AE%9E%E6%97%B6%E6%97%B6%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text"> RTC显示实时时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">4.1.</span> <span class="nav-text"> 整体流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AErtc"><span class="nav-number">4.2.</span> <span class="nav-text"> 配置RTC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E4%BF%AE%E6%94%B9rtc"><span class="nav-number">4.3.</span> <span class="nav-text"> 串口修改RTC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%AE%9E%E6%97%B6%E6%97%B6%E9%97%B4"><span class="nav-number">4.4.</span> <span class="nav-text"> 显示实时时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rtc%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="nav-number">4.5.</span> <span class="nav-text"> RTC中断处理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%87%BD%E6%95%B0"><span class="nav-number">4.6.</span> <span class="nav-text"> 主函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA%E7%BB%93%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text"> 演示结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BE%8B%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text"> 完整例程</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/08/11/STM32-RTC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="STM32学习记录(九)：RTC | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          STM32学习记录(九)：RTC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-08-11 16:25:03 / 修改时间：16:35:04" itemprop="dateCreated datePublished" datetime="2024-08-11T16:25:03+08:00">2024-08-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/STM32/" itemprop="url" rel="index"><span itemprop="name">STM32</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="rtc框图"><a class="markdownIt-Anchor" href="#rtc框图"></a> RTC框图</h2>
+<p>实时时钟(Real-time clock: RTC)是一个独立的计时器。RTC提供一组连续运行的计数器，可以与合适的软件一起使用，以提供时钟日历功能。可以写入计数器值以设置系统的当前时间/日期。</p>
+<span id="more"></span>
+<img src="/2024/08/11/STM32-RTC/9-1.png" class="" title="9-1.png">
+<p>可以选择以下三种作为RTC时钟源：</p>
+<ul>
+<li>HSE时钟进行128分频</li>
+<li>LSE振荡器时钟</li>
+<li>LSI振荡器时钟</li>
+</ul>
+<p>有关时钟的更多信息，参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianxiaohan/p/18278597">STM32时钟树</a><br />
+RTC核心部分由2个部分构成：</p>
+<ul>
+<li><strong>RTC分频器</strong>由<code>RTC_PRL</code>、<code>RTC_DIV</code>构成：
+<ul>
+<li><code>RTC_PRL</code>是预分频装载寄存器，用来保存RTC预分频器的周期计数值。</li>
+<li><code>RTC_DIV</code>是预分频器计数寄存器(只读)。在TR_CLK的每个周期里，RTC预分频器中计数器的值都会被重新设置为RTC_PRL寄存器的值。用户可通过读取RTC_DIV寄存器，以获得预分频计数器的当前值，而不停止分频计数器的工作，从而获得精确的时间测量。当RTC_DIV的值等于RTC_PRL的值，可生成最长为1s的时间基准TR_CLK</li>
+</ul>
+</li>
+<li><strong>RTC32位可编程计数器</strong>由<code>RTC_CNT</code>、<code>RTC_ALR</code>构成
+<ul>
+<li><code>RTC_CNT</code>是32位计数寄存器，存放RTC当前计数值，计数的速率取决于<code>TR_CLK</code>。分为两个16位寄存器<code>RTC_CNTH</code>和<code>RTC_CNTL</code></li>
+<li><code>RTC_ALR</code>是闹钟(alarm)寄存器，当可编程计数器(RTC_CNT)的值与RTC_ALR中的32位值相等时，触发一个闹钟事件，并且产生RTC闹钟中断。</li>
+</ul>
+</li>
+</ul>
+<p>系统复位后，对后备寄存器和RTC的访问被禁止，这是为了防止对后备区域(BKP)的意外写操作。执行以下操作使能对(Backup)后备寄存器和RTC的访问：</p>
+<ul>
+<li>通过设置RCC_APB1ENR寄存器的PWREN位和BKPEN位，来开启POWER和BACKUP的时钟</li>
+<li>通过设置电源控制寄存器(PWR_CR)的DBP位，允许对RTC和Backup寄存器的访问</li>
+</ul>
+<h2 id="pwr"><a class="markdownIt-Anchor" href="#pwr"></a> PWR</h2>
+<p>电源控制(Power control：PWR)，电源框图如下。STM32的工作电压(VDD)为2.0～3.6V。通过内置的电压调节器提供所需的1.8V电源。 当主电源V<sub>DD</sub>掉电后，可通过V<sub>BAT</sub>脚为实时时钟(RTC)和备份寄存器提供电源。<br />
+备份域(Backup domain)有以下几个部分构成：</p>
+<ul>
+<li>频率为32K的LSE振荡器</li>
+<li>BKP(备份)寄存器</li>
+<li>RCC_BDCR(备份域控制)寄存器</li>
+<li>RTC</li>
+</ul>
+<img src="/2024/08/11/STM32-RTC/9-2.png" class="" title="9-2.png">
+<h2 id="bkp"><a class="markdownIt-Anchor" href="#bkp"></a> BKP</h2>
+<p>备份寄存器(Backup Register)是42个16位的寄存器，可用来存储84个字节的用户应用程序数据。他们处在备份域里，当V<sub>DD</sub>电源被切断，他们仍然由V<sub>BAT</sub>维持供电，数据不会丢失。当系统在待机模式下被唤醒，或系统复位或电源复位时，他们也不会被复位。BKP可用于RTC校准功能。</p>
+<h2 id="rtc显示实时时间"><a class="markdownIt-Anchor" href="#rtc显示实时时间"></a> RTC显示实时时间</h2>
+<p>通过串口配置修改将RTC计数寄存器修改为当前时间，开启RTC秒中断(Second Interrupt)，1S产生一次RTC中断，并通过串口助手实时显示时间。备份寄存器在这个例程中的作用就是检查RTC是否被配置了。由于使用的最小系统板V<sub>BAT</sub>引脚没有接电池，所以需要单独供电，断电后BKP的内容会被清空。</p>
+<h3 id="整体流程图"><a class="markdownIt-Anchor" href="#整体流程图"></a> 整体流程图</h3>
+<p>通过串口修改RTC外设寄存器的值设为当前时间，配置完成后单片机向串口助手发送数据，使用串口助手显示当前时间。BKP在本例程中的作用就是用于检测RTC是否被配置，通过向BKP_DR1寄存器写入一个任意的值，来判断RTC是否被配置。整体流程图如下：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    id0[&quot;配置NVIC&quot;] --&gt; id[&quot;上电检测BKP寄存器&quot;] --&gt; id1[&quot;BKP寄存器是否为0x1234？&quot;]
+    --&gt;|NO| id2[&quot;配置RTC并向BKP寄存器写入0x1234&quot;] --&gt; id4[&quot;通过串口助手设置RTC的时间&quot;] --&gt; id6
+    id1 --&gt;|YES| id3[&quot;等待RTC的寄存器同步&quot;] --&gt; id5[&quot;使能RTC秒中断&quot;] --&gt; id6[&quot;清除复位标志位&quot;] --&gt; id7[&quot;向串口显示当前时间&quot;]</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MyRTC_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    NVIC_Configuration();</span><br><span class="line">    <span class="keyword">if</span>(BKP_ReadBackupRegister(BKP_DR1) != <span class="number">0x1234</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\r\n\n RTC not yet configured....&quot;</span>);</span><br><span class="line"></span><br><span class="line">        RTC_Configuration();    <span class="comment">//配置RTC</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\r\n RTC configured....&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Time_Adjust();</span><br><span class="line"></span><br><span class="line">        BKP_WriteBackupRegister(BKP_DR1, <span class="number">0x1234</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 检查电源复位标志位是否被设置 */</span></span><br><span class="line">        <span class="keyword">if</span> (RCC_GetFlagStatus(RCC_FLAG_PORRST) != RESET)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\r\n\n Power On Reset occurred....&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* 检查引脚复位标志位是否被设置 */</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (RCC_GetFlagStatus(RCC_FLAG_PINRST) != RESET)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\r\n\n External Reset occurred....&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\r\n No need to configure RTC....&quot;</span>);</span><br><span class="line">        <span class="comment">/* 等待RTC同步 */</span></span><br><span class="line">        RTC_WaitForSynchro();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 使能RTC秒中断 */</span></span><br><span class="line">        RTC_ITConfig(RTC_IT_SEC, ENABLE);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* 等待RTC寄存器上的最后一次写入操作完成 */</span></span><br><span class="line">        RTC_WaitForLastTask();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 清除复位标志位 */</span></span><br><span class="line">    RCC_ClearFlag();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置rtc"><a class="markdownIt-Anchor" href="#配置rtc"></a> 配置RTC</h3>
+<p>系统复位后，执行以下操作才能实现对(Backup)备份寄存器和RTC的访问：</p>
+<ul>
+<li>开启PWR、BKP时钟</li>
+<li>允许访问BACKUP寄存器、RTC外设</li>
+</ul>
+<pre><code class="highlight mermaid">flowchart TD
+    id[&quot;开启PWR、BKP时钟&quot;] --&gt; id1[&quot;允许访问BACKUP寄存器、RTC外设&quot;]
+    --&gt; id2[&quot;复位Backup寄存器&quot;] --&gt; id3[&quot;使能LSE并选择LSE为RTC时钟&quot;]
+    --&gt; id4[&quot;使能RTC时钟&quot;] --&gt; id5[&quot;等待RTC的寄存器与APB时钟同步&quot;]
+    --&gt; id6[&quot;开启RTC秒中断&quot;] --&gt; id7[&quot;设置RTC时钟预分频系数&quot;]
+</code></pre>
+<div class="wavedrom"><script type="WaveDrom">
+{ signal: [
+  { name: "RTCCLK",  wave: "p..........", period: 2 },
+  { name: "RTC_DIV",  wave: "=.=.=.=.=.=.=.=.=.=.=.", data: ["0x00", "0x03", "0x02", "0x01", "0x00","0x03", "0x02", "0x01", "0x00", "0x03", "0x02"] },
+  { name: "TR_CLK", wave: "0.1.0.....1.0.....1.0.."},
+  { name: "RTC_Second", wave: "0.1.0.....1.0.....1.0.."},
+  { name: "RTC_CNT", wave: "=...=.......=.......=.", data: ["FFFFFFFD", "FFFFFFFFE", "FFFFFFFFF", "00000000"]  },
+  { name: "RTC_Overflow", wave:"0.................1.0.."}
+  ],
+  head:{
+   text:'RTC_PRL=0x03，计数溢出的波形图'
+ }
+}
+</script></div>
+<ul>
+<li>RTCCLK的时钟是来自LSE振荡器的时钟，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mi>L</mi><mi>S</mi><mi>E</mi></mrow></msub></mrow><annotation encoding="application/x-tex">f_{LSE}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>=32.728KHz。由参考手册可得<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mi>T</mi><mi>R</mi><mi mathvariant="normal">_</mi><mi>C</mi><mi>L</mi><mi>K</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>f</mi><mrow><mi>R</mi><mi>T</mi><mi>C</mi><mi>C</mi><mi>L</mi><mi>K</mi></mrow></msub><mrow><mi>R</mi><mi>T</mi><mi>C</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>R</mi><mi>L</mi><mo stretchy="false">[</mo><mn>19</mn><mo>:</mo><mn>0</mn><mo stretchy="false">]</mo><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f_{TR\_CLK}=\frac{f_{RTCCLK}}{RTC\_PRL[19:0]+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.06144em;vertical-align:-0.367em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mord mtight" style="margin-right:0.02778em;">_</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="mord mathnormal mtight">L</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.367em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.4942159999999998em;vertical-align:-0.5619999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9322159999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="mord mtight" style="margin-right:0.02778em;">_</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mord mathnormal mtight">L</span><span class="mopen mtight">[</span><span class="mord mtight">1</span><span class="mord mtight">9</span><span class="mrel mtight">:</span><span class="mord mtight">0</span><span class="mclose mtight">]</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.10764em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="mord mathnormal mtight">L</span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5619999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，时间基准TR_CLK最大可计时1S，即RTC_Second的时钟周期最长可为1S。要获得1S的时间基准，RTC_PRL寄存器应该写入32767。</li>
+<li>RTC_DIV存放分频计数器当前值，当减为0时，在TR_CLK的上升沿时发生重装载(reload)，RTC_DIV的值被重装载为RTC_PRL的值</li>
+<li>RTC_CNT寄存器的值在每个TR_CLK的时钟周期下，值都会递增。RTC_CNT寄存器用于存放系统的当前时间</li>
+<li>RTC_Overflow：当32位的RTC_CNT寄存器计数满了之后，在下个TR_CLK上升沿时，产生一次溢出信号</li>
+</ul>
+<p>RTC配置程序代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RTC_Configuration</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 开启PWR、BKP时钟 */</span></span><br><span class="line">    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 允许访问Backup和RTC寄存器 */</span></span><br><span class="line">    PWR_BackupAccessCmd(ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 复位BKP */</span></span><br><span class="line">    BKP_DeInit();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能LSE */</span></span><br><span class="line">    RCC_LSEConfig(RCC_LSE_ON);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 等待LSE准备好 */</span></span><br><span class="line">    <span class="keyword">while</span> (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 选择LSE做为RTC时钟源 */</span></span><br><span class="line">    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能RTC时钟 */</span></span><br><span class="line">    RCC_RTCCLKCmd(ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 等待RTC寄存器同步 */</span></span><br><span class="line">    RTC_WaitForSynchro();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* RTC写寄存器操作必须要这段语句，等待上次对RTC寄存器的写操作完成 */</span></span><br><span class="line">    RTC_WaitForLastTask();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 每秒产生一次中断 */</span></span><br><span class="line">    RTC_ITConfig(RTC_IT_SEC, ENABLE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 等待上次对RTC寄存器的写操作完成 */</span></span><br><span class="line">    RTC_WaitForLastTask();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 设置预分频 */</span></span><br><span class="line">    RTC_SetPrescaler(<span class="number">32767</span>);    <span class="comment">//RTC时钟周期 = (32.768KHz) / (32767 + 1) = 1Hz = 1s</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 等待上次对RTC寄存器的写操作完成 */</span></span><br><span class="line">    RTC_WaitForLastTask();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="串口修改rtc"><a class="markdownIt-Anchor" href="#串口修改rtc"></a> 串口修改RTC</h3>
+<p>通过串口设置RTC计数寄存器的值，<code>printf()</code>向串口助手发送信息，<code>USART_Scanf()</code>函数接收来自串口助手的消息。USART的数据帧使用8位有效数据。</p>
+<pre><code class="highlight mermaid">flowchart TD
+    id[&quot;调整时间Time_Adjust()&quot;] --&gt;|调用| id1[&quot;设置RTC计数寄存器设RTC_SetCounter()&quot;]
+    --&gt;|调用| id2[&quot;获取来自串口的数据USART_Scanf()&quot;]</code></pre>
+<p>串口修改RTC程序代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  调整时间</span></span><br><span class="line"><span class="comment">  * @param  none</span></span><br><span class="line"><span class="comment">  * @retval none</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Time_Adjust</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 等待上次对RTC寄存器的写操作完成 */</span></span><br><span class="line">    RTC_WaitForLastTask();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 设置RTC计数器的值 */</span></span><br><span class="line">    RTC_SetCounter(Time_Regulate());</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 等待上次对RTC寄存器的写操作完成 */</span></span><br><span class="line">    RTC_WaitForLastTask();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  通过串口设置时间</span></span><br><span class="line"><span class="comment">  * @param  none</span></span><br><span class="line"><span class="comment">  * @retval 用秒表示的时间</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">Time_Regulate</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">uint32_t</span> Tmp_HH = <span class="number">0xFF</span>, Tmp_MM = <span class="number">0xFF</span>, Tmp_SS = <span class="number">0xFF</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n==============Time Settings=====================================&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n  Please Set Hours&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(Tmp_HH == <span class="number">0xFF</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Tmp_HH = USART_Scanf(<span class="number">23</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;:  %d&quot;</span>, Tmp_HH);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n  Please Set Minutes&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(Tmp_MM == <span class="number">0xFF</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Tmp_MM = USART_Scanf(<span class="number">59</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;:  %d&quot;</span>, Tmp_MM);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n  Please Set Seconds&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(Tmp_SS == <span class="number">0xFF</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Tmp_SS = USART_Scanf(<span class="number">59</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;:  %d&quot;</span>, Tmp_SS);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 将输入的值转换为Counter CNT */</span></span><br><span class="line">    <span class="keyword">return</span> (Tmp_HH * <span class="number">60</span> * <span class="number">60</span> + Tmp_MM * <span class="number">60</span> + Tmp_SS);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  获取来自串口的数据</span></span><br><span class="line"><span class="comment">  * @param  value 允许串口输入的最大值</span></span><br><span class="line"><span class="comment">  * @retval 转换后的串口的数据</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">USART_Scanf</span><span class="params">(<span class="type">uint32_t</span> value)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">uint32_t</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span> rev[<span class="number">2</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(index &lt; <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 等待RXNE = 1 */</span></span><br><span class="line">        <span class="keyword">while</span>(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        rev[index++] = USART_ReceiveData(USART1);</span><br><span class="line">        <span class="keyword">if</span>(rev[index - <span class="number">1</span>] &lt; <span class="number">0x30</span> || rev[index - <span class="number">1</span>] &gt; <span class="number">0x39</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n\rPlease enter valid number between 0 and 9&quot;</span>);</span><br><span class="line">            index--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    index = ((rev[<span class="number">0</span>] - <span class="number">0x30</span>) * <span class="number">10</span>) + (rev[<span class="number">1</span>] - <span class="number">0x30</span>);     <span class="comment">//获取输入的值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 检验 */</span></span><br><span class="line">    <span class="keyword">if</span>(index &gt; value)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n\rPlease enter valid number between 0 and %d&quot;</span>, value);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0xFF</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="显示实时时间"><a class="markdownIt-Anchor" href="#显示实时时间"></a> 显示实时时间</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  将时间按照指定格式显示</span></span><br><span class="line"><span class="comment">  * @param  value RTC计数寄存器的值</span></span><br><span class="line"><span class="comment">  * @retval none</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Time_Display</span><span class="params">(<span class="type">uint32_t</span> value)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 当前时间为23:59:59时，复位RTC */</span></span><br><span class="line">    <span class="keyword">if</span>(RTC_GetCounter() == <span class="number">0x0001517F</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        RTC_SetCounter(<span class="number">0x00</span>);</span><br><span class="line">         <span class="comment">/* Waits until last write operation on RTC registers has finished. */</span></span><br><span class="line">        RTC_WaitForLastTask();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">uint32_t</span> Tmp_HH = <span class="number">0x00</span>, Tmp_MM = <span class="number">0x00</span>, Tmp_SS = <span class="number">0x00</span>;</span><br><span class="line">    Tmp_HH = value / <span class="number">3600</span>;  <span class="comment">//小时</span></span><br><span class="line">    Tmp_MM = (value % <span class="number">3600</span>) / <span class="number">60</span>;   <span class="comment">//分钟</span></span><br><span class="line">    Tmp_SS = (value % <span class="number">3600</span>) % <span class="number">60</span>; <span class="comment">//秒</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Time: %0.2d:%0.2d:%0.2d\r&quot;</span>, Tmp_HH, Tmp_MM, Tmp_SS);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  显示实时时间</span></span><br><span class="line"><span class="comment">  * @param  none</span></span><br><span class="line"><span class="comment">  * @retval none</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Time_Show</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(time_display == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Time_Display(RTC_GetCounter());</span><br><span class="line">            time_display = <span class="number">0</span>;   <span class="comment">//通过RTC中断来置1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="rtc中断处理函数"><a class="markdownIt-Anchor" href="#rtc中断处理函数"></a> RTC中断处理函数</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RTC_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(RTC_GetITStatus(RTC_IT_SEC) != RESET)</span><br><span class="line">    &#123;</span><br><span class="line">        time_display = <span class="number">1</span>;</span><br><span class="line">        RTC_ClearITPendingBit(RTC_IT_SEC);</span><br><span class="line">        <span class="comment">/* Waits until last write operation on RTC registers has finished. */</span></span><br><span class="line">        RTC_WaitForLastTask();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="主函数"><a class="markdownIt-Anchor" href="#主函数"></a> 主函数</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    COM_Init();			<span class="comment">//串口初始化，采样数据</span></span><br><span class="line">    MyRTC_Init();		<span class="comment">//初始化RTC</span></span><br><span class="line">    Time_Show();		<span class="comment">//在无限循环中显示时间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="演示结果"><a class="markdownIt-Anchor" href="#演示结果"></a> 演示结果</h2>
+<p>使用串口助手手动调节RTC来显示当前时间</p>
+<img src="/2024/08/11/STM32-RTC/9-3.gif" class="" title="9-3.gif">
+<h2 id="完整例程"><a class="markdownIt-Anchor" href="#完整例程"></a> 完整例程</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/qianxiaohan/STM32Project/tree/main/9-1%20RTC%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4">9-1 RTC</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/08/%E7%AC%AC16%E7%AB%A0string%E7%B1%BB%E5%92%8C%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E7%B1%BB/" rel="prev" title="C++ Primer Plus第16章学习笔记">
+                  <i class="fa fa-angle-left"></i> C++ Primer Plus第16章学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script class="next-config" data-name="wavedrom" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/wavedrom.min.js","integrity":"sha256-INLAoJc6quTNfiMWkGZniYO2cxE8mHpddnLow1m6RFs="}}</script>
+  <script class="next-config" data-name="wavedrom_skin" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/skins/default.js","integrity":"sha256-fduc/Zszk5ezWws2uInY/ALWVmIrmV6VTgXbsYSReFI="}}</script>
+  <script src="/js/third-party/tags/wavedrom.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
