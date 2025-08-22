@@ -28,8 +28,10 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32%20Overview/1-1.png">
 <meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32%20Overview/1-2.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32%20Overview/1-3.png">
+<meta property="og:image" content="http://qianxiaohan.github.io/2024/08/05/STM32%20Overview/1-4.png">
 <meta property="article:published_time" content="2024-08-05T06:58:44.205Z">
-<meta property="article:modified_time" content="2024-08-07T06:41:47.095Z">
+<meta property="article:modified_time" content="2025-08-22T07:29:38.563Z">
 <meta property="article:author" content="Lyx">
 <meta property="article:tag" content="嵌入式">
 <meta property="article:tag" content="学习笔记">
@@ -117,7 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#stm32f10x%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text"> STM32F10x系统结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stm32f10x%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text"> STM32F10x时钟树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEstm32%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text"> 配置STM32编程环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEkeil%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text"> 配置Keil环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text"> 标准库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keil-%E4%B8%8E-vs-code%E6%90%AD%E9%85%8D%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.1.</span> <span class="nav-text"> Keil 与 VS Code搭配使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.2.2.</span> <span class="nav-text"> 创建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.2.3.</span> <span class="nav-text"> 程序下载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hal%E5%BA%93"><span class="nav-number">3.3.</span> <span class="nav-text"> HAL库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%96%99%E4%B8%8B%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text"> 资料下载</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#stm32f10x%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text"> STM32F10x系统结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stm32f10x%E6%97%B6%E9%92%9F%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text"> STM32F10x时钟树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEstm32%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text"> 配置STM32编程环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEkeil%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text"> 配置Keil环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text"> 标准库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keil-%E4%B8%8E-vs-code%E6%90%AD%E9%85%8D%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.1.</span> <span class="nav-text"> Keil 与 VS Code搭配使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.2.2.</span> <span class="nav-text"> 创建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.2.3.</span> <span class="nav-text"> 程序下载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAstm32%E6%A8%A1%E6%9D%BF"><span class="nav-number">4.</span> <span class="nav-text"> 创建一个STM32模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cmsis"><span class="nav-number">4.1.</span> <span class="nav-text"> CMSIS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="nav-number">4.2.</span> <span class="nav-text"> 启动文件目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%AE%BE%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">4.3.</span> <span class="nav-text"> 外设的驱动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">4.4.</span> <span class="nav-text"> 用户文件夹</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93%E5%B7%A5%E7%A8%8B%E6%A8%A1%E6%9D%BF"><span class="nav-number">5.</span> <span class="nav-text"> 标准库工程模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8ac5%E5%92%8Cadc6%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">6.</span> <span class="nav-text"> 编译器AC5和ADC6的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E6%A8%A1%E6%9D%BF%E4%B8%8B%E8%BD%BD"><span class="nav-number">7.</span> <span class="nav-text"> 工程模板下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%96%99%E4%B8%8B%E8%BD%BD"><span class="nav-number">8.</span> <span class="nav-text"> 资料下载</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -130,13 +132,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -204,7 +206,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-08-07 14:41:47" itemprop="dateModified" datetime="2024-08-07T14:41:47+08:00">2024-08-07</time>
+      <time title="修改时间：2025-08-22 15:29:38" itemprop="dateModified" datetime="2025-08-22T15:29:38+08:00">2025-08-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -305,8 +307,73 @@
 <img src="/2024/08/05/STM32%20Overview/1-2.png" class="" title="1-2.png">
 <p>BOOT1和BOOT0都接低电平，配置为从Flash Memory启动，<strong>网上买的最小系统板默认是从STM32中的Flash Memory中启动。</strong></p>
 <p>将编译后的程序下载到flash memory中，常见的Debugger有ST-Link，J-Link，CMSIS-DAP等等。ST-Link调试器参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_52102933/article/details/126830904%EF%BC%8CST-Link%E4%B9%9F%E5%8F%AF%E4%BD%BF%E7%94%A8STM32">https://blog.csdn.net/qq_52102933/article/details/126830904，ST-Link也可使用STM32</a> ST-LINK Utility软件烧录HEX文件到单片机中。</p>
-<h3 id="hal库"><a class="markdownIt-Anchor" href="#hal库"></a> HAL库</h3>
-<p>等待后续更新。。。</p>
+<h2 id="创建一个stm32模板"><a class="markdownIt-Anchor" href="#创建一个stm32模板"></a> 创建一个STM32模板</h2>
+<p>以<code>STM32F103C8T6</code>为例。</p>
+<p>下载标准库外设：<code>stsw-stm32054_v3-6-0</code></p>
+<p>模板将按照以下文件夹结构创建：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├─CMSIS								//CMSIS：Cortex MicroController Software Interface Standard</span><br><span class="line">├─Startup							//stm32f10x启动文件，根据单片机配置选择不同的启动文件     </span><br><span class="line">├─StdPeriph_Driver					//存放标准库外设的驱动文件</span><br><span class="line">├─UserLib							//存放用户自定义的库文件</span><br><span class="line">└─User								//主函数所在目录</span><br></pre></td></tr></table></figure>
+<h3 id="cmsis"><a class="markdownIt-Anchor" href="#cmsis"></a> CMSIS</h3>
+<p>1.将<code>stsw-stm32054_v3-6-0\STM32F10x_StdPeriph_Lib_V3.6.0\Libraries\CMSIS\CM3\CoreSupport</code>路径下的以下文件：</p>
+<ul>
+<li><code>core_cm3.c</code></li>
+<li><code>core_cm3.h</code></li>
+</ul>
+<p>​	复制到工程模板的<code>CMSIS</code>文件夹下。</p>
+<p>2.将<code>stsw-stm32054_v3-6-0\STM32F10x_StdPeriph_Lib_V3.6.0\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x</code>路径下的以下文件：</p>
+<ul>
+<li><code>stm32f10x.h</code></li>
+<li><code>system_stm32f10x.c</code></li>
+<li><code>system_stm32f10x.h</code></li>
+</ul>
+<p>​	复制到工程模板的<code>CMSIS</code>文件夹下。</p>
+<h3 id="启动文件目录"><a class="markdownIt-Anchor" href="#启动文件目录"></a> 启动文件目录</h3>
+<p>将<code>stsw-stm32054_v3-6-0\STM32F10x_StdPeriph_Lib_V3.6.0\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm</code>下的<code>.s</code>文件复制到<code>Startup</code>文件夹下</p>
+<h3 id="外设的驱动文件"><a class="markdownIt-Anchor" href="#外设的驱动文件"></a> 外设的驱动文件</h3>
+<p>将<code>stsw-stm32054_v3-6-0\STM32F10x_StdPeriph_Lib_V3.6.0\Libraries\STM32F10x_StdPeriph_Driver</code>下的<code>inc</code>和<code>src</code>文件夹复制到<code>StdPre_Driver</code>。</p>
+<h3 id="用户文件夹"><a class="markdownIt-Anchor" href="#用户文件夹"></a> 用户文件夹</h3>
+<p>这里存放的是用户需要自行修改的文件。</p>
+<p>将<code>stsw-stm32054_v3-6-0\STM32F10x_StdPeriph_Lib_V3.6.0\Project\STM32F10x_StdPeriph_Template</code>下的：</p>
+<ul>
+<li><code>stm32f10x_conf.h</code></li>
+<li><code>stm32f10x_it.c</code></li>
+<li><code>stm32f10x_it.h</code></li>
+</ul>
+<p>复制到<code>User</code>文件下。</p>
+<p><strong>在User文件夹下创建<code>main.c</code></strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	GPIO_Init(GPIOC, &amp;GPIO_InitStructure);</span><br><span class="line">	GPIO_ResetBits(GPIOC, GPIO_Pin_13);</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在项目中创建和上述文件夹同名的分组，并将上面的文件添加到其中。<strong>注意</strong>：启动文件只需要添加一个<code>.s</code>文件</p>
+<img src="/2024/08/05/STM32%20Overview/1-3.png" class="" title="1-3.png">
+<h2 id="标准库工程模板"><a class="markdownIt-Anchor" href="#标准库工程模板"></a> 标准库工程模板</h2>
+<p>创建后的STM32F103C8T6标准库的工程模板，文件结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">│  keilkill.bat						//批处理文件，用于删除Objects文件夹下的文件</span><br><span class="line">│  Project.uvoptx					//保存keil μVision中的一些配置信息</span><br><span class="line">│  Project.uvprojx					//keil μVision工程文件</span><br><span class="line">│  </span><br><span class="line">├─CMSIS								//CMSIS：Cortex MicroController Software Interface Standard</span><br><span class="line">│      core_cm3.c					//这个C文件没有使用，可以移除</span><br><span class="line">│      core_cm3.h					//CMSIS Cortex-M3核心外设访问层头文件，包含了核心外设的寄存器地址定义如NVIC、SCB、SysTick</span><br><span class="line">│      stm32f10x.h					//CMSIS Cortex-M3 Device Peripheral Access Layer Header File. </span><br><span class="line">│      system_stm32f10x.c			//在其中定义了SystemInit、SystemCoreClock等等</span><br><span class="line">│      system_stm32f10x.h			//CMSIS Cortex-M3 Device Peripheral Access Layer System Header File.</span><br><span class="line">│      </span><br><span class="line">├─DebugConfig							//Keil μVision自动生成的文件夹，存放调试信息   </span><br><span class="line">├─Listings								//Keil μVision自动生成的文件夹</span><br><span class="line">├─Objects								//Keil μVision自动生成的文件夹，存放编译后的文件</span><br><span class="line">├─Startup								//stm32f10x启动文件，根据单片机配置选择不同的启动文件</span><br><span class="line">│      startup_stm32f10x_cl.s</span><br><span class="line">│      startup_stm32f10x_hd.s</span><br><span class="line">│      startup_stm32f10x_hd_vl.s</span><br><span class="line">│      startup_stm32f10x_ld.s</span><br><span class="line">│      startup_stm32f10x_ld_vl.s</span><br><span class="line">│      startup_stm32f10x_md.s</span><br><span class="line">│      startup_stm32f10x_md_vl.s</span><br><span class="line">│      startup_stm32f10x_xl.s</span><br><span class="line">│      </span><br><span class="line">├─StdPeriph_Driver					//存放标准库外设的驱动文件</span><br><span class="line">│      misc.c						//此文件其余固件库函数</span><br><span class="line">│      misc.h</span><br><span class="line">│      stm32f10x_xxx.c				//stm32f10x系列的外设标准库文件</span><br><span class="line">│      stm32f10x_xxx.h</span><br><span class="line">│</span><br><span class="line">├─UserLib							//存放用户自定义的库文件</span><br><span class="line">└─User								//这个文件夹的文件需要自行修改</span><br><span class="line">        main.c						</span><br><span class="line">        stm32f10x_conf.h			//配置文件，包含了所有标准库文件，如需使用标准库，需添加宏USE_STDPERIPH_DRIVER</span><br><span class="line">        stm32f10x_it.c				//stm32f10x系列处理中断的文件</span><br><span class="line">        stm32f10x_it.h</span><br></pre></td></tr></table></figure>
+<p>标准库各个文件之间的关系：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/stm32-c/p/13874308.html">https://www.cnblogs.com/stm32-c/p/13874308.html</a></p>
+<p>Keil中进行如下设置：</p>
+<ul>
+<li>
+<p>添加宏定义<code>STM32F10X_MD</code>，<code>USE_STDPERIPH_DRIVER</code></p>
+<ul>
+<li>
+<p>添加<code>STM32F10X_MD</code>才能使用某些常量，比如中断枚举常量<code>IRQn</code></p>
+</li>
+<li>
+<p>添加<code>USE_STDPERIPH_DRIVER</code>，才能使用头文件<code>stm32f10x_conf.h</code>，而<code>stm32f10x_conf.h</code>中包含了所有的标准外设库文件</p>
+</li>
+</ul>
+</li>
+<li>
+<p>添加<code>CMSIS</code>、<code>Startup</code>、<code>StdPeriph_Driver</code>、<code>UserLib</code>、<code>User</code>这几个文件夹的路径，这样编译器在编译时就能找到对应的文件。<mark>路径要包含到文件的上一级目录。</mark></p>
+</li>
+</ul>
+<img src="/2024/08/05/STM32%20Overview/1-4.png" class="" title="1-4">
+<p>在main.c中编写程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>	<span class="comment">//包含了所有核心外设、设备外设库文件</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="编译器ac5和adc6的选择"><a class="markdownIt-Anchor" href="#编译器ac5和adc6的选择"></a> 编译器AC5和ADC6的选择</h2>
+<p><strong>AC5编译器：</strong></p>
+<p>如果使用的是固件库<code>STM32F10x_StdPeriph_Lib_V3.5.0</code>中的<code>core_cm3.h</code>，固件库中的<code>core_cm3.h</code>版本太老，在keil中只能使用V5版本的编译器。</p>
+<p><strong>AC6编译器：</strong></p>
+<p>对于STM32F10x系列的单片机安装支持包<code>Keil.STM32F1xx_DFP.2.2.0.pack</code>后，<code>core_cm3.h</code>在<code>Keil安装目录\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include</code>。总共需要3个文件：<code>core_cm3.h</code>、<code>cmsis_compiler.h</code>、<code>cmsis_armclang.h</code>，这样在Keil中就可以选择AC6进行编译，但是就不能使用AC5进行编译了。</p>
+<h2 id="工程模板下载"><a class="markdownIt-Anchor" href="#工程模板下载"></a> 工程模板下载</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/qianxiaohan/STM32Project">模板地址</a></p>
 <h2 id="资料下载"><a class="markdownIt-Anchor" href="#资料下载"></a> 资料下载</h2>
 <p>标准库官网下载：<a target="_blank" rel="noopener" href="https://www.st.com.cn/zh/embedded-software/stm32-standard-peripheral-libraries.html">https://www.st.com.cn/zh/embedded-software/stm32-standard-peripheral-libraries.html</a></p>
 <p>STM32F103系列文档下载：<a target="_blank" rel="noopener" href="https://www.st.com.cn/zh/microcontrollers-microprocessors/stm32f103/documentation.html">https://www.st.com.cn/zh/microcontrollers-microprocessors/stm32f103/documentation.html</a></p>
@@ -366,7 +433,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

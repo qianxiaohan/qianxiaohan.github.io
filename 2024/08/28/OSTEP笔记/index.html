@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qianxiaohan.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Operating Systems：Three Easy Piece笔记 Operating Systems：Three Easy Pieces电子书地址https:&#x2F;&#x2F;pages.cs.wisc.edu&#x2F;~remzi&#x2F;OSTEP&#x2F; 这本书从操作系统的3个部分：  虚拟化（virtualization） 并发（concurrency） 持久性（persistence）  操作系统实际上做了： 它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Operating Systems：Three Easy Piece笔记">
+<meta property="og:url" content="http://qianxiaohan.github.io/2024/08/28/OSTEP%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Lyx&#39;s Blog">
+<meta property="og:description" content="Operating Systems：Three Easy Piece笔记 Operating Systems：Three Easy Pieces电子书地址https:&#x2F;&#x2F;pages.cs.wisc.edu&#x2F;~remzi&#x2F;OSTEP&#x2F; 这本书从操作系统的3个部分：  虚拟化（virtualization） 并发（concurrency） 持久性（persistence）  操作系统实际上做了： 它">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-28T08:27:14.830Z">
+<meta property="article:modified_time" content="2025-08-22T07:41:07.467Z">
+<meta property="article:author" content="Lyx">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://qianxiaohan.github.io/2024/08/28/OSTEP%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qianxiaohan.github.io/2024/08/28/OSTEP%E7%AC%94%E8%AE%B0/","path":"2024/08/28/OSTEP笔记/","title":"Operating Systems：Three Easy Piece笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Operating Systems：Three Easy Piece笔记 | Lyx's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lyx's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#operating-systemsthree-easy-piece%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text"> Operating Systems：Three Easy Piece笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC2%E7%AB%A0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text"> 第2章 操作系统的介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E8%99%9A%E6%8B%9F%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text"> 第一部分 虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC4%E7%AB%A0-%E6%8A%BD%E8%B1%A1%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 第4章 抽象：进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC5%E7%AB%A0-%E8%BF%9B%E7%A8%8Bapi"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 第5章 进程API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC6%E7%AB%A0-%E5%8F%97%E9%99%90%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C"><span class="nav-number">1.2.3.</span> <span class="nav-text"> 第6章  受限直接执行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#63-%E9%97%AE%E9%A2%982%E5%9C%A8%E8%BF%9B%E7%A8%8B%E4%B9%8B%E9%97%B4%E5%88%87%E6%8D%A2"><span class="nav-number">1.2.3.1.</span> <span class="nav-text"> 6.3  问题2：在进程之间切换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC7%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-number">1.2.4.</span> <span class="nav-text"> 第7章 进程调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC8%E7%AB%A0-%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97"><span class="nav-number">1.2.5.</span> <span class="nav-text"> 第8章 多级反馈队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC9%E7%AB%A0-%E6%AF%94%E4%BE%8B%E4%BB%BD%E9%A2%9D"><span class="nav-number">1.2.6.</span> <span class="nav-text"> 第9章  比例份额</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC10%E7%AB%A0-%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E5%BA%A6"><span class="nav-number">1.2.7.</span> <span class="nav-text"> 第10章 多处理器调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC13%E7%AB%A0-%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">1.2.8.</span> <span class="nav-text"> 第13章 地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC14%E7%AB%A0-%E5%86%85%E5%AD%98%E6%93%8D%E4%BD%9Capi"><span class="nav-number">1.2.9.</span> <span class="nav-text"> 第14章 内存操作API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC15%E7%AB%A0-%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.10.</span> <span class="nav-text"> 第15章 地址转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC16%E7%AB%A0-%E5%88%86%E6%AE%B5"><span class="nav-number">1.2.11.</span> <span class="nav-text"> 第16章  分段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC17%E7%AB%A0-%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.12.</span> <span class="nav-text"> 第17章 空闲空间管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E5%B9%B6%E5%8F%91"><span class="nav-number">1.3.</span> <span class="nav-text"> 第二部分 并发</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lyx</p>
+  <div class="site-description" itemprop="description">记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qianxiaohan.github.io/2024/08/28/OSTEP%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lyx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lyx's Blog">
+      <meta itemprop="description" content="记录一些在学习过程中遇到的问题，包括C/C++、STM32、RTOS等等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Operating Systems：Three Easy Piece笔记 | Lyx's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Operating Systems：Three Easy Piece笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-28 16:27:14" itemprop="dateCreated datePublished" datetime="2024-08-28T16:27:14+08:00">2024-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-08-22 15:41:07" itemprop="dateModified" datetime="2025-08-22T15:41:07+08:00">2025-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="operating-systemsthree-easy-piece笔记"><a class="markdownIt-Anchor" href="#operating-systemsthree-easy-piece笔记"></a> Operating Systems：Three Easy Piece笔记</h1>
+<p>Operating Systems：Three Easy Pieces电子书地址<a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/">https://pages.cs.wisc.edu/~remzi/OSTEP/</a></p>
+<p>这本书从操作系统的3个部分：</p>
+<ul>
+<li>虚拟化（virtualization）</li>
+<li>并发（concurrency）</li>
+<li>持久性（persistence）</li>
+</ul>
+<p>操作系统实际上做了：</p>
+<p>它取得 CPU、内存或磁盘等物理资源 （resources），甚对它们进行虚拟化（virtualize）。</p>
+<p>它处理与甚发（concurrency）有关的麻烦 且棘手的问题。</p>
+<p>它持久地（persistently）存储文件，从而使它们长期安全。</p>
+<span id="more"></span>
+<h2 id="第2章-操作系统的介绍"><a class="markdownIt-Anchor" href="#第2章-操作系统的介绍"></a> 第2章 操作系统的介绍</h2>
+<h2 id="第一部分-虚拟化"><a class="markdownIt-Anchor" href="#第一部分-虚拟化"></a> 第一部分 虚拟化</h2>
+<p>假设一个计算机只有一个CPU（尽管现代计算机一般拥有2个、4个或者更多CPU），虚拟 化要做的就是将这个CPU虚拟成多个虚拟CPU并分给每一个进程使用因此此，每个应用都 以为自己在独占CPU，但实际上只有一个CPU。这样操作系统就创造了美丽的假象——它 虚拟化了CPU。</p>
+<h3 id="第4章-抽象进程"><a class="markdownIt-Anchor" href="#第4章-抽象进程"></a> 第4章 抽象：进程</h3>
+<ul>
+<li>进程（Process）的非正式定义：就是运行中的程序</li>
+<li>时分共享（time sharing）CPU技术：通过让一个进程只运行一个时间片，然后切换到其他进程，操作系统提供了存在多个虚拟CPU的假象。</li>
+</ul>
+<p>将磁盘中的程序加载到内存中：</p>
+
+<ul>
+<li>
+<p>所有现代操作系统都以某种形式提供以下API。</p>
+<ul>
+<li>创建（create）进程</li>
+<li>销毁（destroy）进程</li>
+<li>等待（wait）进程</li>
+<li>其他控制（miscellaneous control），例如让线程暂停一段时间</li>
+<li>状态（status），通常也有一些接口可以获得有关进程的状态信息</li>
+</ul>
+</li>
+<li>
+<p>操作系统运行程序要做的事：</p>
+<ul>
+<li>操作系统运行程序必须做的第一件事是将代码和所有静态数据加载到内存中的进程的地址空间上。</li>
+<li>操作系统还需要为栈（C程序使用栈存放局部变量、函数参数和返回地址）分配内存，也可能为堆分配内存</li>
+<li>操作系统还将执行一些其他的初始化任务，特别是与输入/输出（I/O）相关的任务。</li>
+<li>最后启动程序， 即main()作为程序的入口。通过跳转到main()，OS将CPU的控制权转移到新创建的进程中，从而程序开始执行。</li>
+</ul>
+</li>
+<li>
+<p>进程可以处于以下三种状态之一：</p>
+<ul>
+<li>运行（running）：进程正在处理器上运行。</li>
+<li>就绪（ready）：在就绪状态下，进程已准备好运行，但由于某种原因，操作系统选择不在此时运行。</li>
+<li>阻塞（blocked）：在阻塞状态下，一个进程执行了某种操作，直到发生其他事件 时才会准备运行。</li>
+</ul>
+  <pre><code class="highlight mermaid">stateDiagram-v2
+    运行 --&gt; 就绪: 取消调度
+    运行 --&gt; 阻塞: I/O：发起
+    就绪 --&gt; 运行: 调度
+    阻塞 --&gt; 就绪: I/O：完成</code></pre>
+<p>从就绪到运行意味着该进程已经被调度（scheduled）。从运行转移到就绪意味着该进程已经取消调度（descheduled）。一旦进程被阻塞（例如，通过发起I/O操作），OS将保持进程的这种状态，直到发生某种事件（例如，I/O完成）。此时，进程再次转入就绪状态（也可能立即再次运行，如果操作系统这样决定）</p>
+</li>
+<li>
+<p>操作系统可能会为所有就绪的进程保留某种进程列表（process list），以及跟踪当前正在运行的进程的一些附加信息。</p>
+</li>
+</ul>
+<p>作业：</p>
+<h3 id="第5章-进程api"><a class="markdownIt-Anchor" href="#第5章-进程api"></a> 第5章 进程API</h3>
+<p>头文件<a target="_blank" rel="noopener" href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html">unistd.h</a></p>
+<ul>
+<li>
+<p>系统调用（System Call），以下函数包含在该头文件中</p>
+<ul>
+<li>
+<p>fork()：创建一个子进程</p>
+</li>
+<li>
+<p>wait()：等待其他线程执行结束</p>
+</li>
+<li>
+<p>exec()：将当前运行的程序替换为不同的运行程序，没有创建新的进程，exec()有几种变体：execl()、execle()、execlp()、execv()和 execvp()</p>
+</li>
+<li>
+<p>kill()：向进程发送信号(signal)，包括要求进程睡眠、终止或其他有用的指令</p>
+</li>
+</ul>
+</li>
+<li>
+<p>调用fork()函数的例子：<a target="_blank" rel="noopener" href="https://github.com/remzi-arpacidusseau/ostep-code/blob/master/cpu-api/p1.c">p1.c</a></p>
+</li>
+<li>
+<p>调用wait()函数的例子：p2.c</p>
+</li>
+<li>
+<p>调用exec()函数的例子：</p>
+</li>
+</ul>
+<h3 id="第6章-受限直接执行"><a class="markdownIt-Anchor" href="#第6章-受限直接执行"></a> 第6章  受限直接执行</h3>
+<p>CPU 虚拟化的关键底层机制，并将其统称为受限直接执行 （limited direct execution）。基本思路很简单：就让你想运行的程序在CPU上运行，但首先确保设置好硬件，以便在没有操作系统帮助的情况下限制进程可以执行的操作。</p>
+<ul>
+<li>如何高效、可控地虚拟化CPU？
+<ul>
+<li>为了使程序尽可能快地运行，操作系统开发人员想出了一种技术——我们称之为受限的直接执行（limited direct execution）：直接在CPU上运行程序即可</li>
+</ul>
+</li>
+<li>硬件通过提供不同的执行模式来协助操作系统。
+<ul>
+<li>CPU用户模式（user mode）：在用户模式下运行的代码会受到限制。例如，在用户模式下运行时，进程不能发出I/O请求。</li>
+<li>CPU内核模式（kernel mode）：操作系统（或内核）就以这种模式运行。 在此模式下，运行的代码可以做它喜欢的事，包括特权操作，如发出I/O请求和执行所有类 型的受限指令。</li>
+</ul>
+</li>
+<li>如果用户希望执行某种特权操作（如从磁盘读取），可以执行系统调用。要执行系统调用，程序必须执行特殊的陷阱（trap）指令。该指令同时跳入内核并将特权级别提升到内核模式。完成后，操作系统调用一个特殊的从陷阱返回 （return-from-trap）指令，同时将特权级别降低，回到用户模式。</li>
+</ul>
+<h4 id="63-问题2在进程之间切换"><a class="markdownIt-Anchor" href="#63-问题2在进程之间切换"></a> 6.3  问题2：在进程之间切换</h4>
+<ul>
+<li>协作方式：等待系统调用</li>
+<li>非协作方式：操作系统进行控制
+<ul>
+<li>在非协作方式下，可以利用时钟中断（timer interrput）重新获得CPU的控制权</li>
+</ul>
+</li>
+<li>保存和恢复上下文：是继续运行当前正在运行的进程，还是切换到另一个进程。这 个决定是由调度程序（scheduler）做出的，它是操作系统的一部分。决定进行切换，OS就会执行一些底层代码，即所谓的上下文切换（context switch）</li>
+</ul>
+<h3 id="第7章-进程调度"><a class="markdownIt-Anchor" href="#第7章-进程调度"></a> 第7章 进程调度</h3>
+<p>调度指标：</p>
+<ul>
+<li>周转时间（turnaround time）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>周转时间</mtext></msub><mo>=</mo><msub><mi>T</mi><mtext>完成时间</mtext></msub><mo>−</mo><msub><mi>T</mi><mtext>到达时间</mtext></msub></mrow><annotation encoding="application/x-tex">T_{周转时间}=T_{完成时间}-T_{到达时间}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">周</span><span class="mord cjk_fallback mtight">转</span><span class="mord cjk_fallback mtight">时</span><span class="mord cjk_fallback mtight">间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">完</span><span class="mord cjk_fallback mtight">成</span><span class="mord cjk_fallback mtight">时</span><span class="mord cjk_fallback mtight">间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">到</span><span class="mord cjk_fallback mtight">达</span><span class="mord cjk_fallback mtight">时</span><span class="mord cjk_fallback mtight">间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>响应时间（response time）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>响应时间</mtext></msub><mo>=</mo><msub><mi>T</mi><mtext>首次运行</mtext></msub><mtext>−</mtext><msub><mi>T</mi><mtext>到达时间</mtext></msub></mrow><annotation encoding="application/x-tex">T_{响应时间} = T_{首次运行}−T_{到达时间}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">响</span><span class="mord cjk_fallback mtight">应</span><span class="mord cjk_fallback mtight">时</span><span class="mord cjk_fallback mtight">间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">首</span><span class="mord cjk_fallback mtight">次</span><span class="mord cjk_fallback mtight">运</span><span class="mord cjk_fallback mtight">行</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">−</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">到</span><span class="mord cjk_fallback mtight">达</span><span class="mord cjk_fallback mtight">时</span><span class="mord cjk_fallback mtight">间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+<p>调度策略：</p>
+<ul>
+<li>先进先出（First In First Out或FIFO）调度：先到达的任务先执行。</li>
+<li>最短任务优先（Shortest Job First，SJF）调度：先运行最短的任务，然后是次短的任务，如此下去</li>
+<li>最短完成时间优先（Shortest Time-to-Completion First，STCF）调度：向SJF添加抢占，称为最短完成时间优。先每当新工作进入系统时，它就会确定剩余工作和新工作中， 谁的剩余时间最少，然后调度该工作。</li>
+<li>轮转（Round-Robin， RR）调度：RR在一个时间片（time slice，有时称为调度量子，scheduling  quantum）内运行一个工作，然后切换到运行队列中的下一个任务，而不是运行一个任务直到结束。它反复执行，直到所有任务完成。</li>
+</ul>
+<p>几种调度策略的图示：</p>
+
+
+<ul>
+<li>重叠（overlap）操作可以最大限度地提高系统的利用率。比如，一个进程在等另一个进程的I/O完成时使用CPU，系统因此得到更好的利用。调度程序与I/O结合，对于STCF调度策略来说，图7.9可以很好地利用资源。将任务A看成5个10ms的子任务，任务A的第一个子任务完成后，发生I/O，此时CPU去处理任务B，等到任务A的第二个子任务到达。根据STCF策略，A的子任务2抢占B的CPU使用权并运行10ms，一个进程在等待另一个进程的I/O完成时使用CPU，系统因此得到更好的利用</li>
+</ul>
+
+<ul>
+<li>介绍了调度的基本思想，并开发了两类方法。<mark>第一类是运行最短的工作，从而优化周转时间。第二类是交替运行所有工作，从而优化响应时间。但很难做到“鱼与熊掌兼 得”，这是系统中常见的、固有的折中。</mark></li>
+</ul>
+<h3 id="第8章-多级反馈队列"><a class="markdownIt-Anchor" href="#第8章-多级反馈队列"></a> 第8章 多级反馈队列</h3>
+<ul>
+<li>著名的调度方法：多级反馈队列（Multi-level Feedback Queue， MLFQ）。多级反馈队列需要解决两方面的问题。首先，它要优化周转时间。其次，需要降低响应时间。</li>
+<li>饥饿（starvation）问题：如果系统有“太多”交互型工作，就会不断占用 CPU，导致长工作永远无法得到CPU（它们饿死了）</li>
+<li>愚弄调度程序（game the scheduler）：用一些卑鄙的手段欺骗调度程序，让它给你远超公平的资源。进程在时间片用完之前，调用一个I/O操作（比如访问一个无关的文件），从而 主动释放CPU。如此便可以保持在高优先级，占用更多的CPU时间。做得好时（比如，每 运行99%的时间片时间就主动放弃一次CPU），工作可以几乎独占CPU。</li>
+<li>优化后的MLFQ规则：
+<ul>
+<li>规则1：如果A的优先级 &gt; B的优先级，运行A（不运行B）。</li>
+<li>规则2：如果A的优先级 = B的优先级，轮转运行A和B。</li>
+<li>规则3：工作进入系统时，放在最高优先级（最上层队列）。</li>
+<li>规则4：为了解决愚弄问题，一旦工作用完了其在某一层中的时间配额（无论中间主动放弃了多少次 CPU），就降低其优先级（移入低一级队列）。</li>
+<li>规则5：为了避免挨饿问题，经过一段时间S，就将系统中所有工作重新加入最高优先级队列。</li>
+</ul>
+</li>
+<li>大多数的MLFQ变体都支持不同队列可变的时间片长度。高优先级队列通常只有较短的时间片（比如 10ms 或者更少），因而这一层的交互工作可以更快地切换。相反，低优先级队列中更多的是 CPU 密集型工作，配置更长的时间片会取得更好的效果。</li>
+</ul>
+<h3 id="第9章-比例份额"><a class="markdownIt-Anchor" href="#第9章-比例份额"></a> 第9章  比例份额</h3>
+<ul>
+<li>调度程序——比例份额（proportional-share）调度程序，有时也称为公平份额（fair-share）调度程序。比例份额算法基于一个简单的想法：调度程序的最终目标，是确保每个工作获得一定比例的CPU时间，而不是优化周转时间和响应时间。</li>
+<li>比例份额的两种实现：彩票调度和步长调度。但由于一些原因，并没有作为CPU调度程序被广泛使用。一 个原因是这两种方式都不能很好地适合 I/O</li>
+</ul>
+<h3 id="第10章-多处理器调度"><a class="markdownIt-Anchor" href="#第10章-多处理器调度"></a> 第10章 多处理器调度</h3>
+<h3 id="第13章-地址空间"><a class="markdownIt-Anchor" href="#第13章-地址空间"></a> 第13章 地址空间</h3>
+<ul>
+<li>内存虚拟化：用户程序生成的每个地址都是虚拟地址。操作系统只是为每个进程提供一个假象，具体来说，就是它拥有自己的大量私有内存。在一些硬件帮助下，操作系统会将这些假的虚拟地址变成真实的物理地址，从而能够找到想要的信息。</li>
+<li>操作系统需要提供一个易用 （easy to use）的物理内存抽象。这个抽象叫作地址空间（address space），是运行的程序看 的系统中的内存。</li>
+<li>地址空间的例子如下，假设只有这3个部分：代码、栈和堆。当我们描述地址空间时，所描述的是操作系统提供给运行程序的抽象（abstract）。 程序不在物理地址0～16KB的内存中，而是加载在任意的物理地址。</li>
+</ul>
+
+<ul>
+<li>内存虚拟化的目标
+<ul>
+<li>透明（transparency）：程序不应该感知到内存被虚拟化的事实，相反，程序的行为就好像它拥有自己的私有物理内存。在幕后，操作系统（和硬件）完成了 所有的工作，让不同的工作复用内存，从而实现这个假象。</li>
+<li>效率（efficiency）：在实现高效率虚拟化时，操作系统将不得不依靠硬件支持，包括TLB这样 的硬件功能。</li>
+<li>保护（protection）：操作系统应确保进程受到保护（protect）， 不会受其他进程影响，操作系统本身也不会受进程影响。</li>
+</ul>
+</li>
+</ul>
+<h3 id="第14章-内存操作api"><a class="markdownIt-Anchor" href="#第14章-内存操作api"></a> 第14章 内存操作API</h3>
+<ul>
+<li>
+<p>在运行一个C程序的时候，会分配两种类型的内存。</p>
+<ul>
+<li>第一种称为栈内存，它的申请和释放操作是编译器来隐式管理的，所以有时也称为自动（automatic）内存。</li>
+<li>第二种称为堆（heap）内存，其中所有的申请和释放操作都由程序员显式地完成。</li>
+</ul>
+</li>
+<li>
+<p>内存分配API</p>
+<ul>
+<li>malloc()：传入要申请的堆空间的大小，它成功就返回一个指向新申请空间的指针，失败就返回NULL</li>
+<li>realloc()：创建一个新的更大的内存区域，将旧区域复制到其中，并返回新区域的指针。</li>
+<li>calloc()：分配内存，并在返回之前将其置零</li>
+<li>free()：释放malloc()函数所分配的堆空间</li>
+</ul>
+</li>
+<li>
+<p>malloc()和free()不是系统调用，而是库调用。malloc库管理虚拟地址空间内的空间，但是它本身是建立在一些系统调用之上的，这些系统调用会进入操作系统，来请求本多内存或者将一 些内容释放回系统。</p>
+</li>
+</ul>
+<h3 id="第15章-地址转换"><a class="markdownIt-Anchor" href="#第15章-地址转换"></a> 第15章 地址转换</h3>
+<ul>
+<li>
+<p>地址转换（address translation）：硬件对每次内存访问进行处理（即指令获取、数据读取或写入），将指令中的虚拟（virtual）地址转换为数据实际存储的物理（physical）地址。</p>
+</li>
+<li>
+<p>动态重定位（dynamic relocation）：基于硬件。每个CPU需要两个硬件寄存器：基址（base）寄存器和界限（bound）寄存器，有时称为限制（limit）寄存器。</p>
+<ul>
+<li>基址寄存器：存放物理地址的首地址</li>
+<li>界限寄存器：界限寄存器提供了访问保护，例如进程拥有4KB大小的地址空间，这个寄存器的值就是4KB</li>
+</ul>
+</li>
+<li>
+<p>动态重定位具体原理：操作系统决定将某个进程加载到32KB的内存地址，因此将基址寄存器设置为这个值。于是有<code>物理地址=虚拟地址+基地址</code>。进程中使用的内存引用都是虚拟地址（virtual address），硬件接下来将虚拟地址加上基址寄存器中的内容，得到物理地址（physical address），再发给内存系统。 由于这种重定位是在运行时发生的，而且我们甚至可以在进程开始运行后改变其地址空间，这种技术一般被称为动态重定位（dynamic relocation）</p>
+</li>
+</ul>
+<p>转换示例：假设一个进程拥有4KB大小地址空间，它被加载到从16KB开始的物理内存中。转换结果如下表</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">虚拟地址</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">物理地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">→</td>
+<td style="text-align:center">16KB</td>
+</tr>
+<tr>
+<td style="text-align:center">1KB</td>
+<td style="text-align:center">→</td>
+<td style="text-align:center">17KB</td>
+</tr>
+<tr>
+<td style="text-align:center">3000</td>
+<td style="text-align:center">→</td>
+<td style="text-align:center">19384</td>
+</tr>
+<tr>
+<td style="text-align:center">4400</td>
+<td style="text-align:center">→</td>
+<td style="text-align:center">错误（越界），进程大小只有4KB</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>为了支持动态重定位，硬件添加了新的功能，操作系统也必须提供相应的支持</li>
+</ul>
+<p>动态重定位：操作系统的职责</p>
+<table>
+<thead>
+<tr>
+<th>操作系统的要求</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存管理</td>
+<td>需要为新进程分配内存<br />从终止的进程回收内存  <br />一般通过空闲列表（free list）来管理内存</td>
+</tr>
+<tr>
+<td>基址/界限管理</td>
+<td>必须在上下文切换时正确设置基址/界限寄存器</td>
+</tr>
+<tr>
+<td>异常处理</td>
+<td>当异常发生时执行的代码，可能的动作是终止犯错的进程</td>
+</tr>
+</tbody>
+</table>
+<h3 id="第16章-分段"><a class="markdownIt-Anchor" href="#第16章-分段"></a> 第16章  分段</h3>
+<ul>
+<li>如果我们将整个地址空间放入物理内存，那么栈和堆之间的空间并没有被进程使用，却依然占用了实际的物理内存。因此，简单的通过基址寄存器和界限寄存器实现的虚拟内存很浪费。为了解决这个问题，分段（segmentation）的概念应运而生。</li>
+</ul>
+
+<ul>
+<li>分段将可分为代码段、堆段、栈段。硬件在地址转换时使用段寄存器，由于栈的地址是从大到小变化，段寄存器需要知道段的增长方向（用一位区分，比如1代表自小而大增长，0反之）。对于地址空间可能存在共享，比如代码段的共享，还需要硬件的支持，这就是保护位（protection bit）。物理内存中存放段，如下表所示</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">段</th>
+<th style="text-align:center">基址</th>
+<th style="text-align:center">大小</th>
+<th style="text-align:center">是否反向增长</th>
+<th style="text-align:center">保护</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">代码</td>
+<td style="text-align:center">32KB</td>
+<td style="text-align:center">2KB</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">读-执行</td>
+</tr>
+<tr>
+<td style="text-align:center">堆</td>
+<td style="text-align:center">34KB</td>
+<td style="text-align:center">2KB</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">读-写</td>
+</tr>
+<tr>
+<td style="text-align:center">栈</td>
+<td style="text-align:center">28KB</td>
+<td style="text-align:center">2KB</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">读-写</td>
+</tr>
+</tbody>
+</table>
+<p>虚拟地址使用二进制形式的前两位表示使用哪个段（00表示代码段，01表示堆段，11表示栈段），后面的二进制数位表示段内的偏移量。偏移量与基址寄存器相加，硬件就得到了最终的物理地址。偏移量也简化了对段边界的判断。我们只要检查偏移量是否小于界限， 大于界限的为非法地址。</p>
+<p>举个例子，假设访问虚拟地址15KB（栈所在的虚拟地址），该虚拟地址的二进制形式是：11 1100 0000 0000（十六进制0x3C00）。硬件利用前两位（11）来指定栈段，段内偏移量为3KB。由于栈地址是反向增长的，必须从3KB中减去最大的段地址（假设是4KB），因此正确的偏移量是3KB减去4KB，即−1KB。 只要用这个反向偏移量（−1KB）加上基址（28KB），就得到了正确的物理地址 27KB，实现了从虚拟地址15KB到物理地址27KB的转换。</p>
+<h3 id="第17章-空闲空间管理"><a class="markdownIt-Anchor" href="#第17章-空闲空间管理"></a> 第17章 空闲空间管理</h3>
+<ul>
+<li>如果要管理的空闲空间由大小不同的单元构成，管理就变得困难。这种情况出现在用户级的内存分配库（如malloc()和free()），或者操作系统用分段（segmentation） 的方式实现虚拟内存。</li>
+<li>外部碎片（external fragmentation）： 空闲空间被分割成不同大小的小块，成为碎片，后续的请求可能失败，因为没有一块足够 大的连续空闲空间，即使这时总的空闲空间超出了请求的大小。</li>
+<li>内存分配程序的底层机制
+<ul>
+<li>分割：它找到一块可以满足请求的空闲空间，将其分割，第一块返回给用户，第二块留在空闲列表中。</li>
+<li>合并：在归还一块空闲内存时，仔细查看要归还的内存块的地址以及邻它的空闲空间块。如果新归还的空间与一个原有空闲块相邻（或两个，就像这个例子），就将它们合并为一个较大的空闲块。</li>
+</ul>
+</li>
+<li>free()函数所需参数只是一个指针，分配程序是怎么知道需要释放多大空间的内存？在使用<code>malloc()</code>函数分配时，大多数分配程序都会在头块（header）中保存一点额外的信息（比如内存块的大小）。假设使用<code>malloc(20)</code>分配20字节的空间</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//简化后的头块</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">header_t</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> size; </span><br><span class="line">    <span class="type">int</span> magic; <span class="comment">//库可以很容易地确定magic是否符合预期的值，作为正常性检查</span></span><br><span class="line">&#125; <span class="type">header_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//free函数通过指针运算得到头块的位置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">free</span><span class="params">(<span class="type">void</span> *ptr)</span> &#123; </span><br><span class="line">    <span class="type">header_t</span> *hptr = (<span class="type">void</span> *)ptr - <span class="keyword">sizeof</span>(<span class="type">header_t</span>); </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>空闲列表：描述了堆中的空闲内存块的列表</li>
+<li>如何在空闲内存自己内部建立这样一个空闲列表？假设一个4KB的堆构建在某块空闲空间上，这块空间通过系统调用 mmap()获得。最初空闲列表只有一个条目：空闲内存大小为4088个字节，下一个头块的地址为0。用户使用malloc()分配到了100个字节（实际上是108个字节）的空间，指针ptr指向该地址。使用free()归还空间时，free()函数通过指针运算得到头块的位置，并将头块后的空间释放掉。遍历列表，合并（merge）相邻块。完成之后，堆又成了一个整体。</li>
+</ul>
+
+<h2 id="第二部分-并发"><a class="markdownIt-Anchor" href="#第二部分-并发"></a> 第二部分 并发</h2>
+<p><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/linux-c-api-ref/content/index.html">Linux C API参考手册</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/15/%E7%AC%AC18%E7%AB%A0%E6%8E%A2%E8%AE%A8C++%E6%96%B0%E6%A0%87%E5%87%86/" rel="prev" title="C++ Primer Plus第18章学习笔记">
+                  <i class="fa fa-angle-left"></i> C++ Primer Plus第18章学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lyx</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qianxiaohan" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script class="next-config" data-name="wavedrom" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/wavedrom.min.js","integrity":"sha256-INLAoJc6quTNfiMWkGZniYO2cxE8mHpddnLow1m6RFs="}}</script>
+  <script class="next-config" data-name="wavedrom_skin" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/skins/default.js","integrity":"sha256-fduc/Zszk5ezWws2uInY/ALWVmIrmV6VTgXbsYSReFI="}}</script>
+  <script src="/js/third-party/tags/wavedrom.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
